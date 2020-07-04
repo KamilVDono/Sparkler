@@ -11,7 +11,7 @@ namespace Rotorz.Games
 	/// Reference to a class <see cref="System.Type"/> with support for Unity serialization.
 	/// </summary>
 	[Serializable]
-	public sealed class ClassTypeReference : ISerializationCallbackReceiver
+	public sealed class ClassTypeReference : ISerializationCallbackReceiver, IEquatable<ClassTypeReference>
 	{
 		[SerializeField]
 		private string classRef;
@@ -101,5 +101,19 @@ namespace Rotorz.Games
 		}
 
 		public override string ToString() => this.Type != null ? this.Type.FullName : "(None)";
+
+		#region Equality
+
+		public static bool operator ==( ClassTypeReference left, ClassTypeReference right ) => left.Equals( right );
+
+		public static bool operator !=( ClassTypeReference left, ClassTypeReference right ) => !left.Equals( right );
+
+		public override bool Equals( object obj ) => Equals( obj as ClassTypeReference );
+
+		public bool Equals( ClassTypeReference other ) => !ReferenceEquals( other, null ) && classRef == other.classRef;
+
+		public override int GetHashCode() => 1504390128 + classRef.GetHashCode();
+
+		#endregion Equality
 	}
 }

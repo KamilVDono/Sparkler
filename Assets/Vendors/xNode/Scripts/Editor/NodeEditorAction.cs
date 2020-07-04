@@ -493,10 +493,10 @@ namespace XNode.Editor
 		public bool IsMac() =>
 #if UNITY_2017_1_OR_NEWER
 			SystemInfo.operatingSystemFamily == OperatingSystemFamily.MacOSX;
-#else
-            return SystemInfo.operatingSystem.StartsWith("Mac");
-#endif
 
+#else
+			return SystemInfo.operatingSystem.StartsWith("Mac");
+#endif
 
 		private void RecalculateDragOffsets( Event current )
 		{
@@ -559,11 +559,11 @@ namespace XNode.Editor
 				XNode.Node node = Selection.activeObject as XNode.Node;
 				if ( nodeSizes.TryGetValue( node, out Vector2 size ) )
 				{
-					RenamePopup.Show( Selection.activeObject, size.x );
+					RenamePopup.Show( Selection.activeObject, node.RenameAction, size.x );
 				}
 				else
 				{
-					RenamePopup.Show( Selection.activeObject );
+					RenamePopup.Show( Selection.activeObject, node.RenameAction );
 				}
 			}
 		}

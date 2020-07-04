@@ -1,5 +1,47 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2211651191980779633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -88, y: -264}
+  ports:
+    keys:
+    - _to
+    - _from
+    values:
+    - _fieldName: _to
+      _node: {fileID: -2211651191980779633}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _from
+      _node: {fileID: -2211651191980779633}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _from: {fileID: 0}
+  _all:
+  - classRef: Tags.IdleTag, Assembly-CSharp
+  _any:
+  - classRef: 
+  _none: []
+  _to: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,4 +54,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053c184ebf42cb449b120db0ca0eec8b, type: 3}
   m_Name: TestGraph
   m_EditorClassIdentifier: 
-  nodes: []
+  nodes:
+  - {fileID: -2211651191980779633}

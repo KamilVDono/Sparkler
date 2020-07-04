@@ -1,6 +1,10 @@
-﻿using UnityEditor;
+﻿using System;
+
+using UnityEditor;
 
 using UnityEngine;
+
+using Object = UnityEngine.Object;
 
 namespace XNode.Editor
 {
@@ -12,11 +16,12 @@ namespace XNode.Editor
 		public Object target;
 		public string input;
 		private bool firstFrame = true;
+		private Action<string> _renameAction;
 		public static RenamePopup current { get; private set; }
 
 		/// <summary> Show a rename popup for an asset at mouse position. Will trigger reimport of
 		/// the asset on apply.
-		public static RenamePopup Show( Object target, float width = 200 )
+		public static RenamePopup Show( Object target, Action<string> renameAction = null, float width = 200 )
 		{
 			RenamePopup window = EditorWindow.GetWindow<RenamePopup>(true, "Rename " + target.name, true);
 			if ( current != null )
@@ -25,6 +30,7 @@ namespace XNode.Editor
 			}
 
 			current = window;
+			window._renameAction = renameAction;
 			window.target = target;
 			window.input = target.name;
 			window.minSize = new Vector2( 100, 44 );
@@ -66,8 +72,15 @@ namespace XNode.Editor
 			{
 				if ( GUILayout.Button( "Revert to default" ) || ( e.isKey && e.keyCode == KeyCode.Return ) )
 				{
-					target.name = UnityEditor.ObjectNames.NicifyVariableName( target.GetType().Name );
-					AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( target ) );
+					if ( _renameAction == null )
+					{
+						target.name = ObjectNames.NicifyVariableName( target.GetType().Name );
+						AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( target ) );
+					}
+					else
+					{
+						_renameAction( ObjectNames.NicifyVariableName( target.GetType().Name ) );
+					}
 					Close();
 				}
 			}
@@ -76,8 +89,15 @@ namespace XNode.Editor
 			{
 				if ( GUILayout.Button( "Apply" ) || ( e.isKey && e.keyCode == KeyCode.Return ) )
 				{
-					target.name = input;
-					AssetDatabase.RenameAsset( AssetDatabase.GetAssetPath( target ), input );
+					if ( _renameAction == null )
+					{
+						target.name = input;
+						AssetDatabase.RenameAsset( AssetDatabase.GetAssetPath( target ), input );
+					}
+					else
+					{
+						_renameAction( input );
+					}
 					Close();
 				}
 			}

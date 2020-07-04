@@ -80,6 +80,11 @@ namespace XNode
 		public IEnumerable<NodePort> DynamicInputs { get { foreach ( NodePort port in Ports ) { if ( port.IsDynamic && port.IsInput ) { yield return port; } } } }
 
 		/// <summary>
+		/// Override this action to implement custom way of renaming nodes
+		/// </summary>
+		public virtual Action<string> RenameAction => null;
+
+		/// <summary>
 		/// Update static ports to reflect class fields. This happens automatically on enable.
 		/// </summary>
 		public void UpdateStaticPorts() => NodeDataCache.UpdatePorts( this, ports );

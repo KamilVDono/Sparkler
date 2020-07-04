@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -201,6 +202,8 @@ namespace XNode.Editor
 				Selection.objects = new Object[] { node };
 			}
 		}
+
+		public T[] Selected<T>() where T : XNode.Node => Selection.objects.OfType<T>().ToArray();
 
 		public void DeselectNode( XNode.Node node )
 		{
