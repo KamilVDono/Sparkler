@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 
 using UnityEditor;
 using UnityEditor.Callbacks;
 
 using UnityEngine;
+
+using Object = UnityEngine.Object;
 
 namespace XNode.Editor
 {
@@ -71,9 +74,38 @@ namespace XNode.Editor
 				return;
 			}
 
-			NodeEditorWindow w = GetWindow(typeof(NodeEditorWindow), false, "xNode", true) as NodeEditorWindow;
+			NodeEditorWindow w = Init(graph);
 			w.wantsMouseMove = true;
 			w.graph = graph;
+		}
+
+		/// <summary>
+		/// Create editor window
+		/// </summary>
+		public static NodeEditorWindow Init( XNode.NodeGraph graph )
+		{
+			NodeEditorWindow w = null;
+			foreach ( var window in Resources.FindObjectsOfTypeAll<NodeEditorWindow>() )
+			{
+				if ( window.titleContent.text.IndexOf( graph.name, StringComparison.InvariantCultureIgnoreCase ) == 0 )
+				{
+					w = window;
+				}
+			}
+
+			if ( w == null )
+			{
+				w = CreateWindow<NodeEditorWindow>( typeof( NodeEditorWindow ) );
+				w.titleContent = new GUIContent( "xNode" );
+				w.wantsMouseMove = true;
+				w.Show();
+			}
+			else
+			{
+				w.Focus();
+			}
+
+			return w;
 		}
 
 		/// <summary>
