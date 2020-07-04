@@ -10,6 +10,15 @@ namespace FSM.Editor
 		protected FSMNode Target => target as FSMNode;
 
 		public override void OnHeaderGUI() => GUILayout.Label( Target.Name, NodeEditorResources.styles.nodeHeader, GUILayout.Height( 30 ) );
+
+		public override Color GetTint()
+		{
+			if ( !Target.IsRightConfigured() )
+			{
+				return Color.red;
+			}
+			return base.GetTint();
+		}
 	}
 
 	public abstract class FSMNodeEditor<T> : FSMNodeEditor where T : FSMNode
