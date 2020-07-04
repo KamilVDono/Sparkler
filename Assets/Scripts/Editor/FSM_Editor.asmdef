@@ -1,0 +1,20 @@
+{
+    "name": "FSM_Editor",
+    "rootNamespace": "FSM.Editor",
+    "references": [
+        "GUID:867f66b20449bd5469ea743548b2fe21",
+        "GUID:3905a554dd96d7b4ebf88a0a468e84bc",
+        "GUID:57743abd298c0f549b38985fe7447a0c"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
