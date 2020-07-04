@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 053c184ebf42cb449b120db0ca0eec8b, type: 3}
-  m_Name: TestingGraph
+  m_Name: TestGraph
   m_EditorClassIdentifier: 
   nodes: []

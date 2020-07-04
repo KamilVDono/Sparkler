@@ -1,10 +1,7 @@
 {
-    "name": "FSM",
-    "rootNamespace": "FSM",
-    "references": [
-        "GUID:3905a554dd96d7b4ebf88a0a468e84bc",
-        "GUID:defade650d4200943bb41a087ec43f59"
-    ],
+    "name": "Rotorz.Games",
+    "rootNamespace": "",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -1,11 +1,13 @@
 {
-    "name": "FSM",
-    "rootNamespace": "FSM",
+    "name": "Rotorz.Games.Editor",
+    "rootNamespace": "",
     "references": [
-        "GUID:3905a554dd96d7b4ebf88a0a468e84bc",
-        "GUID:defade650d4200943bb41a087ec43f59"
+        "rotorz.unity3d-class-type-reference",
+        "Rotorz.Games"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
