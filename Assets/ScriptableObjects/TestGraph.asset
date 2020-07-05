@@ -27,6 +27,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+      _allowedTypes: []
     - _fieldName: _from
       _node: {fileID: -2211651191980779633}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -35,6 +36,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+      _allowedTypes: []
   _name: Idle
   _from: {fileID: 0}
   _all:
@@ -58,6 +60,8 @@ MonoBehaviour:
   - {fileID: -2211651191980779633}
   - {fileID: 5274439539639490737}
   - {fileID: 593013002516118109}
+  - {fileID: 1760004253655610051}
+  - {fileID: 0}
 --- !u!114 &593013002516118109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,7 +75,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -120, y: 120}
+  position: {x: -440, y: -40}
   ports:
     keys:
     - _from
@@ -85,14 +89,22 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+      _allowedTypes: []
     - _fieldName: _to
       _node: {fileID: 593013002516118109}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _from
+        node: {fileID: 1760004253655610051}
+        reroutePoints: []
+      - fieldName: _from
+        node: {fileID: 5274439539639490737}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+      _allowedTypes: []
   _name: Eat
   _from: {fileID: 0}
   _all:
@@ -100,6 +112,52 @@ MonoBehaviour:
   _any: []
   _none:
   - classRef: Tags.IdleTag, Assembly-CSharp
+  _to: {fileID: 0}
+--- !u!114 &1760004253655610051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 184, y: 72}
+  ports:
+    keys:
+    - _from
+    - _to
+    values:
+    - _fieldName: _from
+      _node: {fileID: 1760004253655610051}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: 593013002516118109}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 1760004253655610051}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+  _name: 
+  _from: {fileID: 0}
+  _all: []
+  _any: []
+  _none: []
   _to: {fileID: 0}
 --- !u!114 &5274439539639490737
 MonoBehaviour:
@@ -123,11 +181,15 @@ MonoBehaviour:
     - _fieldName: _from
       _node: {fileID: 5274439539639490737}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _to
+        node: {fileID: 593013002516118109}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+      _allowedTypes: []
     - _fieldName: _to
       _node: {fileID: 5274439539639490737}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -136,6 +198,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+      _allowedTypes: []
   _name: Walk
   _from: {fileID: 0}
   _all: []

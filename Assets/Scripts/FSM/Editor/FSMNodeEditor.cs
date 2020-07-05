@@ -7,7 +7,22 @@ namespace FSM.Editor
 	[CustomNodeEditor( typeof( FSMNode ) )]
 	public class FSMNodeEditor : XNode.Editor.NodeEditor
 	{
+		private Color? _nodeColor;
 		protected FSMNode Target => target as FSMNode;
+
+		private Color _NodeColor
+		{
+			get
+			{
+				if ( _nodeColor.HasValue )
+				{
+					return _nodeColor.Value;
+				}
+
+				_nodeColor = Target.Color;
+				return _nodeColor.Value;
+			}
+		}
 
 		public override void OnHeaderGUI() => GUILayout.Label( Target.Name, NodeEditorResources.styles.nodeHeader, GUILayout.Height( 30 ) );
 
@@ -17,7 +32,7 @@ namespace FSM.Editor
 			{
 				return Color.red;
 			}
-			return base.GetTint();
+			return _NodeColor;
 		}
 	}
 

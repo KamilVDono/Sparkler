@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Rotorz.Games;
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using UnityEngine;
@@ -26,8 +29,10 @@ namespace XNode
 		[SerializeField] private Node.TypeConstraint _typeConstraint;
 
 		[SerializeField] private bool _dynamic;
+		[SerializeField] private ClassTypeReference[] _allowedTypes;
 
 		public int ConnectionCount => connections.Count;
+		public Type[] AllowedTypes => ( _allowedTypes?.Length ?? 0 ) > 0 ? _allowedTypes.Select( a => (Type)a ).ToArray() : new[] { ValueType };
 
 		/// <summary>
 		/// Return the first non-null connection
@@ -102,16 +107,27 @@ namespace XNode
 			var attribs = fieldInfo.GetCustomAttributes(false);
 			for ( int i = 0; i < attribs.Length; i++ )
 			{
-				if ( attribs[i] is Node.InputAttribute )
+				if ( attribs[i] is Node.InputAttribute inputAttribute )
 				{
 					_direction = IO.Input;
-					_connectionType = ( attribs[i] as Node.InputAttribute ).connectionType;
-					_typeConstraint = ( attribs[i] as Node.InputAttribute ).typeConstraint;
+					_connectionType = inputAttribute.connectionType;
+					_typeConstraint = inputAttribute.typeConstraint;
+					_allowedTypes = new ClassTypeReference[inputAttribute.allowedTypes.Length];
+					for ( int j = 0; j < inputAttribute.allowedTypes.Length; j++ )
+					{
+						_allowedTypes[j] = inputAttribute.allowedTypes[j];
+					}
 				}
-				else if ( attribs[i] is Node.OutputAttribute )
+				else if ( attribs[i] is Node.OutputAttribute outputAttribute )
 				{
 					_direction = IO.Output;
-					_connectionType = ( attribs[i] as Node.OutputAttribute ).connectionType;
+					_connectionType = outputAttribute.connectionType;
+					_typeConstraint = outputAttribute.typeConstraint;
+					_allowedTypes = new ClassTypeReference[outputAttribute.allowedTypes.Length];
+					for ( int j = 0; j < outputAttribute.allowedTypes.Length; j++ )
+					{
+						_allowedTypes[j] = outputAttribute.allowedTypes[j];
+					}
 				}
 			}
 		}
@@ -127,6 +143,7 @@ namespace XNode
 			_dynamic = nodePort._dynamic;
 			_connectionType = nodePort._connectionType;
 			_typeConstraint = nodePort._typeConstraint;
+			_allowedTypes = nodePort._allowedTypes;
 			_node = node;
 		}
 
@@ -425,15 +442,42 @@ namespace XNode
 			{
 				return false;
 			}
-			// Check type constraints
-			if ( input.typeConstraint == XNode.Node.TypeConstraint.Inherited && !input.ValueType.IsAssignableFrom( output.ValueType ) )
+			// Disable connection if input and output belongs to same node
+			if ( input.node == output.node )
 			{
 				return false;
 			}
-
-			if ( input.typeConstraint == XNode.Node.TypeConstraint.Strict && input.ValueType != output.ValueType )
+			// Check input type constraints
+			if ( input.typeConstraint == XNode.Node.TypeConstraint.Inherited )
 			{
-				return false;
+				if ( !AllowedTypes.Any( t => ( (Type)t ).IsAssignableFrom( output.ValueType ) ) )
+				{
+					return false;
+				}
+			}
+
+			if ( input.typeConstraint == XNode.Node.TypeConstraint.Strict )
+			{
+				if ( AllowedTypes.All( t => ( (Type)t ) != output.ValueType ) )
+				{
+					return false;
+				}
+			}
+			// Check output type constraints
+			if ( output.typeConstraint == XNode.Node.TypeConstraint.Inherited )
+			{
+				if ( !AllowedTypes.Any( t => ( (Type)t ).IsAssignableFrom( input.ValueType ) ) )
+				{
+					return false;
+				}
+			}
+
+			if ( output.typeConstraint == XNode.Node.TypeConstraint.Strict )
+			{
+				if ( AllowedTypes.All( t => ( (Type)t ) != input.ValueType ) )
+				{
+					return false;
+				}
 			}
 			// Success
 			return true;

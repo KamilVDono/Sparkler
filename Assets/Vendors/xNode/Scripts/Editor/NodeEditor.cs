@@ -94,8 +94,7 @@ namespace XNode.Editor
 		public virtual GUIStyle GetBodyStyle() => NodeEditorResources.styles.nodeBody;
 
 		/// <summary>
-		/// Add items for the context menu when right-clicking this node. Override to add custom
-		/// menu items.
+		/// Add items for the context menu when right-clicking this node. Override to add custom menu items.
 		/// </summary>
 		public virtual void AddContextMenuItems( GenericMenu menu )
 		{

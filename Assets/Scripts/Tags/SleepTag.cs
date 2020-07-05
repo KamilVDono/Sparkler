@@ -1,8 +1,8 @@
-﻿using FSM;
+﻿using Unity.Entities;
 
 namespace Tags
 {
-	public struct SleepTag : IStateTag
+	public struct SleepTag : IComponentData
 	{
 	}
 }

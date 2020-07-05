@@ -1,12 +1,8 @@
 {
-    "name": "Rotorz.Games.Editor",
-    "rootNamespace": "",
-    "references": [
-        "Rotorz.Games"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "name": "FSM.Utility",
+    "rootNamespace": "FSM.Utility",
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

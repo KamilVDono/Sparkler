@@ -68,8 +68,8 @@ namespace XNode.Editor
 					spacePadding = spaceAttribute.height;
 				}
 
-				// If property is an input, display a regular property field and put a port handle
-				// on the left side
+				// If property is an input, display a regular property field and put a port handle on the
+				// left side
 				if ( port.direction == XNode.NodePort.IO.Input )
 				{
 					// Get data from [Input] attribute
@@ -127,8 +127,7 @@ namespace XNode.Editor
 
 					rect = GUILayoutUtility.GetLastRect();
 					rect.position = rect.position - new Vector2( 16, -spacePadding );
-					// If property is an output, display a text label and put a port handle on the
-					// right side
+					// If property is an output, display a text label and put a port handle on the right side
 				}
 				else if ( port.direction == XNode.NodePort.IO.Output )
 				{
@@ -198,7 +197,7 @@ namespace XNode.Editor
 				}
 
 				Color col = NodeEditorWindow.current.graphEditor.GetPortColor(port);
-				DrawPortHandle( rect, backgroundColor, col );
+				DrawPortHandle( rect, backgroundColor, col, port.connectionType == Node.ConnectionType.Multiple );
 
 				// Register the handle position
 				Vector2 portPos = rect.center;
@@ -229,8 +228,7 @@ namespace XNode.Editor
 			Vector2 position = Vector3.zero;
 			GUIContent content = label != null ? label : new GUIContent(ObjectNames.NicifyVariableName(port.fieldName));
 
-			// If property is an input, display a regular property field and put a port handle on
-			// the left side
+			// If property is an input, display a regular property field and put a port handle on the left side
 			if ( port.direction == XNode.NodePort.IO.Input )
 			{
 				// Display a label
@@ -270,7 +268,7 @@ namespace XNode.Editor
 			}
 
 			Color col = NodeEditorWindow.current.graphEditor.GetPortColor(port);
-			DrawPortHandle( rect, backgroundColor, col );
+			DrawPortHandle( rect, backgroundColor, col, port.connectionType == Node.ConnectionType.Multiple );
 
 			// Register the handle position
 			Vector2 portPos = rect.center;
@@ -289,8 +287,7 @@ namespace XNode.Editor
 
 			Rect rect = new Rect();
 
-			// If property is an input, display a regular property field and put a port handle on
-			// the left side
+			// If property is an input, display a regular property field and put a port handle on the left side
 			if ( port.direction == XNode.NodePort.IO.Input )
 			{
 				rect = GUILayoutUtility.GetLastRect();
@@ -312,7 +309,7 @@ namespace XNode.Editor
 			}
 
 			Color col = NodeEditorWindow.current.graphEditor.GetPortColor(port);
-			DrawPortHandle( rect, backgroundColor, col );
+			DrawPortHandle( rect, backgroundColor, col, port.connectionType == Node.ConnectionType.Multiple );
 
 			// Register the handle position
 			Vector2 portPos = rect.center;
@@ -330,13 +327,13 @@ namespace XNode.Editor
 			GUILayout.EndHorizontal();
 		}
 
-		public static void DrawPortHandle( Rect rect, Color backgroundColor, Color typeColor )
+		public static void DrawPortHandle( Rect rect, Color backgroundColor, Color typeColor, bool isMultiple = false )
 		{
 			Color col = GUI.color;
 			GUI.color = backgroundColor;
-			GUI.DrawTexture( rect, NodeEditorResources.dotOuter );
+			GUI.DrawTexture( rect, isMultiple ? NodeEditorResources.pentagonOuter : NodeEditorResources.dotOuter );
 			GUI.color = typeColor;
-			GUI.DrawTexture( rect, NodeEditorResources.dot );
+			GUI.DrawTexture( rect, isMultiple ? NodeEditorResources.pentagon : NodeEditorResources.dot );
 			GUI.color = col;
 		}
 

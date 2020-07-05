@@ -432,11 +432,8 @@ namespace XNode
 			public ShowBackingValue backingValue;
 			public ConnectionType connectionType;
 			public bool dynamicPortList;
-
 			public TypeConstraint typeConstraint;
-
-			[Obsolete( "Use dynamicPortList instead" )]
-			public bool instancePortList { get => dynamicPortList; set => dynamicPortList = value; }
+			public Type[] allowedTypes;
 
 			/// <summary>
 			/// Mark a serializable field as an input port. You can access this through <see cref="GetInputPort(string)"/>
@@ -452,12 +449,14 @@ namespace XNode
 			/// If true, will display a reorderable list of inputs instead of a single port. Will
 			/// automatically add and display values for lists and arrays
 			/// </param>
-			public InputAttribute( ShowBackingValue backingValue = ShowBackingValue.Unconnected, ConnectionType connectionType = ConnectionType.Multiple, TypeConstraint typeConstraint = TypeConstraint.None, bool dynamicPortList = false )
+			/// <param name="allowedTypes">If set apply to typeConstraint</param>
+			public InputAttribute( ShowBackingValue backingValue = ShowBackingValue.Unconnected, ConnectionType connectionType = ConnectionType.Multiple, TypeConstraint typeConstraint = TypeConstraint.None, bool dynamicPortList = false, params Type[] allowedTypes )
 			{
 				this.backingValue = backingValue;
 				this.connectionType = connectionType;
 				this.dynamicPortList = dynamicPortList;
 				this.typeConstraint = typeConstraint;
+				this.allowedTypes = allowedTypes;
 			}
 		}
 
@@ -470,9 +469,8 @@ namespace XNode
 			public ShowBackingValue backingValue;
 			public ConnectionType connectionType;
 			public bool dynamicPortList;
-
-			[Obsolete( "Use dynamicPortList instead" )]
-			public bool instancePortList { get => dynamicPortList; set => dynamicPortList = value; }
+			public TypeConstraint typeConstraint;
+			public Type[] allowedTypes;
 
 			/// <summary>
 			/// Mark a serializable field as an output port. You can access this through <see cref="GetOutputPort(string)"/>
@@ -485,11 +483,17 @@ namespace XNode
 			/// If true, will display a reorderable list of outputs instead of a single port. Will
 			/// automatically add and display values for lists and arrays
 			/// </param>
-			public OutputAttribute( ShowBackingValue backingValue = ShowBackingValue.Never, ConnectionType connectionType = ConnectionType.Multiple, bool dynamicPortList = false )
+			/// <param name="typeConstraint">
+			/// Constrains which input connections can be made from this port
+			/// </param>
+			/// <param name="allowedTypes">If set apply to typeConstraint</param>
+			public OutputAttribute( ShowBackingValue backingValue = ShowBackingValue.Never, ConnectionType connectionType = ConnectionType.Multiple, TypeConstraint typeConstraint = TypeConstraint.None, bool dynamicPortList = false, params Type[] allowedTypes )
 			{
 				this.backingValue = backingValue;
 				this.connectionType = connectionType;
 				this.dynamicPortList = dynamicPortList;
+				this.typeConstraint = typeConstraint;
+				this.allowedTypes = allowedTypes;
 			}
 		}
 

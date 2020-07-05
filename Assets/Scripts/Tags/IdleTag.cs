@@ -1,8 +1,9 @@
-﻿using FSM;
+﻿
+using Unity.Entities;
 
 namespace Tags
 {
-	public struct IdleTag : IStateTag
+	public struct IdleTag : IComponentData
 	{
 	}
 }

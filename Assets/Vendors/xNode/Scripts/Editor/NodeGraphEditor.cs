@@ -91,7 +91,9 @@ namespace XNode.Editor
 		/// <summary>
 		/// Create a node and save it in the graph asset
 		/// </summary>
-		public virtual void CreateNode( Type type, Vector2 position )
+		public virtual void CreateNode( Type type, Vector2 position ) => CreateNode( type, position, null );
+
+		public virtual void CreateNode( Type type, Vector2 position, Action<Node> config )
 		{
 			XNode.Node node = target.AddNode(type);
 			node.position = position;
@@ -113,6 +115,7 @@ namespace XNode.Editor
 			}
 
 			NodeEditorWindow.RepaintAll();
+			config?.Invoke( node );
 		}
 
 		/// <summary>

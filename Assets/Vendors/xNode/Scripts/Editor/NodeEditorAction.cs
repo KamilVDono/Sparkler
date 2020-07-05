@@ -10,50 +10,51 @@ namespace XNode.Editor
 {
 	public partial class NodeEditorWindow
 	{
-		public enum NodeActivity { Idle, HoldNode, DragNode, HoldGrid, DragGrid }
-
 		public static NodeActivity currentActivity = NodeActivity.Idle;
-		public static bool isPanning { get; private set; }
+
 		public static Vector2[] dragOffset;
 
-		private bool IsDraggingPort => draggedOutput != null;
-		private bool IsHoveringPort => hoveredPort != null;
-		private bool IsHoveringNode => hoveredNode != null;
-		private bool IsHoveringReroute => hoveredReroute.port != null;
+		public static XNode.Node[] copyBuffer = null;
+
+		[NonSerialized] public XNode.NodePort draggedOutput = null;
+
 		private XNode.Node hoveredNode = null;
+
 		[NonSerialized] private XNode.NodePort hoveredPort = null;
-		[NonSerialized] private XNode.NodePort draggedOutput = null;
+
 		[NonSerialized] private XNode.NodePort draggedOutputTarget = null;
+
 		[NonSerialized] private List<Vector2> draggedOutputReroutes = new List<Vector2>();
+
 		private RerouteReference hoveredReroute = new RerouteReference();
+
 		private List<RerouteReference> selectedReroutes = new List<RerouteReference>();
+
+		private ConnectionReference hoveredConnection = new ConnectionReference();
+		private List<ConnectionReference> selectedConnections = new List<ConnectionReference>();
+
 		private Vector2 dragBoxStart;
+
 		private UnityEngine.Object[] preBoxSelection;
+
 		private RerouteReference[] preBoxSelectionReroute;
+
 		private Rect selectionBox;
+
 		private bool isDoubleClick = false;
 
-		private struct RerouteReference
-		{
-			public XNode.NodePort port;
-			public int connectionIndex;
-			public int pointIndex;
+		private Vector2 lastMousePosition;
 
-			public RerouteReference( XNode.NodePort port, int connectionIndex, int pointIndex )
-			{
-				this.port = port;
-				this.connectionIndex = connectionIndex;
-				this.pointIndex = pointIndex;
-			}
+		public static bool isPanning { get; private set; }
 
-			public void InsertPoint( Vector2 pos ) => port.GetReroutePoints( connectionIndex ).Insert( pointIndex, pos );
+		private bool IsDraggingPort => draggedOutput != null;
 
-			public void SetPoint( Vector2 pos ) => port.GetReroutePoints( connectionIndex )[pointIndex] = pos;
+		private bool IsHoveringPort => hoveredPort != null;
 
-			public void RemovePoint() => port.GetReroutePoints( connectionIndex ).RemoveAt( pointIndex );
+		private bool IsHoveringNode => hoveredNode != null;
 
-			public Vector2 GetPoint() => port.GetReroutePoints( connectionIndex )[pointIndex];
-		}
+		private bool IsHoveringReroute => hoveredReroute.port != null;
+		private bool IsHoveringConnection => hoveredConnection.outputPort != null;
 
 		public void Controls()
 		{
@@ -62,6 +63,7 @@ namespace XNode.Editor
 			switch ( e.type )
 			{
 				case EventType.MouseMove:
+					lastMousePosition = e.mousePosition;
 					break;
 
 				case EventType.ScrollWheel:
@@ -130,8 +132,8 @@ namespace XNode.Editor
 										node.position.y = ( Mathf.Round( ( node.position.y + 8 ) / 16 ) * 16 ) - 8;
 									}
 
-									// Offset portConnectionPoints instantly if a node is dragged so
-									// they aren't delayed by a frame.
+									// Offset portConnectionPoints instantly if a node is dragged so they aren't
+									// delayed by a frame.
 									Vector2 offset = node.position - initial;
 									if ( offset.sqrMagnitude > 0 )
 									{
@@ -233,6 +235,7 @@ namespace XNode.Editor
 								if ( !e.control && !e.shift )
 								{
 									selectedReroutes.Clear();
+									selectedConnections.Clear();
 								}
 							}
 							else if ( e.control || e.shift )
@@ -240,8 +243,8 @@ namespace XNode.Editor
 								DeselectNode( hoveredNode );
 							}
 
-							// Cache double click state, but only act on it in MouseUp - Except
-							// ClickCount only works in mouseDown.
+							// Cache double click state, but only act on it in MouseUp - Except ClickCount only
+							// works in mouseDown.
 							isDoubleClick = ( e.clickCount == 2 );
 
 							e.Use();
@@ -273,6 +276,32 @@ namespace XNode.Editor
 							e.Use();
 							currentActivity = NodeActivity.HoldNode;
 						}
+						else if ( IsHoveringConnection )
+						{
+							// If reroute isn't selected
+							if ( !selectedConnections.Contains( hoveredConnection ) )
+							{
+								// Add it
+								if ( e.control || e.shift )
+								{
+									selectedConnections.Add( hoveredConnection );
+								}
+								// Select it
+								else
+								{
+									selectedConnections = new List<ConnectionReference>() { hoveredConnection };
+									Selection.activeObject = null;
+								}
+							}
+							// Deselect
+							else if ( e.control || e.shift )
+							{
+								selectedConnections.Remove( hoveredConnection );
+							}
+
+							e.Use();
+							currentActivity = NodeActivity.HoldNode;
+						}
 						// If mousedown on grid background, deselect all
 						else if ( !IsHoveringNode )
 						{
@@ -280,6 +309,7 @@ namespace XNode.Editor
 							if ( !e.control && !e.shift )
 							{
 								selectedReroutes.Clear();
+								selectedConnections.Clear();
 								Selection.activeObject = null;
 							}
 						}
@@ -301,8 +331,7 @@ namespace XNode.Editor
 									draggedOutput.Connect( draggedOutputTarget );
 								}
 
-								// ConnectionIndex can be -1 if the connection is removed instantly
-								// after creation
+								// ConnectionIndex can be -1 if the connection is removed instantly after creation
 								int connectionIndex = draggedOutput.GetConnectionIndex(draggedOutputTarget);
 								if ( connectionIndex != -1 )
 								{
@@ -313,6 +342,15 @@ namespace XNode.Editor
 									}
 
 									EditorUtility.SetDirty( graph );
+								}
+							}
+							else
+							{
+								GenericMenu menu = new GenericMenu();
+								graphEditor.AddContextMenuItems( menu );
+								if ( menu.GetItemCount() > 0 )
+								{
+									menu.DropDown( new Rect( Event.current.mousePosition, Vector2.zero ) );
 								}
 							}
 							//Release dragged connection
@@ -355,6 +393,7 @@ namespace XNode.Editor
 						if ( currentActivity == NodeActivity.HoldNode && !( e.control || e.shift ) )
 						{
 							selectedReroutes.Clear();
+							selectedConnections.Clear();
 							SelectNode( hoveredNode, false );
 
 							// Double click to center node
@@ -369,6 +408,13 @@ namespace XNode.Editor
 						if ( IsHoveringReroute && !( e.control || e.shift ) )
 						{
 							selectedReroutes = new List<RerouteReference>() { hoveredReroute };
+							Selection.activeObject = null;
+						}
+
+						// If click connection, select it
+						if ( IsHoveringConnection && !( e.control || e.shift ) )
+						{
+							selectedConnections = new List<ConnectionReference> { hoveredConnection };
 							Selection.activeObject = null;
 						}
 
@@ -476,6 +522,24 @@ namespace XNode.Editor
 
 						e.Use();
 					}
+					else if ( e.commandName == "Copy" )
+					{
+						if ( e.type == EventType.ExecuteCommand )
+						{
+							CopySelectedNodes();
+						}
+
+						e.Use();
+					}
+					else if ( e.commandName == "Paste" )
+					{
+						if ( e.type == EventType.ExecuteCommand )
+						{
+							PasteNodes( WindowToGridPosition( lastMousePosition ) );
+						}
+
+						e.Use();
+					}
 					Repaint();
 					break;
 
@@ -490,33 +554,7 @@ namespace XNode.Editor
 			}
 		}
 
-		public bool IsMac() =>
-#if UNITY_2017_1_OR_NEWER
-			SystemInfo.operatingSystemFamily == OperatingSystemFamily.MacOSX;
-
-#else
-			return SystemInfo.operatingSystem.StartsWith("Mac");
-#endif
-
-		private void RecalculateDragOffsets( Event current )
-		{
-			dragOffset = new Vector2[Selection.objects.Length + selectedReroutes.Count];
-			// Selected nodes
-			for ( int i = 0; i < Selection.objects.Length; i++ )
-			{
-				if ( Selection.objects[i] is XNode.Node )
-				{
-					XNode.Node node = Selection.objects[i] as XNode.Node;
-					dragOffset[i] = node.position - WindowToGridPosition( current.mousePosition );
-				}
-			}
-
-			// Selected reroutes
-			for ( int i = 0; i < selectedReroutes.Count; i++ )
-			{
-				dragOffset[Selection.objects.Length + i] = selectedReroutes[i].GetPoint() - WindowToGridPosition( current.mousePosition );
-			}
-		}
+		public bool IsMac() => SystemInfo.operatingSystemFamily == OperatingSystemFamily.MacOSX;
 
 		/// <summary>
 		/// Puts all nodes in focus. If no nodes are present, resets view to
@@ -539,6 +577,11 @@ namespace XNode.Editor
 				selectedReroutes[i].RemovePoint();
 			}
 			selectedReroutes.Clear();
+			selectedConnections.ForEach( c =>
+			{
+				c.outputPort.Disconnect( c.inputPort );
+			} );
+			selectedConnections.Clear();
 			foreach ( UnityEngine.Object item in Selection.objects )
 			{
 				if ( item is XNode.Node )
@@ -641,6 +684,10 @@ namespace XNode.Editor
 			Selection.objects = newNodes;
 		}
 
+		public void CopySelectedNodes() => copyBuffer = Selection.objects.Select( x => x as XNode.Node ).Where( x => x != null && x.graph == graph ).ToArray();
+
+		public void PasteNodes( Vector2 pos ) => InsertDuplicateNodes( copyBuffer, pos );
+
 		/// <summary>
 		/// Draw a connection as we are dragging it
 		/// </summary>
@@ -693,6 +740,87 @@ namespace XNode.Editor
 			}
 		}
 
+		private void InsertDuplicateNodes( XNode.Node[] nodes, Vector2 topLeft )
+		{
+			if ( nodes == null || nodes.Length == 0 )
+			{
+				return;
+			}
+
+			// Get top-left node
+			Vector2 topLeftNode = nodes.Select(x => x.position).Aggregate((x, y) => new Vector2(Mathf.Min(x.x, y.x), Mathf.Min(x.y, y.y)));
+			Vector2 offset = topLeft - topLeftNode;
+
+			UnityEngine.Object[] newNodes = new UnityEngine.Object[nodes.Length];
+			Dictionary<XNode.Node, XNode.Node> substitutes = new Dictionary<XNode.Node, XNode.Node>();
+			for ( int i = 0; i < nodes.Length; i++ )
+			{
+				XNode.Node srcNode = nodes[i];
+				if ( srcNode == null )
+				{
+					continue;
+				}
+
+				XNode.Node newNode = graphEditor.CopyNode(srcNode);
+				substitutes.Add( srcNode, newNode );
+				newNode.position = srcNode.position + offset;
+				newNodes[i] = newNode;
+			}
+
+			// Walk through the selected nodes again, recreate connections, using the new nodes
+			for ( int i = 0; i < nodes.Length; i++ )
+			{
+				XNode.Node srcNode = nodes[i];
+				if ( srcNode == null )
+				{
+					continue;
+				}
+
+				foreach ( XNode.NodePort port in srcNode.Ports )
+				{
+					for ( int c = 0; c < port.ConnectionCount; c++ )
+					{
+						XNode.NodePort inputPort = port.direction == XNode.NodePort.IO.Input ? port : port.GetConnection(c);
+						XNode.NodePort outputPort = port.direction == XNode.NodePort.IO.Output ? port : port.GetConnection(c);
+
+						if ( substitutes.TryGetValue( inputPort.node, out Node newNodeIn ) && substitutes.TryGetValue( outputPort.node, out Node newNodeOut ) )
+						{
+							newNodeIn.UpdateStaticPorts();
+							newNodeOut.UpdateStaticPorts();
+							inputPort = newNodeIn.GetInputPort( inputPort.fieldName );
+							outputPort = newNodeOut.GetOutputPort( outputPort.fieldName );
+						}
+						if ( !inputPort.IsConnectedTo( outputPort ) )
+						{
+							inputPort.Connect( outputPort );
+						}
+					}
+				}
+			}
+			// Select the new nodes
+			Selection.objects = newNodes;
+		}
+
+		private void RecalculateDragOffsets( Event current )
+		{
+			dragOffset = new Vector2[Selection.objects.Length + selectedReroutes.Count];
+			// Selected nodes
+			for ( int i = 0; i < Selection.objects.Length; i++ )
+			{
+				if ( Selection.objects[i] is XNode.Node )
+				{
+					XNode.Node node = Selection.objects[i] as XNode.Node;
+					dragOffset[i] = node.position - WindowToGridPosition( current.mousePosition );
+				}
+			}
+
+			// Selected reroutes
+			for ( int i = 0; i < selectedReroutes.Count; i++ )
+			{
+				dragOffset[Selection.objects.Length + i] = selectedReroutes[i].GetPoint() - WindowToGridPosition( current.mousePosition );
+			}
+		}
+
 		private bool IsHoveringTitle( XNode.Node node )
 		{
 			Vector2 mousePos = Event.current.mousePosition;
@@ -710,6 +838,36 @@ namespace XNode.Editor
 
 			Rect windowRect = new Rect(nodePos, new Vector2(width / zoom, 30 / zoom));
 			return windowRect.Contains( mousePos );
+		}
+
+		public enum NodeActivity { Idle, HoldNode, DragNode, HoldGrid, DragGrid }
+
+		private struct RerouteReference
+		{
+			public XNode.NodePort port;
+			public int connectionIndex;
+			public int pointIndex;
+
+			public RerouteReference( XNode.NodePort port, int connectionIndex, int pointIndex )
+			{
+				this.port = port;
+				this.connectionIndex = connectionIndex;
+				this.pointIndex = pointIndex;
+			}
+
+			public void InsertPoint( Vector2 pos ) => port.GetReroutePoints( connectionIndex ).Insert( pointIndex, pos );
+
+			public void SetPoint( Vector2 pos ) => port.GetReroutePoints( connectionIndex )[pointIndex] = pos;
+
+			public void RemovePoint() => port.GetReroutePoints( connectionIndex ).RemoveAt( pointIndex );
+
+			public Vector2 GetPoint() => port.GetReroutePoints( connectionIndex )[pointIndex];
+		}
+
+		private struct ConnectionReference
+		{
+			public XNode.NodePort outputPort;
+			public XNode.NodePort inputPort;
 		}
 	}
 }

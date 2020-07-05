@@ -22,6 +22,17 @@ namespace FSM
 
 		public override Action<string> RenameAction => ( newName ) => Name = newName;
 
+		public virtual int ColorSeed => Name?.GetHashCode() ?? 0;
+
+		public Color Color
+		{
+			get
+			{
+				System.Random rng = new System.Random(ColorSeed);
+				return new Color( (float)rng.NextDouble(), (float)rng.NextDouble(), (float)rng.NextDouble() );
+			}
+		}
+
 		protected virtual IEnumerable<Func<bool>> ConfigurationCheckers => Enumerable.Empty<Func<bool>>();
 
 		public bool IsRightConfigured() => ConfigurationCheckers.Concat( new Func<bool>[] { () => !string.IsNullOrEmpty( Name ) } ).All( f => f?.Invoke() ?? false );

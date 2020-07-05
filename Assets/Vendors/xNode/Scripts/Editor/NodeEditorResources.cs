@@ -9,12 +9,14 @@ namespace XNode.Editor
 		public static Styles _styles = null;
 
 		private static Texture2D _dot;
-
 		private static Texture2D _dotOuter;
 
 		private static Texture2D _nodeBody;
 
 		private static Texture2D _nodeHighlight;
+
+		private static Texture2D _pentagonOuter;
+		private static Texture2D _pentagon;
 
 		// Textures
 		public static Texture2D dot => _dot != null ? _dot : _dot = Resources.Load<Texture2D>( "xnode_dot" );
@@ -22,6 +24,9 @@ namespace XNode.Editor
 		public static Texture2D dotOuter => _dotOuter != null ? _dotOuter : _dotOuter = Resources.Load<Texture2D>( "xnode_dot_outer" );
 		public static Texture2D nodeBody => _nodeBody != null ? _nodeBody : _nodeBody = Resources.Load<Texture2D>( "xnode_node" );
 		public static Texture2D nodeHighlight => _nodeHighlight != null ? _nodeHighlight : _nodeHighlight = Resources.Load<Texture2D>( "xnode_node_highlight" );
+
+		public static Texture2D pentagon => _pentagon != null ? _pentagon : _pentagon = Resources.Load<Texture2D>( "xnode_pentagon" );
+		public static Texture2D pentagonOuter => _pentagonOuter != null ? _pentagonOuter : _pentagonOuter = Resources.Load<Texture2D>( "xnode_pentagon_outer" );
 
 		// Styles
 		public static Styles styles => _styles != null ? _styles : _styles = new Styles();

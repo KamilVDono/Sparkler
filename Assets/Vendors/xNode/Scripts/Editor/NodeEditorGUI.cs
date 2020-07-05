@@ -113,8 +113,9 @@ namespace XNode.Editor
 		/// <summary>
 		/// Draw a bezier from output to input in grid coordinates
 		/// </summary>
-		public void DrawNoodle( Color col, List<Vector2> gridPoints )
+		public void DrawNoodle( Color col, List<Vector2> gridPoints, NodePort output = null, NodePort input = null )
 		{
+			Vector2 mousePos = Event.current.mousePosition;
 			Vector2[] windowPoints = gridPoints.Select(x => GridToWindowPosition(x)).ToArray();
 			Handles.color = col;
 			int length = gridPoints.Count;
@@ -148,7 +149,24 @@ namespace XNode.Editor
 							inputTangent = Vector2.left * Vector2.Distance( windowPoints[i], windowPoints[i + 1] ) * 0.01f * zoom;
 						}
 
-						Handles.DrawBezier( windowPoints[i], windowPoints[i + 1], windowPoints[i] + ( ( outputTangent * 50 ) / zoom ), windowPoints[i + 1] + ( ( inputTangent * 50 ) / zoom ), col, null, 4 );
+						// bezier fields
+						var startPos = windowPoints[i];
+						var endPos = windowPoints[i + 1];
+						var startTangent = windowPoints[i] + ((outputTangent * 50) / zoom);
+						var endTangent = windowPoints[i + 1] + ((inputTangent * 50) / zoom);
+						// If connection is selected draw outline bezier
+						if ( selectedConnections.Any( c => c.outputPort == output && c.inputPort == input ) )
+						{
+							Handles.DrawBezier( startPos, endPos, startTangent, endTangent, Color.white, null, 8 );
+						}
+						// Draw bezier
+						Handles.DrawBezier( startPos, endPos, startTangent, endTangent, col, null, 4 );
+						// Check is bezier hovered by mouse
+						if ( HandleUtility.DistancePointBezier( mousePos, startPos, endPos, startTangent, endTangent ) <= 3.5f )
+						{
+							hoveredConnection.outputPort = output;
+							hoveredConnection.inputPort = input;
+						}
 						outputTangent = -inputTangent;
 					}
 					break;
@@ -156,7 +174,7 @@ namespace XNode.Editor
 				case NodeEditorPreferences.NoodleType.Line:
 					for ( int i = 0; i < length - 1; i++ )
 					{
-						Handles.DrawAAPolyLine( 5, windowPoints[i], windowPoints[i + 1] );
+						DrawAAPolyLineSelection( mousePos, 5, windowPoints[i], windowPoints[i + 1], output, input );
 					}
 					break;
 
@@ -175,9 +193,9 @@ namespace XNode.Editor
 							Vector2 end_1 = windowPoints[i + 1];
 							start_1.x = midpoint;
 							end_1.x = midpoint;
-							Handles.DrawAAPolyLine( 5, windowPoints[i], start_1 );
-							Handles.DrawAAPolyLine( 5, start_1, end_1 );
-							Handles.DrawAAPolyLine( 5, end_1, windowPoints[i + 1] );
+							DrawAAPolyLineSelection( mousePos, 5, windowPoints[i], start_1, output, input );
+							DrawAAPolyLineSelection( mousePos, 5, start_1, end_1, output, input );
+							DrawAAPolyLineSelection( mousePos, 5, end_1, windowPoints[i + 1], output, input );
 						}
 						else
 						{
@@ -190,11 +208,11 @@ namespace XNode.Editor
 							Vector2 end_2 = end_1;
 							start_2.y = midpoint;
 							end_2.y = midpoint;
-							Handles.DrawAAPolyLine( 5, windowPoints[i], start_1 );
-							Handles.DrawAAPolyLine( 5, start_1, start_2 );
-							Handles.DrawAAPolyLine( 5, start_2, end_2 );
-							Handles.DrawAAPolyLine( 5, end_2, end_1 );
-							Handles.DrawAAPolyLine( 5, end_1, windowPoints[i + 1] );
+							DrawAAPolyLineSelection( mousePos, 5, windowPoints[i], start_1, output, input );
+							DrawAAPolyLineSelection( mousePos, 5, start_1, start_2, output, input );
+							DrawAAPolyLineSelection( mousePos, 5, start_2, end_2, output, input );
+							DrawAAPolyLineSelection( mousePos, 5, end_2, end_1, output, input );
+							DrawAAPolyLineSelection( mousePos, 5, end_1, windowPoints[i + 1], output, input );
 						}
 					}
 					break;
@@ -209,6 +227,7 @@ namespace XNode.Editor
 			Vector2 mousePos = Event.current.mousePosition;
 			List<RerouteReference> selection = preBoxSelectionReroute != null ? new List<RerouteReference>(preBoxSelectionReroute) : new List<RerouteReference>();
 			hoveredReroute = new RerouteReference();
+			hoveredConnection = new ConnectionReference();
 
 			Color col = GUI.color;
 			foreach ( XNode.Node node in graph.nodes )
@@ -258,7 +277,7 @@ namespace XNode.Editor
 						};
 						gridPoints.AddRange( reroutePoints );
 						gridPoints.Add( toRect.center );
-						DrawNoodle( connectionColor, gridPoints );
+						DrawNoodle( connectionColor, gridPoints, output, input );
 
 						// Loop through reroute points again and draw the points
 						for ( int i = 0; i < reroutePoints.Count; i++ )
@@ -286,6 +305,7 @@ namespace XNode.Editor
 							if ( rect.Contains( mousePos ) )
 							{
 								hoveredReroute = rerouteRef;
+								hoveredConnection.outputPort = null;
 							}
 						}
 					}
@@ -295,6 +315,23 @@ namespace XNode.Editor
 			if ( Event.current.type != EventType.Layout && currentActivity == NodeActivity.DragGrid )
 			{
 				selectedReroutes = selection;
+			}
+		}
+
+		/// <summary>
+		/// Do <see cref="Handles.DrawAAPolyLine"/> but cares about selection
+		/// </summary>
+		private void DrawAAPolyLineSelection( Vector2 mousePos, float width, Vector3 startPoint, Vector3 endPoint, NodePort output, NodePort input )
+		{
+			if ( selectedConnections.Any( c => c.outputPort == output && c.inputPort == input ) )
+			{
+				Handles.DrawAAPolyLine( width * 2, startPoint, endPoint );
+			}
+			Handles.DrawAAPolyLine( width, startPoint, endPoint );
+			if ( HandleUtility.DistancePointLine( mousePos, startPoint, endPoint ) <= 3.5f )
+			{
+				hoveredConnection.outputPort = output;
+				hoveredConnection.inputPort = input;
 			}
 		}
 
@@ -403,8 +440,8 @@ namespace XNode.Editor
 
 			for ( int n = 0; n < graph.nodes.Count; n++ )
 			{
-				// Skip null nodes. The user could be in the process of renaming scripts, so
-				// removing them at this point is not advisable.
+				// Skip null nodes. The user could be in the process of renaming scripts, so removing them
+				// at this point is not advisable.
 				if ( graph.nodes[n] == null )
 				{
 					continue;

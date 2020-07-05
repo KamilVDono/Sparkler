@@ -1,7 +1,9 @@
 {
     "name": "xNode",
     "rootNamespace": "XNode",
-    "references": [],
+    "references": [
+        "GUID:defade650d4200943bb41a087ec43f59"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
