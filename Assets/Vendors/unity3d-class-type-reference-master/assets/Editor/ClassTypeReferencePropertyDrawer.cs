@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using UnityEditor;
@@ -191,6 +192,11 @@ namespace Rotorz.Games.Editor
 					else if ( ResolveType( classRef ) == null )
 					{
 						s_TempContent.text += " {Missing}";
+					}
+					else
+					{
+						var componentName = s_TempContent.text.Split( '.' ).Last();
+						s_TempContent.text = $"{componentName} - ({s_TempContent.text})";
 					}
 
 					EditorStyles.popup.Draw( position, s_TempContent, controlID );

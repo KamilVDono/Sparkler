@@ -14,9 +14,9 @@ namespace FSM.Components
 	public enum ComponentLinkAccessType
 	{
 		Unused = 0,
-		Read = 1 << 0,
-		Write = 1 << 1,
-		ReadWrite = Read | Write,
+		R = 1 << 0,
+		W = 1 << 1,
+		RW = R | W,
 	}
 
 	public enum ComponentLinkUsageType

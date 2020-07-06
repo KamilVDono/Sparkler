@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 using UnityEngine;
@@ -11,16 +10,14 @@ namespace FSM.Utility
 	public static class ReflectionExtensions
 	{
 		/// <summary>
-		/// Copy field value from source field(sourceFieldName) to target field(targetFieldName)
-		/// with possible object conversion via fieldValueConverter
+		/// Copy field value from source field(sourceFieldName) to target field(targetFieldName) with
+		/// possible object conversion via fieldValueConverter
 		/// </summary>
 		/// <param name="source">Source object to copy from</param>
 		/// <param name="sourceFieldName">Name of field to copy from</param>
 		/// <param name="target">Target object to paste to</param>
 		/// <param name="targetFieldName">Name of field to paste to</param>
-		/// <param name="fieldValueConverter">
-		/// Function to convert source value to proper target value
-		/// </param>
+		/// <param name="fieldValueConverter">Function to convert source value to proper target value</param>
 		public static void CopyField( object source, string sourceFieldName, object target, string targetFieldName, Func<object, object> fieldValueConverter = null )
 		{
 			var sourceField = source.GetType().GetFieldRecursive(sourceFieldName);
@@ -222,37 +219,6 @@ namespace FSM.Utility
 			}
 		}
 
-		public static bool IsWriteable( this MemberInfo member )
-		{
-			if ( member.MemberType == MemberTypes.Field )
-			{
-				return true;
-			}
-			else if ( member.MemberType == MemberTypes.Property )
-			{
-				return ( (PropertyInfo)member ).CanWrite;
-			}
-
-			return false;
-		}
-
-		public static Type PointType( this MemberInfo member )
-		{
-			if ( member.MemberType == MemberTypes.Field )
-			{
-				return ( (FieldInfo)member ).FieldType;
-			}
-			else if ( member.MemberType == MemberTypes.Property )
-			{
-				return ( (PropertyInfo)member ).PropertyType;
-			}
-			else if ( member.MemberType == MemberTypes.Method )
-			{
-				return ( (MethodInfo)member ).ReturnType;
-			}
-			return null;
-		}
-
 		public static IEnumerable<MethodInfo> AllMethods( Func<MethodInfo, bool> filter )
 		{
 			var currentDomain = AppDomain.CurrentDomain;
@@ -263,13 +229,6 @@ namespace FSM.Utility
 				BindingFlags.Instance | BindingFlags.Static));
 			return allMethods.Where( filter );
 		}
-
-		// === Converters
-
-		/// <summary>
-		/// Converts any boxed (in object) int to specified enum
-		/// </summary>
-		public static Func<object, object> Enum2EnumByInt<TEnum>() where TEnum : struct => ( source ) => CastTo<TEnum>.From( (int)source );
 
 		/// <summary>
 		/// All classes inheriting from TBaseType
@@ -291,37 +250,5 @@ namespace FSM.Utility
 		}
 
 		public static IEnumerable<Type> SubClassesWithBaseOf( Type baseType ) => SubClassesOf( baseType ).Append( baseType );
-
-		/// <summary>
-		/// All public functions
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public static IEnumerable<MethodInfo> PublicFunctions( this Type type ) => type.GetMethods( BindingFlags.Public | BindingFlags.Instance );
-
-		/// <summary> Class to cast to type <see cref="T"/> No boxing, very fast and optimized
-		/// </summary> <typeparam name="T">Target type</typeparam> <example> EnumType enum =
-		/// CastTo<EnumType>.From((int?)sourceNullableInt); </example>
-		public static class CastTo<T>
-		{
-			/// <summary>
-			/// Casts <see cref="S"/> to <see cref="T"/>. This does not cause boxing for value
-			/// types. Useful in generic methods.
-			/// </summary>
-			/// <typeparam name="S">Source type to cast from. Usually a generic type.</typeparam>
-			public static T From<S>( S s ) => Cache<S>.caster( s );
-
-			private static class Cache<S>
-			{
-				public static readonly Func<S, T> caster = Get();
-
-				private static Func<S, T> Get()
-				{
-					var p = Expression.Parameter(typeof(S));
-					var c = Expression.ConvertChecked(p, typeof(T));
-					return Expression.Lambda<Func<S, T>>( c, p ).Compile();
-				}
-			}
-		}
 	}
 }
