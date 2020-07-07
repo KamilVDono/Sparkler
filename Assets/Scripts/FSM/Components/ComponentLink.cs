@@ -13,7 +13,7 @@ namespace FSM.Components
 	[Flags]
 	public enum ComponentLinkAccessType
 	{
-		Unused = 0,
+		Un = 0,
 		R = 1 << 0,
 		W = 1 << 1,
 		RW = R | W,

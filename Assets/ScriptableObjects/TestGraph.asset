@@ -113,8 +113,23 @@ MonoBehaviour:
   - _componentTypeReference:
       classRef: Unity.Transforms.Translation, Unity.Transforms
     _componentName: 
+    _accessType: 1
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Speed
+    _accessType: 2
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Acceleration
     _accessType: 3
     _usageType: 2
+  - _componentTypeReference:
+      classRef: Unity.Transforms.Frozen, Unity.Transforms
+    _componentName: 
+    _accessType: 3
+    _usageType: 3
   _to: {fileID: 0}
 --- !u!114 &1760004253655610051
 MonoBehaviour:

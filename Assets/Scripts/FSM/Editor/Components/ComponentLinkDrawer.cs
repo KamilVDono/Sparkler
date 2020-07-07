@@ -31,7 +31,11 @@ namespace FSM.Editor.Components
 
 			propertyRect.AllocateLine();
 			EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 50 ), usageProp, EmptyContent );
-			EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 40 ), accessProp, EmptyContent );
+			if ( ( (ComponentLinkUsageType)usageProp.GetPropertyValue() ) == ComponentLinkUsageType.All )
+			{
+				EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 40 ), accessProp, EmptyContent );
+			}
+
 			EditorGUI.PropertyField( propertyRect.RestOfLine(), typeProp, EmptyContent );
 
 			if ( !HasSettedType( property ) )
