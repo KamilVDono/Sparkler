@@ -17,7 +17,15 @@ namespace FSM
 		public string Name
 		{
 			get => _name;
-			set => _name = value;
+			set
+			{
+				var nameParts = value.Split(' ', '.', ',', '_', '-');
+				_name = "";
+				foreach ( var namePart in nameParts )
+				{
+					_name += char.ToUpperInvariant( namePart[0] ) + namePart.Substring( 1 );
+				}
+			}
 		}
 
 		public override Action<string> RenameAction => ( newName ) => Name = newName;

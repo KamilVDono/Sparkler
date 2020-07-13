@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 using XNode;
 
@@ -13,13 +11,5 @@ namespace FSM
 		[SerializeField] private string _namespace;
 		public string CodeGenerationPath { get => _codeGenerationPath; set => _codeGenerationPath = value; }
 		public string Namespace { get => _namespace; set => _namespace = value; }
-
-		public void GenerateCode()
-		{
-			string template = LoadTemplate();
-			var states = nodes.OfType<StateNode>();
-		}
-
-		private string LoadTemplate() => "";
 	}
 }

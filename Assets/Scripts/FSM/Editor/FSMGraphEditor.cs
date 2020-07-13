@@ -17,10 +17,12 @@ namespace FSM.Editor
 	[CustomNodeGraphEditor( typeof( FSMGraph ) )]
 	public class FSMGraphEditor : XNode.Editor.NodeGraphEditor
 	{
+		#region Consts
 		private static readonly GUIContent s_emptyContent = new GUIContent("");
 		private static readonly GUIContent s_horizontalLine = new GUIContent("|");
 		private static readonly GUIContent s_namespaceContent = new GUIContent("Namespace");
 		private static readonly GUIContent s_generateContent = new GUIContent("Code generation path");
+		#endregion Consts
 
 		private FSMGraph Target => (FSMGraph)target;
 
@@ -155,7 +157,7 @@ namespace FSM.Editor
 
 			if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
 			{
-				Target.GenerateCode();
+				CodeGenerator.Generate( Target );
 			}
 		}
 

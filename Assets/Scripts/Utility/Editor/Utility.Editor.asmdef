@@ -1,5 +1,5 @@
 {
-    "name": "Utility.Editor",
+    "name": "FSM.Utility.Editor",
     "rootNamespace": "FSM.Utility.Editor",
     "references": [],
     "includePlatforms": [

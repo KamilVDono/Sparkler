@@ -13,5 +13,7 @@ namespace FSM.Utility
 			}
 			return assetsPath;
 		}
+
+		public static string SystemPath( string assetsComponentPath ) => $"{Application.dataPath}/{assetsComponentPath.Substring( 7 )}";
 	}
 }

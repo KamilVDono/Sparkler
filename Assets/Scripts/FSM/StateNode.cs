@@ -1,5 +1,7 @@
 using FSM.Components;
 
+using System.Collections.Generic;
+
 using UnityEngine;
 
 using XNode;
@@ -17,6 +19,9 @@ namespace FSM
 
 		[Output(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
 		[SerializeField] private StateNode _to;
+
+		public string StateName => Name;
+		public IReadOnlyCollection<ComponentLink> Components => _components;
 
 		public override object GetValue( NodePort port ) => this;
 	}

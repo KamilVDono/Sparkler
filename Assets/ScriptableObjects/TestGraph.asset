@@ -48,7 +48,12 @@ MonoBehaviour:
       _allowedTypes: []
   _name: Idle
   _from: {fileID: 0}
-  _components: []
+  _components:
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Speed
+    _accessType: 0
+    _usageType: 3
   _to: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -67,12 +72,8 @@ MonoBehaviour:
   - {fileID: 5274439539639490737}
   - {fileID: 593013002516118109}
   - {fileID: 1760004253655610051}
-  _path: fasdfasdfdfg
-  _toogle: 0
-  _kupa: asdf
-  _kupa2:
-  - aadf
-  - asdf
+  _codeGenerationPath: Assets/Scripts/CodeGen
+  _namespace: FSM.AI.States
 --- !u!114 &593013002516118109
 MonoBehaviour:
   m_ObjectHideFlags: 0

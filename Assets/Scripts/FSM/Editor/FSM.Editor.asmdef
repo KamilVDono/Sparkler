@@ -1,5 +1,5 @@
 {
-    "name": "FSM_Editor",
+    "name": "FSM.Editor",
     "rootNamespace": "FSM.Editor",
     "references": [
         "GUID:867f66b20449bd5469ea743548b2fe21",
