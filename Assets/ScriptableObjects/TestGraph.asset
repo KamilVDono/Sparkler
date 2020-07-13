@@ -67,6 +67,12 @@ MonoBehaviour:
   - {fileID: 5274439539639490737}
   - {fileID: 593013002516118109}
   - {fileID: 1760004253655610051}
+  _path: fasdfasdfdfg
+  _toogle: 0
+  _kupa: asdf
+  _kupa2:
+  - aadf
+  - asdf
 --- !u!114 &593013002516118109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +124,7 @@ MonoBehaviour:
   - _componentTypeReference:
       classRef: 
     _componentName: Speed
-    _accessType: 2
+    _accessType: 3
     _usageType: 1
   - _componentTypeReference:
       classRef: 

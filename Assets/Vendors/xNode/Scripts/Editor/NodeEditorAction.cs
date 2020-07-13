@@ -375,7 +375,7 @@ namespace XNode.Editor
 								AssetDatabase.SaveAssets();
 							}
 						}
-						else if ( !IsHoveringNode )
+						else if ( !IsHoveringNode && !TooltipRect().Contains( Event.current.mousePosition ) )
 						{
 							// If click outside node, release field focus
 							if ( !isPanning )

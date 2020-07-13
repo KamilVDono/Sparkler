@@ -7,8 +7,8 @@ using UnityEngine;
 namespace XNode.Editor
 {
 	/// <summary>
-	/// Base class to derive custom Node Graph editors from. Use this to override how graphs are
-	/// drawn in the editor.
+	/// Base class to derive custom Node Graph editors from. Use this to override how graphs are drawn
+	/// in the editor.
 	/// </summary>
 	[CustomNodeGraphEditor( typeof( XNode.NodeGraph ) )]
 	public class NodeGraphEditor : XNode.Editor.NodeEditorBase<NodeGraphEditor, NodeGraphEditor.CustomNodeGraphEditorAttribute, XNode.NodeGraph>
@@ -18,8 +18,14 @@ namespace XNode.Editor
 		/// </summary>
 		protected bool isRenaming;
 
+		public virtual bool HasToolbar => false;
+
 		[Obsolete( "Use window.position instead" )]
 		public Rect position { get => window.position; set => window.position = value; }
+
+		public virtual void OnToolbar()
+		{
+		}
 
 		public virtual void OnGUI()
 		{
@@ -34,9 +40,11 @@ namespace XNode.Editor
 
 		public virtual Texture2D GetSecondaryGridTexture() => NodeEditorPreferences.GetSettings().crossTexture;
 
+		public Color GetToolbarColor() => NodeEditorPreferences.GetSettings().toolbarColor;
+
 		/// <summary>
-		/// Return default settings for this graph type. This is the settings the user will load if
-		/// no previous settings have been saved.
+		/// Return default settings for this graph type. This is the settings the user will load if no
+		/// previous settings have been saved.
 		/// </summary>
 		public virtual NodeEditorPreferences.Settings GetDefaultPreferences() => new NodeEditorPreferences.Settings();
 
@@ -57,8 +65,7 @@ namespace XNode.Editor
 		}
 
 		/// <summary>
-		/// Add items for the context menu when right-clicking this node. Override to add custom
-		/// menu items.
+		/// Add items for the context menu when right-clicking this node. Override to add custom menu items.
 		/// </summary>
 		public virtual void AddContextMenuItems( GenericMenu menu )
 		{

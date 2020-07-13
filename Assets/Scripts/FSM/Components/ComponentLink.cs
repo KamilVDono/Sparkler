@@ -15,8 +15,7 @@ namespace FSM.Components
 	{
 		Un = 0,
 		R = 1 << 0,
-		W = 1 << 1,
-		RW = R | W,
+		RW = R | 1 << 1,
 	}
 
 	public enum ComponentLinkUsageType

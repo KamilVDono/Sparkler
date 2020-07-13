@@ -47,29 +47,24 @@ namespace XNode.Editor
 
 		public void BeginZoomed()
 		{
-			GUI.EndGroup();
+			GUI.EndClip();
 
-			Rect position = new Rect( this.position )
-			{
-				x = 0,
-				y = topPadding
-			};
-
-			Vector2 topLeft = new Vector2(position.xMin, position.yMin - topPadding);
-			Rect clippedArea = ScaleSizeBy(position, zoom, topLeft);
-			GUI.BeginGroup( clippedArea );
-
-			prevGuiMatrix = GUI.matrix;
-			Matrix4x4 translation = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, Vector3.one);
-			Matrix4x4 scale = Matrix4x4.Scale(new Vector3(1.0f / zoom, 1.0f / zoom, 1.0f));
-			GUI.matrix = translation * scale * translation.inverse * GUI.matrix;
+			GUIUtility.ScaleAroundPivot( Vector2.one / zoom, position.size * 0.5f );
+			Vector4 padding = new Vector4(0, topPadding, 0, 0);
+			padding *= zoom;
+			GUI.BeginClip( new Rect( -( ( position.width * zoom ) - position.width ) * 0.5f, -( ( ( position.height * zoom ) - position.height ) * 0.5f ) + ( topPadding * zoom ),
+					position.width * zoom,
+					position.height * zoom ) );
 		}
 
 		public void EndZoomed()
 		{
-			GUI.matrix = prevGuiMatrix;
-			GUI.EndGroup();
-			GUI.BeginGroup( new Rect( 0.0f, topPadding - ( topPadding * zoom ), Screen.width, Screen.height ) );
+			GUIUtility.ScaleAroundPivot( Vector2.one * zoom, position.size * 0.5f );
+			Vector3 offset = new Vector3(
+								(((position.width * zoom) - position.width) * 0.5f),
+								(((position.height * zoom) - position.height) * 0.5f) + (-topPadding * zoom) + topPadding,
+								0);
+			GUI.matrix = Matrix4x4.TRS( offset, Quaternion.identity, Vector3.one );
 		}
 
 		public void DrawGrid( Rect rect, float zoom, Vector2 panOffset )
@@ -348,11 +343,16 @@ namespace XNode.Editor
 			Controls();
 
 			DrawGrid( position, zoom, panOffset );
+
 			DrawConnections();
 			DrawDraggedConnection();
 			DrawNodes();
 			DrawSelectionBox();
 			DrawTooltip();
+			if ( graphEditor.HasToolbar )
+			{
+				DrawToolbar();
+			}
 			graphEditor.OnGUI();
 
 			// Run and reset onLateGUI
@@ -363,6 +363,19 @@ namespace XNode.Editor
 			}
 
 			GUI.matrix = m;
+		}
+
+		private void DrawToolbar()
+		{
+			var rect = EditorGUILayout.BeginVertical(GUILayout.Height(EditorGUIUtility.singleLineHeight + 8), GUILayout.ExpandWidth(true));
+			EditorGUI.DrawRect( rect, graphEditor.GetToolbarColor() );
+			EditorGUILayout.Space( 2 );
+			EditorGUILayout.BeginHorizontal();
+
+			graphEditor.OnToolbar();
+
+			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.EndVertical();
 		}
 
 		/// <summary>
@@ -669,6 +682,12 @@ namespace XNode.Editor
 				EditorGUI.LabelField( rect, content, NodeEditorResources.styles.tooltip );
 				Repaint();
 			}
+		}
+
+		private Rect TooltipRect()
+		{
+			Rect tooltipRect = new Rect(0, 0, position.width, EditorGUIUtility.singleLineHeight);
+			return tooltipRect;
 		}
 	}
 }

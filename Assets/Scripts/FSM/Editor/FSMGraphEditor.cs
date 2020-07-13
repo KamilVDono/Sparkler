@@ -17,6 +17,13 @@ namespace FSM.Editor
 	[CustomNodeGraphEditor( typeof( FSMGraph ) )]
 	public class FSMGraphEditor : XNode.Editor.NodeGraphEditor
 	{
+		private static readonly GUIContent s_emptyContent = new GUIContent("");
+		private static readonly GUIContent s_horizontalLine = new GUIContent("|");
+		private static readonly GUIContent s_namespaceContent = new GUIContent("Namespace");
+		private static readonly GUIContent s_generateContent = new GUIContent("Code generation path");
+
+		private FSMGraph Target => (FSMGraph)target;
+
 		public override void OnOpen()
 		{
 			base.OnOpen();
@@ -121,5 +128,44 @@ namespace FSM.Editor
 			}
 			return nodeType.Name.Replace( "Node", "" );
 		}
+
+		#region Toolbar
+		public override bool HasToolbar => true;
+
+		public override void OnToolbar()
+		{
+			EditorGUILayout.LabelField( s_generateContent, GUILayout.ExpandWidth( false ) );
+			Target.CodeGenerationPath = EditorGUILayout.TextField( Target.CodeGenerationPath, GUILayout.ExpandWidth( true ) );
+			if ( GUILayout.Button( "\u27b1", GUILayout.ExpandWidth( false ) ) )
+			{
+				var dialogPath = EditorUtility.OpenFolderPanel( "Code directory", "", "" );
+				if ( !string.IsNullOrWhiteSpace( dialogPath ) )
+				{
+					Target.CodeGenerationPath = "Assets" + dialogPath.Substring( Application.dataPath.Length );
+				}
+			}
+
+			ToolbarSpace();
+
+			EditorStyles.label.CalcMinMaxWidth( s_namespaceContent, out var min, out var max );
+			EditorGUILayout.LabelField( s_namespaceContent, GUILayout.Width( min ) );
+			Target.Namespace = EditorGUILayout.TextField( Target.Namespace, GUILayout.ExpandWidth( true ) );
+
+			ToolbarSpace();
+
+			if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
+			{
+				Target.GenerateCode();
+			}
+		}
+
+		private static void ToolbarSpace()
+		{
+			EditorGUILayout.LabelField( s_emptyContent, GUILayout.Width( 4 ) );
+			EditorGUILayout.LabelField( s_horizontalLine, GUILayout.Width( 4 ) );
+			EditorGUILayout.LabelField( s_emptyContent, GUILayout.Width( 4 ) );
+		}
+
+		#endregion Toolbar
 	}
 }

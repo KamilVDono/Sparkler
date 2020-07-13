@@ -33,6 +33,9 @@ namespace XNode.Editor
 			[SerializeField] private Color32 _gridBgColor = new Color(0.18f, 0.18f, 0.18f);
 			public Color32 gridBgColor { get => _gridBgColor; set { _gridBgColor = value; _gridTexture = null; } }
 
+			[SerializeField] private Color32 _toolbarColor = Color.black;
+			public Color toolbarColor { get => _toolbarColor; set => _toolbarColor = value; }
+
 			[Obsolete( "Use maxZoom instead" )]
 			public float zoomOutLimit { get => maxZoom; set => maxZoom = value; }
 
@@ -147,7 +150,7 @@ namespace XNode.Editor
 #endif
 
 #if !UNITY_2019_1_OR_NEWER
-        [PreferenceItem("Node Editor")]
+				[PreferenceItem("Node Editor")]
 #endif
 
 		private static void PreferencesGUI()
@@ -178,6 +181,7 @@ namespace XNode.Editor
 			EditorGUI.indentLevel--;
 			settings.gridLineColor = EditorGUILayout.ColorField( "Color", settings.gridLineColor );
 			settings.gridBgColor = EditorGUILayout.ColorField( " ", settings.gridBgColor );
+			settings.toolbarColor = EditorGUILayout.ColorField( "Toolbar Color", settings.toolbarColor );
 			if ( GUI.changed )
 			{
 				SavePrefs( key, settings );
@@ -329,7 +333,7 @@ namespace XNode.Editor
 #if UNITY_5_4_OR_NEWER
 					UnityEngine.Random.InitState( typeName.GetHashCode() );
 #else
-                    UnityEngine.Random.seed = typeName.GetHashCode();
+										UnityEngine.Random.seed = typeName.GetHashCode();
 #endif
 					col = new Color( UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value );
 					typeColors.Add( type, col );
