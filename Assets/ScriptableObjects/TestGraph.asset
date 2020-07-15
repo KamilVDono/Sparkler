@@ -51,6 +51,11 @@ MonoBehaviour:
   _components:
   - _componentTypeReference:
       classRef: 
+    _componentName: IdleTag
+    _accessType: 3
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: 
     _componentName: Speed
     _accessType: 0
     _usageType: 3
@@ -183,7 +188,22 @@ MonoBehaviour:
       _allowedTypes: []
   _name: Run
   _from: {fileID: 0}
-  _components: []
+  _components:
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Speed
+    _accessType: 1
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Acceleration
+    _accessType: 3
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: 
+    _componentName: RunTag
+    _accessType: 3
+    _usageType: 1
   _to: {fileID: 0}
 --- !u!114 &5274439539639490737
 MonoBehaviour:
@@ -198,7 +218,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 24, y: -312}
+  position: {x: 136, y: -376}
   ports:
     keys:
     - _from
@@ -230,5 +250,15 @@ MonoBehaviour:
       _allowedTypes: []
   _name: Walk
   _from: {fileID: 0}
-  _components: []
+  _components:
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Speed
+    _accessType: 1
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: 
+    _componentName: Acceleration
+    _accessType: 3
+    _usageType: 1
   _to: {fileID: 0}

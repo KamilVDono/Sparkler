@@ -1,0 +1,11 @@
+using System;
+
+using Unity.Entities;
+
+namespace $NAMESPACE$.Components
+{
+	[Serializable]
+	public struct $NAME$ : IComponentData
+	{
+	}
+}

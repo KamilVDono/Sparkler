@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 
 using UnityEditor;
+using UnityEditor.Compilation;
 
 using UnityEngine;
 
@@ -157,6 +158,7 @@ namespace FSM.Editor
 
 			if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
 			{
+				CompilationPipeline.compilationFinished += OnAfterCompilation;
 				CodeGenerator.Generate( Target );
 			}
 		}
@@ -169,5 +171,16 @@ namespace FSM.Editor
 		}
 
 		#endregion Toolbar
+
+		#region Generation
+
+		private void OnAfterCompilation( object _ )
+		{
+			CompilationPipeline.compilationFinished -= OnAfterCompilation;
+			//TODO: Change only named components to typed components
+			Debug.Log( "Compilation completed" );
+		}
+
+		#endregion Generation
 	}
 }

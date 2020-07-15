@@ -42,10 +42,16 @@ namespace FSM.Components
 		[SerializeField, NodeEnum]
 		private ComponentLinkUsageType _usageType;
 
+		#region Queries
 		public Type TypeReference => _componentTypeReference?.Type;
-		public string ComponentName => _componentName;
+		public string HandwrittenName => _componentName;
+		public string ComponentName => TypeReference?.Name ?? HandwrittenName;
+
 		public ComponentLinkAccessType AccessType => _accessType;
 		public ComponentLinkUsageType Usage => _usageType;
+
+		public bool IsHandWrited => TypeReference == null && !string.IsNullOrWhiteSpace( HandwrittenName );
+		#endregion Queries
 
 		#region Equality
 

@@ -1,11 +1,12 @@
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Transforms;
+using $NAMESPACE$.Components;
+$USINGS$
 
-namespace FSM.AI.States.Systems
+namespace $NAMESPACE$.Systems
 {
-	public class TestSystem : SystemBase
+	public class $NAME$ : SystemBase
 	{
 		protected override void OnUpdate()
 		{
@@ -17,7 +18,11 @@ namespace FSM.AI.States.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
-			Entities.ForEach( ( ref Translation translation, in Rotation rotation ) =>
+			Entities
+				$WITH_ALL$
+				$WITH_ANY$
+				$WITH_NONE$
+				.ForEach( ( $FOR_EACH$ ) =>
 			{
 				// Implement the work to perform for each entity here. You should only access data that is
 				// local or that is a field on this job. Note that the 'rotation' parameter is marked as
