@@ -2,6 +2,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using FSM.AI.States.Components;
+using FSM.AI.States.Components;
 using Unity.Transforms;
 
 
@@ -23,7 +24,7 @@ namespace FSM.AI.States.Systems
 				
 				
 				.WithNone<Frozen>()
-				.ForEach( ( ref Acceleration acceleration, in Speed speed ) =>
+				.ForEach( ( ref Acceleration acceleration, in Speed speed, in WalkTag walkTag ) =>
 			{
 				// Implement the work to perform for each entity here. You should only access data that is
 				// local or that is a field on this job. Note that the 'rotation' parameter is marked as

@@ -21,8 +21,8 @@ namespace FSM.AI.States.Systems
 			Entities
 				
 				
-				.WithNone<Speed>()
-				.ForEach( ( ref IdleTag idleTag ) =>
+				
+				.ForEach( ( in IdleTag idleTag ) =>
 			{
 				// Implement the work to perform for each entity here. You should only access data that is
 				// local or that is a field on this job. Note that the 'rotation' parameter is marked as

@@ -90,7 +90,7 @@ namespace XNode.Editor
 
 		public class Styles
 		{
-			public GUIStyle inputPort, nodeHeader, nodeBody, tooltip, nodeHighlight;
+			public GUIStyle inputPort, nodeHeader, nodeErrorHeader, nodeBody, tooltip, nodeHighlight;
 
 			public Styles()
 			{
@@ -111,6 +111,13 @@ namespace XNode.Editor
 					fontStyle = FontStyle.Bold
 				};
 				nodeHeader.normal.textColor = Color.white;
+
+				nodeErrorHeader = new GUIStyle
+				{
+					alignment = TextAnchor.MiddleCenter,
+					fontStyle = FontStyle.Normal,
+				};
+				nodeErrorHeader.normal.textColor = Color.magenta;
 
 				nodeBody = new GUIStyle();
 				nodeBody.normal.background = NodeEditorResources.nodeBody;

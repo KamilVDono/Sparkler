@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -440, y: -344}
+  position: {x: -440, y: -360}
   ports:
     keys:
     - _to
@@ -50,15 +50,11 @@ MonoBehaviour:
   _from: {fileID: 0}
   _components:
   - _componentTypeReference:
-      classRef: 
-    _componentName: IdleTag
-    _accessType: 3
+      classRef: FSM.AI.States.Components.IdleTag, Assembly-CSharp
+      name: IdleTag
+    _componentName: 
+    _accessType: 1
     _usageType: 1
-  - _componentTypeReference:
-      classRef: 
-    _componentName: Speed
-    _accessType: 0
-    _usageType: 3
   _to: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -92,7 +88,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: 24}
+  position: {x: -120, y: 72}
   ports:
     keys:
     - _from
@@ -124,21 +120,25 @@ MonoBehaviour:
   _components:
   - _componentTypeReference:
       classRef: Unity.Transforms.Translation, Unity.Transforms
+      name: 
     _componentName: 
     _accessType: 1
     _usageType: 1
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
+      name: Speed
     _componentName: Speed
     _accessType: 3
     _usageType: 1
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.Acceleration, Assembly-CSharp
+      name: Acceleration
     _componentName: Acceleration
     _accessType: 3
     _usageType: 2
   - _componentTypeReference:
       classRef: Unity.Transforms.Frozen, Unity.Transforms
+      name: 
     _componentName: 
     _accessType: 3
     _usageType: 3
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 312, y: -72}
+  position: {x: 472, y: -72}
   ports:
     keys:
     - _from
@@ -190,20 +190,29 @@ MonoBehaviour:
   _from: {fileID: 0}
   _components:
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
+      name: Speed
     _componentName: Speed
     _accessType: 1
     _usageType: 1
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.Acceleration, Assembly-CSharp
+      name: Acceleration
     _componentName: Acceleration
     _accessType: 3
     _usageType: 1
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.RunTag, Assembly-CSharp
+      name: RunTag
     _componentName: RunTag
     _accessType: 3
     _usageType: 1
+  - _componentTypeReference:
+      classRef: Unity.Transforms.Frozen, Unity.Transforms
+      name: 
+    _componentName: 
+    _accessType: 3
+    _usageType: 3
   _to: {fileID: 0}
 --- !u!114 &5274439539639490737
 MonoBehaviour:
@@ -252,13 +261,27 @@ MonoBehaviour:
   _from: {fileID: 0}
   _components:
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
+      name: Speed
     _componentName: Speed
     _accessType: 1
     _usageType: 1
   - _componentTypeReference:
-      classRef: 
+      classRef: FSM.AI.States.Components.Acceleration, Assembly-CSharp
+      name: Acceleration
     _componentName: Acceleration
+    _accessType: 3
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: Unity.Transforms.Frozen, Unity.Transforms
+      name: 
+    _componentName: 
+    _accessType: 3
+    _usageType: 3
+  - _componentTypeReference:
+      classRef: FSM.AI.States.Components.WalkTag, Assembly-CSharp
+      name: WalkTag
+    _componentName: 
     _accessType: 3
     _usageType: 1
   _to: {fileID: 0}

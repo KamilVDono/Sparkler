@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 
 using UnityEditor;
-using UnityEditor.Compilation;
 
 using UnityEngine;
 
@@ -25,13 +24,34 @@ namespace FSM.Editor
 		private static readonly GUIContent s_generateContent = new GUIContent("Code generation path");
 		#endregion Consts
 
+		private int _counter = 0;
+
 		private FSMGraph Target => (FSMGraph)target;
 
-		public override void OnOpen()
+		public override void OnOpen() => window.titleContent = new GUIContent( $"{target.name} - FSM" );
+
+		public override void OnGUI()
 		{
-			base.OnOpen();
-			window.titleContent = new GUIContent( $"{target.name} - FSM" );
+			base.OnGUI();
+			--_counter;
+			if ( _counter > 0 )
+			{
+				return;
+			}
+			_counter = 5;
+
+			bool anyChange = false;
+			Target.nodes.OfType<StateNode>().SelectMany( n => n.Components ).ForEach( c => anyChange |= c.Validate() );
+			if ( anyChange )
+			{
+				EditorUtility.SetDirty( Target );
+				Target.nodes.ForEach( EditorUtility.SetDirty );
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
+			}
 		}
+
+		#region Graph operations
 
 		public override void AddContextMenuItems( GenericMenu menu )
 		{
@@ -132,6 +152,8 @@ namespace FSM.Editor
 			return nodeType.Name.Replace( "Node", "" );
 		}
 
+		#endregion Graph operations
+
 		#region Toolbar
 		public override bool HasToolbar => true;
 
@@ -156,11 +178,13 @@ namespace FSM.Editor
 
 			ToolbarSpace();
 
+			var oldEnabled = GUI.enabled;
+			GUI.enabled = oldEnabled && Target.nodes.OfType<FSMNode>().All( n => n.IsRightConfigured().Item1 );
 			if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
 			{
-				CompilationPipeline.compilationFinished += OnAfterCompilation;
 				CodeGenerator.Generate( Target );
 			}
+			GUI.enabled = oldEnabled;
 		}
 
 		private static void ToolbarSpace()
@@ -171,16 +195,5 @@ namespace FSM.Editor
 		}
 
 		#endregion Toolbar
-
-		#region Generation
-
-		private void OnAfterCompilation( object _ )
-		{
-			CompilationPipeline.compilationFinished -= OnAfterCompilation;
-			//TODO: Change only named components to typed components
-			Debug.Log( "Compilation completed" );
-		}
-
-		#endregion Generation
 	}
 }

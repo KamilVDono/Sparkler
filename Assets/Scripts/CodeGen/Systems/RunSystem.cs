@@ -1,8 +1,7 @@
-using FSM.AI.States.Components;
-
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using FSM.AI.States.Components;
 using Unity.Transforms;
 
 
@@ -21,8 +20,8 @@ namespace FSM.AI.States.Systems
 			// process the component types you want.
 
 			Entities
-
-
+				
+				
 				.WithNone<Frozen>()
 				.ForEach( ( ref Acceleration acceleration, ref RunTag runTag, in Speed speed ) =>
 			{

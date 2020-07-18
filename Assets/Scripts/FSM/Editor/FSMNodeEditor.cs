@@ -24,11 +24,19 @@ namespace FSM.Editor
 			}
 		}
 
-		public override void OnHeaderGUI() => GUILayout.Label( Target.Name, NodeEditorResources.styles.nodeHeader, GUILayout.Height( 30 ) );
+		public override void OnHeaderGUI()
+		{
+			GUILayout.Label( Target.Name, NodeEditorResources.styles.nodeHeader, GUILayout.Height( 30 ) );
+			var configuration = Target.IsRightConfigured();
+			if ( !configuration.Item1 )
+			{
+				GUILayout.Label( configuration.Item2, NodeEditorResources.styles.nodeErrorHeader );
+			}
+		}
 
 		public override Color GetTint()
 		{
-			if ( !Target.IsRightConfigured() )
+			if ( !Target.IsRightConfigured().Item1 )
 			{
 				return Color.red;
 			}

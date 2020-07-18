@@ -1,8 +1,13 @@
 using Rotorz.Games;
 
 using System;
+using System.Linq;
 
 using Unity.Entities;
+
+#if UNITY_EDITOR
+
+#endif
 
 using UnityEngine;
 
@@ -86,5 +91,34 @@ namespace FSM.Components
 		}
 
 		#endregion Equality
+
+#if UNITY_EDITOR
+
+		private static Type[] _allTypes;
+
+		static ComponentLink() => _allTypes = AppDomain.CurrentDomain.GetAssemblies().Reverse().SelectMany( a => a.GetTypes() ).ToArray();
+
+		public bool Validate()
+		{
+			if ( TypeReference == null && !string.IsNullOrWhiteSpace( HandwrittenName ) )
+			{
+				var type = _allTypes.FirstOrDefault( t => t.Name == HandwrittenName );
+				if ( type != null )
+				{
+					_componentTypeReference = new ClassTypeReference( type );
+					_componentName = "";
+					return true;
+				}
+			}
+			if ( TypeReference == null && !string.IsNullOrWhiteSpace( _componentTypeReference.Name ) )
+			{
+				_componentName = _componentTypeReference.Name;
+				_componentTypeReference = new ClassTypeReference();
+				return true;
+			}
+			return false;
+		}
+
+#endif
 	}
 }

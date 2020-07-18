@@ -16,7 +16,11 @@ namespace Rotorz.Games
 		[SerializeField]
 		private string classRef;
 
+		[SerializeField]
+		private string name;
+
 		private Type type;
+		public string Name => name;
 
 		/// <summary>
 		/// Gets or sets type of class reference.
@@ -36,6 +40,7 @@ namespace Rotorz.Games
 
 				this.type = value;
 				this.classRef = GetClassRef( value );
+				this.name = value?.Name;
 			}
 		}
 
@@ -55,6 +60,7 @@ namespace Rotorz.Games
 			this.Type = !string.IsNullOrEmpty( assemblyQualifiedClassName )
 				? Type.GetType( assemblyQualifiedClassName )
 				: null;
+			this.name = this.Type?.Name;
 		}
 
 		/// <summary>
@@ -64,7 +70,11 @@ namespace Rotorz.Games
 		/// <exception cref="System.ArgumentException">
 		/// If <paramref name="type"/> is not a class type.
 		/// </exception>
-		public ClassTypeReference( Type type ) => this.Type = type;
+		public ClassTypeReference( Type type )
+		{
+			Type = type;
+			this.name = this.Type?.Name;
+		}
 
 		public static string GetClassRef( Type type )
 		{
@@ -98,6 +108,11 @@ namespace Rotorz.Games
 
 		void ISerializationCallbackReceiver.OnBeforeSerialize()
 		{
+			//HACK: If we null Type then we need null also name
+			if ( Type == null )
+			{
+				name = "";
+			}
 		}
 
 		public override string ToString() => this.Type != null ? this.Type.FullName : "(None)";

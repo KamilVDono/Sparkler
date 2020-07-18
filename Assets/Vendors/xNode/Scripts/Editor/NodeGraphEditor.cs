@@ -36,6 +36,11 @@ namespace XNode.Editor
 		/// </summary>
 		public virtual void OnOpen() { }
 
+		/// <summary>
+		/// Called when closed by NodeEditorWindow
+		/// </summary>
+		public virtual void OnClose() { }
+
 		public virtual Texture2D GetGridTexture() => NodeEditorPreferences.GetSettings().gridTexture;
 
 		public virtual Texture2D GetSecondaryGridTexture() => NodeEditorPreferences.GetSettings().crossTexture;

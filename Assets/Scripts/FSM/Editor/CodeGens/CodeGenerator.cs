@@ -176,10 +176,7 @@ namespace FSM.Editor
 					foreachBuilder.Append( componentName.Substring( 1 ) );
 					foreachBuilder.Append( ", " );
 				}
-				if ( refComponents.Length < 1 )
-				{
-					foreachBuilder.Append( ", " );
-				}
+
 				foreach ( var inComponent in inComponents )
 				{
 					var componentName = inComponent.ComponentName;

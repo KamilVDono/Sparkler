@@ -244,6 +244,8 @@ namespace XNode.Editor
 				_rects[index] = portConnectionPoint.Value;
 				index++;
 			}
+			NodeGraphEditor graphEditor = NodeGraphEditor.GetEditor(graph, this);
+			graphEditor?.OnClose();
 		}
 
 		private void OnEnable()

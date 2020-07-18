@@ -14,6 +14,8 @@ namespace FSM
 		[HideInInspector]
 		private string _name;
 
+		private Func<(bool, string)>[] _allConfigurationCheckers;
+
 		public string Name
 		{
 			get => _name;
@@ -41,8 +43,39 @@ namespace FSM
 			}
 		}
 
-		protected virtual IEnumerable<Func<bool>> ConfigurationCheckers => Enumerable.Empty<Func<bool>>();
+		protected virtual IEnumerable<Func<(bool, string)>> ConfigurationCheckers => Enumerable.Empty<Func<(bool, string)>>();
 
-		public bool IsRightConfigured() => ConfigurationCheckers.Concat( new Func<bool>[] { () => !string.IsNullOrEmpty( Name ) } ).All( f => f?.Invoke() ?? false );
+		private Func<(bool, string)>[] _AllConfigurationCheckers
+		{
+			get
+			{
+				if ( _allConfigurationCheckers == null )
+				{
+					_allConfigurationCheckers = ConfigurationCheckers
+						.Concat( new Func<(bool, string)>[] { HasName } )
+						.ToArray();
+				}
+				return _allConfigurationCheckers;
+			}
+		}
+
+		public (bool, string) IsRightConfigured()
+		{
+			var messages = _AllConfigurationCheckers
+				.Select( cc => cc() )
+				.GroupBy( p => p.Item1 )
+				.Where( g => !g.Key )
+				.SelectMany( g => g).Select(g => g.Item2)
+				.Distinct()
+				.ToArray();
+
+			if ( messages.Any() )
+			{
+				return (false, string.Join( "\n", messages ));
+			}
+			return (true, "");
+		}
+
+		private (bool, string) HasName() => (!string.IsNullOrEmpty( Name ), "Empty name");
 	}
 }
