@@ -4,6 +4,8 @@ using FSM.Utility.Editor;
 
 using Rotorz.Games;
 
+using System;
+
 using UnityEditor;
 
 using UnityEngine;
@@ -23,7 +25,7 @@ namespace FSM.Editor.Components
 			position = EditorGUI.PrefixLabel( position, GUIUtility.GetControlID( FocusType.Passive ), EmptyContent );
 			var propertyRect = new PropertyRect(position);
 			var indent = EditorGUI.indentLevel;
-			EditorGUI.indentLevel = indent - 1;
+			EditorGUI.indentLevel = Math.Max( 0, indent - 1 );
 
 			var usageProp = property.FindPropertyRelative( "_usageType" );
 			var accessProp = property.FindPropertyRelative( "_accessType" );
@@ -59,6 +61,6 @@ namespace FSM.Editor.Components
 		}
 
 		private bool HasSettedType( SerializedProperty property ) =>
-			( property.FindPropertyRelative( "_componentTypeReference" ).GetPropertyValue() as ClassTypeReference ).Type != null;
+			( property.FindPropertyRelative( "_componentTypeReference" ).GetPropertyValue() as ClassTypeReference )?.Type != null;
 	}
 }

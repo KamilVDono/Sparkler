@@ -16,12 +16,13 @@ namespace FSM
 	public class StateNode : FSMNode
 	{
 		[Input(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
-		[SerializeField] private StateNode _from;
+		[SerializeField] private StateNode _from = null;
 
-		[SerializeField] private ComponentLink[] _components = default;
+		[SerializeField] private ComponentLink[] _components = new ComponentLink[0];
+		[SerializeField] private SystemLambdaAction[] _lambda = new SystemLambdaAction[0];
 
 		[Output(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
-		[SerializeField] private StateNode _to;
+		[SerializeField] private StateNode _to = null;
 
 		public string StateName => Name;
 		public IReadOnlyCollection<ComponentLink> Components => _components;

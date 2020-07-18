@@ -121,7 +121,7 @@ namespace FSM.Editor
 					continue;
 				}
 
-				template = AssignUsings( system, template );
+				template = AssignUsings( system, _fsmGraph.Namespace, template );
 
 				template = AssignWithAll( system, template );
 
@@ -198,7 +198,7 @@ namespace FSM.Editor
 			return true;
 		}
 
-		private static string AssignUsings( StateNode system, string template )
+		private static string AssignUsings( StateNode system, string namespaceName, string template )
 		{
 			// Namespaces
 			var usingNamespaces = system.Components.Where( c => c.TypeReference != null ).Select( c => c.TypeReference.Namespace ).Distinct();
@@ -208,6 +208,10 @@ namespace FSM.Editor
 				usingsBuilder.Append( "using " );
 				usingsBuilder.Append( usingNamespace );
 				usingsBuilder.AppendLine( ";" );
+			}
+			if ( system.Components.Any( c => c.IsHandWrited ) )
+			{
+				usingsBuilder.AppendLine( $"using {namespaceName}.Components;" );
 			}
 			template = Regex.Replace( template, @"\$USINGS\$", usingsBuilder.ToString() );
 			return template;

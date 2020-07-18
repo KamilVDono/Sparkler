@@ -1,14 +1,12 @@
-using FSM.AI.States.Components;
-
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Transforms;
+using FSM.AI.States.Components;
 
 
 namespace FSM.AI.States.Systems
 {
-	public class WalkSystem : SystemBase
+	public class WakeUpSystem : SystemBase
 	{
 		protected override void OnUpdate()
 		{
@@ -21,10 +19,10 @@ namespace FSM.AI.States.Systems
 			// process the component types you want.
 
 			Entities
-
-
-				.WithNone<Frozen>()
-				.ForEach( ( ref Acceleration acceleration, in Speed speed, in WalkTag walkTag ) =>
+				
+				
+				
+				.ForEach( ( ref Regenerating regenerating, in WakeUpTag wakeUpTag ) =>
 			{
 				// Implement the work to perform for each entity here. You should only access data that is
 				// local or that is a field on this job. Note that the 'rotation' parameter is marked as

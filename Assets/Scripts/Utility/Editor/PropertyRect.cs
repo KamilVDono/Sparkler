@@ -12,18 +12,21 @@ namespace FSM.Utility.Editor
 
 		public PropertyRect( Rect originalRect ) : this() => _originalRect = originalRect;
 
-		public Rect AllocateLine()
+		public Rect AllocateLine() => AllocateLine( EditorGUIUtility.singleLineHeight );
+
+		public Rect AllocateLine( float height )
 		{
 			if ( _currentRect == default )
 			{
 				_currentRect = _originalRect;
-				_currentRect.height = EditorGUIUtility.singleLineHeight;
+				_currentRect.height = height;
 			}
 			else
 			{
 				_currentRect.width = _originalRect.width;
 				_currentRect.x = _originalRect.x;
-				_currentRect.y += EditorGUIUtility.singleLineHeight;
+				_currentRect.y += _currentRect.height;
+				_currentRect.height = height;
 			}
 			_currentLine = _currentRect;
 			return _currentRect;
@@ -47,6 +50,15 @@ namespace FSM.Utility.Editor
 		{
 			_currentRect.width = _currentLine.width - ( _currentRect.x - _currentLine.x );
 			return _currentRect;
+		}
+
+		public Rect AlocateWidthWithAscesorFlat( float widthOfAscesor )
+		{
+			var width = _currentRect.width - widthOfAscesor;
+			_currentRect.width = width;
+			var rect = _currentRect;
+			_currentRect.x += width;
+			return rect;
 		}
 	}
 }

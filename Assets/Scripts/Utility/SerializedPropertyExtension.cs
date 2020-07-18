@@ -116,14 +116,21 @@ namespace FSM.Utility
 
 					var currentArray = currentValue as IEnumerable;
 					var enumerator = currentArray.GetEnumerator();
-					enumerator.MoveNext();
+					var hasCurrent = enumerator.MoveNext();
 
 					for ( int j = 0; j < index; j++ )
 					{
-						enumerator.MoveNext();
+						hasCurrent = enumerator.MoveNext();
 					}
 
-					currentValue = enumerator.Current;
+					if ( hasCurrent )
+					{
+						currentValue = enumerator.Current;
+					}
+					else
+					{
+						currentValue = null;
+					}
 
 					if ( type.IsArray )
 					{
@@ -140,6 +147,11 @@ namespace FSM.Utility
 					currentValue = fieldInfo.GetValue( currentValue );
 
 					type = fieldInfo.FieldType;
+				}
+
+				if ( currentValue == null )
+				{
+					return currentValue;
 				}
 			}
 

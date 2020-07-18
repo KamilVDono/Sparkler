@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5692167846030235723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 632, y: 216}
+  ports:
+    keys:
+    - _from
+    - _to
+    values:
+    - _fieldName: _from
+      _node: {fileID: -5692167846030235723}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: 6686637859470450578}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -5692167846030235723}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: -2211651191980779633}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+  _name: WakeUp
+  _from: {fileID: 0}
+  _components:
+  - _componentTypeReference:
+      classRef: FSM.AI.States.Components.WakeUpTag, Assembly-CSharp
+      name: WakeUpTag
+    _componentName: 
+    _accessType: 1
+    _usageType: 1
+  - _componentTypeReference:
+      classRef: FSM.AI.States.Components.Regenerating, Assembly-CSharp
+      name: Regenerating
+    _componentName: 
+    _accessType: 3
+    _usageType: 1
+  _lambda: []
+  _to: {fileID: 0}
 --- !u!114 &-2211651191980779633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,6 +101,9 @@ MonoBehaviour:
       - fieldName: _to
         node: {fileID: 1760004253655610051}
         reroutePoints: []
+      - fieldName: _to
+        node: {fileID: -5692167846030235723}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -55,6 +118,7 @@ MonoBehaviour:
     _componentName: 
     _accessType: 1
     _usageType: 1
+  _lambda: []
   _to: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -73,6 +137,8 @@ MonoBehaviour:
   - {fileID: 5274439539639490737}
   - {fileID: 593013002516118109}
   - {fileID: 1760004253655610051}
+  - {fileID: 6686637859470450578}
+  - {fileID: -5692167846030235723}
   _codeGenerationPath: Assets/Scripts/CodeGen
   _namespace: FSM.AI.States
 --- !u!114 &593013002516118109
@@ -109,7 +175,10 @@ MonoBehaviour:
     - _fieldName: _to
       _node: {fileID: 593013002516118109}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _from
+        node: {fileID: 6686637859470450578}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -142,6 +211,103 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 3
+  _lambda:
+  - _name: 
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Entities.ChunkHeader, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Unity.Entities.Asset, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 2
+    - _componentTypeReference:
+        classRef: Unity.Entities.Asset, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 2
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Scale, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Scale, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+  - _name: 
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Entities.ChunkHeader, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Unity.Entities.Asset, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 2
+    - _componentTypeReference:
+        classRef: Unity.Entities.Asset, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 2
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Scale, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Scale, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+  - _name: 
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Entities.ChunkHeader, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Unity.Entities.Asset, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 2
+    - _componentTypeReference:
+        classRef: Unity.Entities.Asset, Unity.Entities
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 2
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Scale, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Scale, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
   _to: {fileID: 0}
 --- !u!114 &1760004253655610051
 MonoBehaviour:
@@ -213,6 +379,7 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 3
+  _lambda: []
   _to: {fileID: 0}
 --- !u!114 &5274439539639490737
 MonoBehaviour:
@@ -284,4 +451,59 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 1
+  _lambda: []
+  _to: {fileID: 0}
+--- !u!114 &6686637859470450578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 232, y: 264}
+  ports:
+    keys:
+    - _from
+    - _to
+    values:
+    - _fieldName: _from
+      _node: {fileID: 6686637859470450578}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: 593013002516118109}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 6686637859470450578}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: -5692167846030235723}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+  _name: Sleep
+  _from: {fileID: 0}
+  _components:
+  - _componentTypeReference:
+      classRef: FSM.AI.States.Components.SleepTag, Assembly-CSharp
+      name: SleepTag
+    _componentName: 
+    _accessType: 1
+    _usageType: 1
+  _lambda: []
   _to: {fileID: 0}
