@@ -99,6 +99,17 @@ namespace FSM.Utility
 		/// leave as 0
 		/// </param>
 		/// <returns>Real value of property</returns>
+		public static T GetPropertyValue<T>( this SerializedProperty serializedProperty, int ofUpper = 0 ) => (T)GetPropertyValue( serializedProperty, ofUpper );
+
+		/// <summary>
+		/// Get value of property (or property parent)
+		/// </summary>
+		/// <param name="serializedProperty">Property which value from we want</param>
+		/// <param name="ofUpper">
+		/// Set to 1 if want parent class instance, set to 2 if parent parent ... If just property value
+		/// leave as 0
+		/// </param>
+		/// <returns>Real value of property</returns>
 		public static object GetPropertyValue( this SerializedProperty serializedProperty, int ofUpper = 0 )
 		{
 			string[] slices = serializedProperty.propertyPath.Split('.');

@@ -32,7 +32,9 @@ namespace FSM.Editor.Components
 			var typeProp = property.FindPropertyRelative( "_componentTypeReference" );
 
 			propertyRect.AllocateLine();
+
 			EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 50 ), usageProp, EmptyContent );
+
 			if ( ( (ComponentLinkUsageType)usageProp.GetPropertyValue() ) == ComponentLinkUsageType.All )
 			{
 				EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 40 ), accessProp, EmptyContent );
@@ -48,6 +50,7 @@ namespace FSM.Editor.Components
 			}
 
 			EditorGUI.indentLevel = indent;
+			EditorGUI.EndProperty();
 		}
 
 		public override float GetPropertyHeight( SerializedProperty property, GUIContent label )

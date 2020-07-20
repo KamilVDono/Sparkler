@@ -101,7 +101,7 @@ namespace FSM.Editor
 				Directory.CreateDirectory( systemsPath );
 			}
 
-			IEnumerable<(StateNode s, string)> systemsData = _states.Select(s => s.StateName.EndsWith("System") ? (s, s.StateName) : (s, s.StateName + "System"));
+			IEnumerable<(StateNode s, string)> systemsData = _states.Select(s => (s, s.StateName));
 
 			var loadedTemplate = LoadTemplate("System");
 
@@ -109,10 +109,6 @@ namespace FSM.Editor
 			{
 				var template = loadedTemplate;
 				var systemName = system.StateName;
-				if ( !systemName.EndsWith( "System" ) )
-				{
-					systemName += "System";
-				}
 
 				var hasForEachComponents = AssignForEachComponents( system, ref template );
 				if ( !hasForEachComponents )
@@ -128,6 +124,8 @@ namespace FSM.Editor
 				template = AssignWithAny( system, template );
 
 				template = AssignWithNone( system, template );
+
+				template = SetupTransition( system, template );
 
 				var systemPath = Path.Combine( systemsPath, $"{systemName}.cs");
 				GenerateSystemFile( systemName, systemPath, template );
@@ -289,6 +287,20 @@ namespace FSM.Editor
 				withNoneBuilder.Append( ">()" );
 			}
 			template = Regex.Replace( template, @"\$WITH_NONE\$", withNoneBuilder.ToString() );
+			return template;
+		}
+
+		private static string SetupTransition( StateNode system, string template )
+		{
+			var transitions = system.TransitionsTo.Select(s => s.StateName).ToArray();
+			bool hasTransition = transitions.Length > 0;
+			if ( !hasTransition )
+			{
+				return Regex.Replace( template, @"#\$TRANSITION(?s).+?#\$", "" );
+			}
+			template = Regex.Replace( template, @"#\$TRANSITION", "" );
+			template = Regex.Replace( template, @"#\$", "" );
+			template = Regex.Replace( template, @"\$TRANSITION_TO\$", string.Join( ", ", transitions ) );
 			return template;
 		}
 

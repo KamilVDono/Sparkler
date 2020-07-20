@@ -11,8 +11,6 @@ using Unity.Entities;
 
 using UnityEngine;
 
-using XNode;
-
 namespace FSM.Components
 {
 	[Flags]
@@ -41,11 +39,11 @@ namespace FSM.Components
 		[SerializeField]
 		private string _componentName;
 
-		[SerializeField, NodeEnum]
-		private ComponentLinkAccessType _accessType;
+		[SerializeField]
+		private ComponentLinkAccessType _accessType = ComponentLinkAccessType.Un;
 
-		[SerializeField, NodeEnum]
-		private ComponentLinkUsageType _usageType;
+		[SerializeField]
+		private ComponentLinkUsageType _usageType = ComponentLinkUsageType.Invalid;
 
 		#region Queries
 		public Type TypeReference => _componentTypeReference?.Type;
@@ -53,7 +51,7 @@ namespace FSM.Components
 		public string ComponentName => TypeReference?.Name ?? HandwrittenName;
 
 		public ComponentLinkAccessType AccessType => _accessType;
-		public ComponentLinkUsageType Usage => _usageType;
+		public ComponentLinkUsageType Usage { get => _usageType; set => _usageType = value; }
 
 		public bool IsHandWrited => TypeReference == null && !string.IsNullOrWhiteSpace( HandwrittenName );
 		#endregion Queries
@@ -92,6 +90,7 @@ namespace FSM.Components
 
 		#endregion Equality
 
+		#region Editor
 #if UNITY_EDITOR
 
 		private static Type[] _allTypes;
@@ -120,5 +119,6 @@ namespace FSM.Components
 		}
 
 #endif
+		#endregion Editor
 	}
 }

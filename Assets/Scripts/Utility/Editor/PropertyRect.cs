@@ -54,11 +54,9 @@ namespace FSM.Utility.Editor
 
 		public Rect AlocateWidthWithAscesorFlat( float widthOfAscesor )
 		{
-			var width = _currentRect.width - widthOfAscesor;
-			_currentRect.width = width;
-			var rect = _currentRect;
-			_currentRect.x += width;
-			return rect;
+			var leftWidth = _currentLine.width - (_currentRect.x - _currentLine.x);
+			var width = leftWidth - widthOfAscesor;
+			return AllocateWidthFlat( width );
 		}
 	}
 }

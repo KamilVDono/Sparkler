@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 632, y: 216}
+  position: {x: -424, y: -24}
   ports:
     keys:
     - _from
@@ -22,10 +22,7 @@ MonoBehaviour:
     - _fieldName: _from
       _node: {fileID: -5692167846030235723}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: 6686637859470450578}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -58,7 +55,6 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 1
-  _lambda: []
   _to: {fileID: 0}
 --- !u!114 &-2211651191980779633
 MonoBehaviour:
@@ -118,7 +114,6 @@ MonoBehaviour:
     _componentName: 
     _accessType: 1
     _usageType: 1
-  _lambda: []
   _to: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -154,7 +149,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -120, y: 72}
+  position: {x: -40, y: -360}
   ports:
     keys:
     - _from
@@ -211,103 +206,6 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 3
-  _lambda:
-  - _name: 
-    _components:
-    - _componentTypeReference:
-        classRef: Unity.Entities.ChunkHeader, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: Unity.Entities.Asset, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 2
-    - _componentTypeReference:
-        classRef: Unity.Entities.Asset, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 2
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Scale, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 3
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Scale, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 3
-  - _name: 
-    _components:
-    - _componentTypeReference:
-        classRef: Unity.Entities.ChunkHeader, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: Unity.Entities.Asset, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 2
-    - _componentTypeReference:
-        classRef: Unity.Entities.Asset, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 2
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Scale, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 3
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Scale, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 3
-  - _name: 
-    _components:
-    - _componentTypeReference:
-        classRef: Unity.Entities.ChunkHeader, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: Unity.Entities.Asset, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 2
-    - _componentTypeReference:
-        classRef: Unity.Entities.Asset, Unity.Entities
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 2
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Scale, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 3
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Scale, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 0
-      _usageType: 3
   _to: {fileID: 0}
 --- !u!114 &1760004253655610051
 MonoBehaviour:
@@ -322,7 +220,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 472, y: -72}
+  position: {x: 472, y: -680}
   ports:
     keys:
     - _from
@@ -379,7 +277,6 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 3
-  _lambda: []
   _to: {fileID: 0}
 --- !u!114 &5274439539639490737
 MonoBehaviour:
@@ -394,7 +291,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: -376}
+  position: {x: -56, y: -712}
   ports:
     keys:
     - _from
@@ -451,7 +348,6 @@ MonoBehaviour:
     _componentName: 
     _accessType: 3
     _usageType: 1
-  _lambda: []
   _to: {fileID: 0}
 --- !u!114 &6686637859470450578
 MonoBehaviour:
@@ -466,7 +362,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 232, y: 264}
+  position: {x: 392, y: -344}
   ports:
     keys:
     - _from
@@ -487,10 +383,7 @@ MonoBehaviour:
     - _fieldName: _to
       _node: {fileID: 6686637859470450578}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: -5692167846030235723}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -505,5 +398,4 @@ MonoBehaviour:
     _componentName: 
     _accessType: 1
     _usageType: 1
-  _lambda: []
   _to: {fileID: 0}

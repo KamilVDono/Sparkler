@@ -12,7 +12,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 	[CustomNodeEditor( typeof( StateNode ) )]
 	public class StateNodeEditor : FSMNodeEditor
 	{
-		private Dictionary<string, bool> _folded = new Dictionary<string, bool>();
+		private static readonly GUIContent s_foldedButtonContent = new GUIContent("\u25B6");
+		private static readonly GUIContent s_expandedButtonContent = new GUIContent("\u25BC");
 
 		public override void OnBodyGUI()
 		{
@@ -36,12 +37,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 				if ( iterator.isArray )
 				{
-					if ( !_folded.TryGetValue( iterator.propertyPath, out var folded ) )
-					{
-						folded = true;
-					}
-					DrawArray( iterator, ref folded );
-					_folded[iterator.propertyPath] = folded;
+					DrawArray( iterator );
 				}
 				else
 				{
@@ -51,7 +47,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			serializedObject.ApplyModifiedProperties();
 		}
 
-		private static void DrawArray( SerializedProperty property, ref bool folded )
+		private static void DrawArray( SerializedProperty property )
 		{
 			var indexesToDelete = new List<int>();
 			int addNewElementCount = 0;
@@ -59,9 +55,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			// Header [Label - size - plus button]
 			EditorGUILayout.Space( 8, false );
 			EditorGUILayout.BeginHorizontal();
-			folded = EditorGUILayout.Foldout( folded, property.displayName, true, EditorStyles.boldLabel );
-
-			//EditorGUILayout.LabelField( property.displayName, EditorStyles.boldLabel, GUILayout.ExpandWidth( true ) );
+			property.isExpanded ^= GUILayout.Button( !property.isExpanded ? s_foldedButtonContent : s_expandedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) );
+			EditorGUILayout.LabelField( property.displayName, EditorStyles.boldLabel );
 
 			int newSize = EditorGUILayout.IntField( property.arraySize, GUILayout.Width( 50 ) );
 
@@ -71,7 +66,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			}
 			EditorGUILayout.EndHorizontal();
 
-			if ( folded )
+			if ( !property.isExpanded )
 			{
 				return;
 			}
