@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -424, y: -24}
+  position: {x: -424, y: -88}
   ports:
     keys:
     - _from
-    - _to
+    - Component_0
     values:
     - _fieldName: _from
       _node: {fileID: -5692167846030235723}
@@ -28,34 +28,26 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
-    - _fieldName: _to
+    - _fieldName: Component_0
       _node: {fileID: -5692167846030235723}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: -2211651191980779633}
-        reroutePoints: []
+      connections: []
       _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
       _allowedTypes: []
   _name: WakeUp
   _from: {fileID: 0}
-  _components:
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.WakeUpTag, Assembly-CSharp
-      name: WakeUpTag
-    _componentName: 
-    _accessType: 1
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Regenerating, Assembly-CSharp
-      name: Regenerating
-    _componentName: 
-    _accessType: 3
-    _usageType: 1
-  _to: {fileID: 0}
+  _lambdas:
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.SleepTimer, Assembly-CSharp
+        name: SleepTimer
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
 --- !u!114 &-2211651191980779633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,27 +61,13 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -440, y: -360}
+  position: {x: -440, y: -456}
   ports:
     keys:
-    - _to
     - _from
+    - Component_0
+    - Component_1
     values:
-    - _fieldName: _to
-      _node: {fileID: -2211651191980779633}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: 5274439539639490737}
-        reroutePoints: []
-      - fieldName: _from
-        node: {fileID: 593013002516118109}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-      _allowedTypes: []
     - _fieldName: _from
       _node: {fileID: -2211651191980779633}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -105,16 +83,46 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
+    - _fieldName: Component_0
+      _node: {fileID: -2211651191980779633}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_1
+      _node: {fileID: -2211651191980779633}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: 593013002516118109}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
   _name: Idle
   _from: {fileID: 0}
-  _components:
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.IdleTag, Assembly-CSharp
-      name: IdleTag
-    _componentName: 
-    _accessType: 1
-    _usageType: 1
-  _to: {fileID: 0}
+  _lambdas:
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.IdleTag, Assembly-CSharp
+        name: 
+      _componentName: IdleTag
+      _accessType: 1
+      _usageType: 1
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.IdleTag, Assembly-CSharp
+        name: 
+      _componentName: IdleTag
+      _accessType: 1
+      _usageType: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,17 +157,17 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -40, y: -360}
+  position: {x: -24, y: -392}
   ports:
     keys:
     - _from
-    - _to
+    - Component_0
     values:
     - _fieldName: _from
       _node: {fileID: 593013002516118109}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: _to
+      - fieldName: Component_1
         node: {fileID: -2211651191980779633}
         reroutePoints: []
       _direction: 0
@@ -167,46 +175,38 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
-    - _fieldName: _to
+    - _fieldName: Component_0
       _node: {fileID: 593013002516118109}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: 6686637859470450578}
-        reroutePoints: []
+      connections: []
       _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
       _allowedTypes: []
   _name: Eat
   _from: {fileID: 0}
-  _components:
-  - _componentTypeReference:
-      classRef: Unity.Transforms.Translation, Unity.Transforms
-      name: 
-    _componentName: 
-    _accessType: 1
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
-      name: Speed
-    _componentName: Speed
-    _accessType: 3
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Acceleration, Assembly-CSharp
-      name: Acceleration
-    _componentName: Acceleration
-    _accessType: 3
-    _usageType: 2
-  - _componentTypeReference:
-      classRef: Unity.Transforms.Frozen, Unity.Transforms
-      name: 
-    _componentName: 
-    _accessType: 3
-    _usageType: 3
-  _to: {fileID: 0}
+  _lambdas:
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.CurrentFood, Assembly-CSharp
+        name: CurrentFood
+      _componentName: 
+      _accessType: -1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.Energy, Assembly-CSharp
+        name: Energy
+      _componentName: 
+      _accessType: -1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.EatSpeed, Assembly-CSharp
+        name: EatSpeed
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
 --- !u!114 &1760004253655610051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,11 +220,11 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 472, y: -680}
+  position: {x: 456, y: -712}
   ports:
     keys:
     - _from
-    - _to
+    - Component_0
     values:
     - _fieldName: _from
       _node: {fileID: 1760004253655610051}
@@ -238,46 +238,38 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
-    - _fieldName: _to
+    - _fieldName: Component_0
       _node: {fileID: 1760004253655610051}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: -2211651191980779633}
-        reroutePoints: []
+      connections: []
       _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
       _allowedTypes: []
   _name: Run
   _from: {fileID: 0}
-  _components:
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
-      name: Speed
-    _componentName: Speed
-    _accessType: 1
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Acceleration, Assembly-CSharp
-      name: Acceleration
-    _componentName: Acceleration
-    _accessType: 3
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.RunTag, Assembly-CSharp
-      name: RunTag
-    _componentName: RunTag
-    _accessType: 3
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: Unity.Transforms.Frozen, Unity.Transforms
-      name: 
-    _componentName: 
-    _accessType: 3
-    _usageType: 3
-  _to: {fileID: 0}
+  _lambdas:
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Translation, Unity.Transforms
+        name: Speed
+      _componentName: 
+      _accessType: -1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.RunTag, Assembly-CSharp
+        name: RunTag
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.RunSpeed, Assembly-CSharp
+        name: RunSpeed
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
 --- !u!114 &5274439539639490737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +287,7 @@ MonoBehaviour:
   ports:
     keys:
     - _from
-    - _to
+    - Component_0
     values:
     - _fieldName: _from
       _node: {fileID: 5274439539639490737}
@@ -309,46 +301,38 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
-    - _fieldName: _to
+    - _fieldName: Component_0
       _node: {fileID: 5274439539639490737}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: 1760004253655610051}
-        reroutePoints: []
+      connections: []
       _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
       _allowedTypes: []
   _name: Walk
   _from: {fileID: 0}
-  _components:
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
-      name: Speed
-    _componentName: Speed
-    _accessType: 1
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.Acceleration, Assembly-CSharp
-      name: Acceleration
-    _componentName: Acceleration
-    _accessType: 3
-    _usageType: 1
-  - _componentTypeReference:
-      classRef: Unity.Transforms.Frozen, Unity.Transforms
-      name: 
-    _componentName: 
-    _accessType: 3
-    _usageType: 3
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.WalkTag, Assembly-CSharp
-      name: WalkTag
-    _componentName: 
-    _accessType: 3
-    _usageType: 1
-  _to: {fileID: 0}
+  _lambdas:
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.WalkingTag, Assembly-CSharp
+        name: WalkingTag
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.WalkSpeed, Assembly-CSharp
+        name: WalkSpeed
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Translation, Unity.Transforms
+        name: 
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
 --- !u!114 &6686637859470450578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,7 +350,7 @@ MonoBehaviour:
   ports:
     keys:
     - _from
-    - _to
+    - Component_0
     values:
     - _fieldName: _from
       _node: {fileID: 6686637859470450578}
@@ -380,22 +364,23 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
-    - _fieldName: _to
+    - _fieldName: Component_0
       _node: {fileID: 6686637859470450578}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
       _allowedTypes: []
   _name: Sleep
   _from: {fileID: 0}
-  _components:
-  - _componentTypeReference:
-      classRef: FSM.AI.States.Components.SleepTag, Assembly-CSharp
-      name: SleepTag
-    _componentName: 
-    _accessType: 1
-    _usageType: 1
-  _to: {fileID: 0}
+  _lambdas:
+  - _name: Main
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.SleepTag, Assembly-CSharp
+        name: 
+      _componentName: SleepTag
+      _accessType: 1
+      _usageType: 1

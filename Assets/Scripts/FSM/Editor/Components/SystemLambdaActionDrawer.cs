@@ -1,5 +1,4 @@
 ﻿using FSM.Components;
-using FSM.Utility;
 using FSM.Utility.Editor;
 
 using System.Collections.Generic;
@@ -34,6 +33,7 @@ namespace FSM.Editor
 			var nameProp = property.FindPropertyRelative("_name");
 			EditorGUI.PropertyField( propertyRect.AllocateLine(), nameProp );
 
+			// Draw array
 			var componentsProp = property.FindPropertyRelative("_components");
 			DrawArray( propertyRect, componentsProp );
 

@@ -10,7 +10,7 @@ using XNode.Editor;
 namespace FSM.Editor.Assets.Scripts.FSM.Editor
 {
 	[CustomNodeEditor( typeof( StateNode ) )]
-	public class StateNodeEditor : FSMNodeEditor
+	public class StateNodeEditor : FSMNodeEditor<StateNode>
 	{
 		private static readonly GUIContent s_foldedButtonContent = new GUIContent("\u25B6");
 		private static readonly GUIContent s_expandedButtonContent = new GUIContent("\u25BC");
@@ -37,7 +37,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 				if ( iterator.isArray )
 				{
-					DrawArray( iterator );
+					DrawArray( iterator, Target );
 				}
 				else
 				{
@@ -47,7 +47,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			serializedObject.ApplyModifiedProperties();
 		}
 
-		private static void DrawArray( SerializedProperty property )
+		private static void DrawArray( SerializedProperty property, StateNode stateNode )
 		{
 			var indexesToDelete = new List<int>();
 			int addNewElementCount = 0;
@@ -85,6 +85,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 					indexesToDelete.Add( i );
 				}
 				EditorGUILayout.EndHorizontal();
+				NodeEditorGUILayout.AddPortField( stateNode.GetOrAddComponentPort( i ) );
 			}
 			EditorGUILayout.EndVertical();
 
@@ -110,12 +111,19 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			{
 				property.DeleteArrayElementAtIndex( indexesToDelete[i] );
 			}
-			indexesToDelete.Clear();
 
 			for ( int i = 0; i < addNewElementCount; i++ )
 			{
 				property.InsertArrayElementAtIndex( property.arraySize );
 			}
+
+			property.serializedObject.ApplyModifiedProperties();
+			for ( int i = indexesToDelete.Count - 1; i >= 0; i-- )
+			{
+				stateNode.RemoveComponentPort( indexesToDelete[i] );
+			}
+			indexesToDelete.Clear();
+			property.serializedObject.Update();
 		}
 
 		private static void DrawLine( float thickness = 2, float space = 2 )

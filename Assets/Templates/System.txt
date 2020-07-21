@@ -7,15 +7,18 @@ namespace $NAMESPACE$.Systems
 {
 	public class $NAME$ : SystemBase
 	{
-		#$TRANSITION
+		#$STRUCTURAL_CHANGES
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
+		$#STRUCTURAL_CHANGES
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
+			#$STRUCTURAL_CHANGES
 			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+			$#STRUCTURAL_CHANGES
 		}
-		#$
+		
 
 		protected override void OnUpdate()
 		{
@@ -27,30 +30,31 @@ namespace $NAMESPACE$.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
-			Entities
-				$WITH_ALL$
-				$WITH_ANY$
-				$WITH_NONE$
-				.ForEach( ( $FOR_EACH$ ) =>
-			{
-				//TODO: Implement state behavior
-			} ).Schedule();
-
-			#$TRANSITION
+			#$STRUCTURAL_CHANGES
 			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
+			$#STRUCTURAL_CHANGES
+
+			#$LAMBDA
 			Entities
-				.WithName( "Transition" )
+				.WithName( "$LAMBDA_NAME$" )
 				$WITH_ALL$
 				$WITH_ANY$
 				$WITH_NONE$
-				.ForEach( ( Entity e, $FOR_EACH$ ) =>
+				.ForEach( ( #$TRANSITION Entity e, $#TRANSITION $FOR_EACH$ ) =>
 			{
+				#$TRANSITION
 				//TODO: Make transition to one of the following state:
 				//$TRANSITION_TO$
+				$#TRANSITION
+				#$!TRANSITION
+				//TODO: Implement state behavior
+				$#!TRANSITION
 			} ).Schedule();
+			$#LAMBDA
 
+			#$STRUCTURAL_CHANGES
 			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );
-			#$
+			$#STRUCTURAL_CHANGES
 		}
 	}
 }

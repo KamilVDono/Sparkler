@@ -1,8 +1,8 @@
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using FSM.AI.States.Components;
 using Unity.Transforms;
+using FSM.AI.States.Components;
 
 
 namespace FSM.AI.States.Systems
@@ -10,12 +10,11 @@ namespace FSM.AI.States.Systems
 	public class RunSystem : SystemBase
 	{
 		
-		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
-			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+			
 		}
 		
 
@@ -29,29 +28,24 @@ namespace FSM.AI.States.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
-			Entities
-				
-				
-				.WithNone<Frozen>()
-				.ForEach( ( ref Acceleration acceleration, ref RunTag runTag, in Speed speed ) =>
-			{
-				//TODO: Implement state behavior
-			} ).Schedule();
+			
 
 			
-			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
 			Entities
-				.WithName( "Transition" )
+				.WithName( "RunSystem_Main" )
+				.WithAll<RunTag>()
 				
 				
-				.WithNone<Frozen>()
-				.ForEach( ( Entity e, ref Acceleration acceleration, ref RunTag runTag, in Speed speed ) =>
+				.ForEach( (  in RunSpeed runSpeed ) =>
 			{
-				//TODO: Make transition to one of the following state:
-				//IdleSystem
+				
+				
+				//TODO: Implement state behavior
+				
 			} ).Schedule();
+			
 
-			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );
+
 			
 		}
 	}

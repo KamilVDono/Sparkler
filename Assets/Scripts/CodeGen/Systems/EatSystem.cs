@@ -1,7 +1,6 @@
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Transforms;
 using FSM.AI.States.Components;
 
 
@@ -10,12 +9,11 @@ namespace FSM.AI.States.Systems
 	public class EatSystem : SystemBase
 	{
 		
-		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
-			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+			
 		}
 		
 
@@ -29,29 +27,24 @@ namespace FSM.AI.States.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
-			Entities
-				
-				.WithAny<Acceleration>()
-				.WithNone<Frozen>()
-				.ForEach( ( ref Speed speed, in Translation translation ) =>
-			{
-				//TODO: Implement state behavior
-			} ).Schedule();
+			
 
 			
-			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
 			Entities
-				.WithName( "Transition" )
+				.WithName( "EatSystem_Main" )
 				
-				.WithAny<Acceleration>()
-				.WithNone<Frozen>()
-				.ForEach( ( Entity e, ref Speed speed, in Translation translation ) =>
+				
+				
+				.ForEach( (  in EatSpeed eatSpeed ) =>
 			{
-				//TODO: Make transition to one of the following state:
-				//SleepSystem
+				
+				
+				//TODO: Implement state behavior
+				
 			} ).Schedule();
+			
 
-			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );
+
 			
 		}
 	}

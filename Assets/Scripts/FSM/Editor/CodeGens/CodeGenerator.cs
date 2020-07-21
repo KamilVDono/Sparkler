@@ -15,6 +15,8 @@ namespace FSM.Editor
 {
 	public class CodeGenerator
 	{
+		private static readonly Regex s_lambdaRegex = new Regex(@"(#\$LAMBDA)(?s)(.+?)(\$#LAMBDA)");
+
 		private FSMGraph _fsmGraph;
 		private IReadOnlyCollection<StateNode> _states;
 		private IReadOnlyCollection<ComponentLink> _components;
@@ -26,7 +28,7 @@ namespace FSM.Editor
 		public static void Generate( FSMGraph fsmGraph )
 		{
 			var states = fsmGraph.nodes.OfType<StateNode>().ToList();
-			var components = states.SelectMany(s => s.Components).Distinct().ToList();
+			var components = states.SelectMany(s => s.AllComponents).Distinct().ToList();
 
 			CodeGenerator codeGenerator = new CodeGenerator()
 			{
@@ -95,7 +97,7 @@ namespace FSM.Editor
 
 		private void GenerateSystems()
 		{
-			var systemsPath =  PathExtension.SystemPath(Path.Combine( _fsmGraph.CodeGenerationPath, "Systems"));
+			var systemsPath = PathExtension.SystemPath(Path.Combine( _fsmGraph.CodeGenerationPath, "Systems"));
 			if ( !Directory.Exists( systemsPath ) )
 			{
 				Directory.CreateDirectory( systemsPath );
@@ -110,22 +112,32 @@ namespace FSM.Editor
 				var template = loadedTemplate;
 				var systemName = system.StateName;
 
-				var hasForEachComponents = AssignForEachComponents( system, ref template );
-				if ( !hasForEachComponents )
-				{
-					Debug.LogWarning( $"System {systemName} has zero 'ForEach' components so can not be created" );
-					continue;
-				}
-
 				template = AssignUsings( system, _fsmGraph.Namespace, template );
 
-				template = AssignWithAll( system, template );
+				var lambdaTemplate = s_lambdaRegex.Match(template).Groups[2].Value;
+				StringBuilder lambdaTemplateBuilder = new StringBuilder();
+				foreach ( var lambda in system.Lambdas )
+				{
+					var currentTemplate = lambdaTemplate;
+					currentTemplate = AssignLambdaName( system, lambda, currentTemplate );
 
-				template = AssignWithAny( system, template );
+					currentTemplate = AssignForEachComponents( lambda, currentTemplate );
 
-				template = AssignWithNone( system, template );
+					currentTemplate = AssignWithAll( lambda, currentTemplate );
 
-				template = SetupTransition( system, template );
+					currentTemplate = AssignWithAny( lambda, currentTemplate );
+
+					currentTemplate = AssignWithNone( lambda, currentTemplate );
+
+					currentTemplate = SetupTransition( system, lambda, currentTemplate );
+
+					lambdaTemplateBuilder.AppendLine( currentTemplate );
+				}
+				template = s_lambdaRegex.Replace( template, lambdaTemplateBuilder.ToString() );
+
+				template = ConditionalText( system.HasStructuralChanges, "STRUCTURAL_CHANGES", template );
+
+				template = Regex.Replace( template, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline );
 
 				var systemPath = Path.Combine( systemsPath, $"{systemName}.cs");
 				GenerateSystemFile( systemName, systemPath, template );
@@ -151,55 +163,10 @@ namespace FSM.Editor
 
 		#region Helpers
 
-		private static bool AssignForEachComponents( StateNode system, ref string template )
-		{
-			//ForEach
-			StringBuilder foreachBuilder = new StringBuilder();
-			var refComponents = system.Components
-					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.RW)
-					.ToArray();
-			var inComponents = system.Components
-					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.R)
-					.ToArray();
-
-			if ( refComponents.Length > 0 || inComponents.Length > 0 )
-			{
-				foreach ( var refComponent in refComponents )
-				{
-					var componentName = refComponent.ComponentName;
-					foreachBuilder.Append( "ref " );
-					foreachBuilder.Append( componentName );
-					foreachBuilder.Append( " " );
-					foreachBuilder.Append( char.ToLowerInvariant( componentName[0] ) );
-					foreachBuilder.Append( componentName.Substring( 1 ) );
-					foreachBuilder.Append( ", " );
-				}
-
-				foreach ( var inComponent in inComponents )
-				{
-					var componentName = inComponent.ComponentName;
-					foreachBuilder.Append( "in " );
-					foreachBuilder.Append( componentName );
-					foreachBuilder.Append( " " );
-					foreachBuilder.Append( char.ToLowerInvariant( componentName[0] ) );
-					foreachBuilder.Append( componentName.Substring( 1 ) );
-					foreachBuilder.Append( ", " );
-				}
-				// Remove space and comma
-				foreachBuilder.Length -= 2;
-			}
-			else
-			{
-				return false;
-			}
-			template = Regex.Replace( template, @"\$FOR_EACH\$", foreachBuilder.ToString() );
-			return true;
-		}
-
 		private static string AssignUsings( StateNode system, string namespaceName, string template )
 		{
 			// Namespaces
-			var usingNamespaces = system.Components.Where( c => c.TypeReference != null ).Select( c => c.TypeReference.Namespace ).Distinct();
+			var usingNamespaces = system.AllComponents.Where( c => c.TypeReference != null ).Select( c => c.TypeReference.Namespace ).Distinct();
 			StringBuilder usingsBuilder = new StringBuilder();
 			foreach ( var usingNamespace in usingNamespaces )
 			{
@@ -207,7 +174,7 @@ namespace FSM.Editor
 				usingsBuilder.Append( usingNamespace );
 				usingsBuilder.AppendLine( ";" );
 			}
-			if ( system.Components.Any( c => c.IsHandWrited ) )
+			if ( system.AllComponents.Any( c => c.IsHandWrited ) )
 			{
 				usingsBuilder.AppendLine( $"using {namespaceName}.Components;" );
 			}
@@ -215,11 +182,49 @@ namespace FSM.Editor
 			return template;
 		}
 
-		private static string AssignWithAll( StateNode system, string template )
+		private static string AssignForEachComponents( SystemLambdaAction lambda, string template )
+		{
+			//ForEach
+			StringBuilder foreachBuilder = new StringBuilder();
+			var refComponents = lambda.Components
+					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.RW)
+					.ToArray();
+			var inComponents = lambda.Components
+					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.R)
+					.ToArray();
+
+			foreach ( var refComponent in refComponents )
+			{
+				var componentName = refComponent.ComponentName;
+				foreachBuilder.Append( "ref " );
+				foreachBuilder.Append( componentName );
+				foreachBuilder.Append( " " );
+				foreachBuilder.Append( char.ToLowerInvariant( componentName[0] ) );
+				foreachBuilder.Append( componentName.Substring( 1 ) );
+				foreachBuilder.Append( ", " );
+			}
+
+			foreach ( var inComponent in inComponents )
+			{
+				var componentName = inComponent.ComponentName;
+				foreachBuilder.Append( "in " );
+				foreachBuilder.Append( componentName );
+				foreachBuilder.Append( " " );
+				foreachBuilder.Append( char.ToLowerInvariant( componentName[0] ) );
+				foreachBuilder.Append( componentName.Substring( 1 ) );
+				foreachBuilder.Append( ", " );
+			}
+			// Remove space and comma
+			foreachBuilder.Length -= 2;
+
+			return Regex.Replace( template, @"\$FOR_EACH\$", foreachBuilder.ToString() );
+		}
+
+		private static string AssignWithAll( SystemLambdaAction lambda, string template )
 		{
 			//With all
 			StringBuilder withAllBuilder = new StringBuilder();
-			var withAllComponents = system.Components
+			var withAllComponents = lambda.Components
 					.Where( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Un )
 					.ToArray();
 			if ( withAllComponents.Length > 0 )
@@ -240,11 +245,11 @@ namespace FSM.Editor
 			return template;
 		}
 
-		private static string AssignWithAny( StateNode system, string template )
+		private static string AssignWithAny( SystemLambdaAction lambda, string template )
 		{
 			//With any
 			StringBuilder withAnyBuilder = new StringBuilder();
-			var withAnyComponents = system.Components
+			var withAnyComponents = lambda.Components
 					.Where( c => c.Usage == ComponentLinkUsageType.Any )
 					.ToArray();
 			if ( withAnyComponents.Length > 0 )
@@ -265,11 +270,11 @@ namespace FSM.Editor
 			return template;
 		}
 
-		private static string AssignWithNone( StateNode system, string template )
+		private static string AssignWithNone( SystemLambdaAction lambda, string template )
 		{
 			//With none
 			StringBuilder withNoneBuilder = new StringBuilder();
-			var withNoneComponents = system.Components
+			var withNoneComponents = lambda.Components
 					.Where( c => c.Usage == ComponentLinkUsageType.None )
 					.ToArray();
 			if ( withNoneComponents.Length > 0 )
@@ -290,25 +295,39 @@ namespace FSM.Editor
 			return template;
 		}
 
-		private static string SetupTransition( StateNode system, string template )
+		private static string SetupTransition( StateNode system, SystemLambdaAction lambda, string template )
 		{
-			var transitions = system.TransitionsTo.Select(s => s.StateName).ToArray();
-			bool hasTransition = transitions.Length > 0;
-			if ( !hasTransition )
-			{
-				return Regex.Replace( template, @"#\$TRANSITION(?s).+?#\$", "" );
-			}
-			template = Regex.Replace( template, @"#\$TRANSITION", "" );
-			template = Regex.Replace( template, @"#\$", "" );
-			template = Regex.Replace( template, @"\$TRANSITION_TO\$", string.Join( ", ", transitions ) );
+			var transition = system.TransitionTo(lambda);
+			bool hasTransition = transition != null;
+
+			template = ConditionalText( hasTransition, "TRANSITION", template );
+			template = Regex.Replace( template, @"\$TRANSITION_TO\$", transition?.Name ?? "" );
+
 			return template;
 		}
+
+		private string AssignLambdaName( StateNode system, SystemLambdaAction lambda, string lambdaTemplate ) =>
+			Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME\$", lambda.FullName( system ) );
 
 		#endregion Helpers
 
 		#endregion Systems
 
 		#endregion Generation
+
+		private static string ConditionalText( bool condition, string conditionalName, string input )
+		{
+			if ( !condition )
+			{
+				input = Regex.Replace( input, $"(#\\${conditionalName})(?s)(.+?)(\\$#{conditionalName})", "" );
+				return Regex.Replace( input, $"(#\\$!{conditionalName})(?s)(.+?)(\\$#!{conditionalName})", m => m.Groups[2].Value );
+			}
+			else
+			{
+				input = Regex.Replace( input, $"(#\\$!{conditionalName})(?s)(.+?)(\\$#!{conditionalName})", "" );
+				return Regex.Replace( input, $"(#\\${conditionalName})(?s)(.+?)(\\$#{conditionalName})", m => m.Groups[2].Value );
+			}
+		}
 
 		private string LoadTemplate( string name )
 		{

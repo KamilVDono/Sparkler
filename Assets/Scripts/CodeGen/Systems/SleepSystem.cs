@@ -1,13 +1,22 @@
-using FSM.AI.States.Components;
-
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using FSM.AI.States.Components;
+
 
 namespace FSM.AI.States.Systems
 {
 	public class SleepSystem : SystemBase
 	{
+		
+
+		protected override void OnCreate()
+		{
+			base.OnCreate();
+			
+		}
+		
+
 		protected override void OnUpdate()
 		{
 			// Assign values to local variables captured in your job here, so that it has everything it
@@ -18,12 +27,25 @@ namespace FSM.AI.States.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
-			Entities
+			
 
-				.ForEach( ( in SleepTag sleepTag ) =>
+			
+			Entities
+				.WithName( "SleepSystem_Main" )
+				
+				
+				
+				.ForEach( (  in SleepTag sleepTag ) =>
 			{
+				
+				
 				//TODO: Implement state behavior
+				
 			} ).Schedule();
+			
+
+
+			
 		}
 	}
 }

@@ -9,12 +9,11 @@ namespace FSM.AI.States.Systems
 	public class WakeUpSystem : SystemBase
 	{
 		
-		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
-			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+			
 		}
 		
 
@@ -28,29 +27,24 @@ namespace FSM.AI.States.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
-			Entities
-				
-				
-				
-				.ForEach( ( ref Regenerating regenerating, in WakeUpTag wakeUpTag ) =>
-			{
-				//TODO: Implement state behavior
-			} ).Schedule();
+			
 
 			
-			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
 			Entities
-				.WithName( "Transition" )
+				.WithName( "WakeUpSystem_Main" )
 				
 				
 				
-				.ForEach( ( Entity e, ref Regenerating regenerating, in WakeUpTag wakeUpTag ) =>
+				.ForEach( (  in SleepTimer sleepTimer ) =>
 			{
-				//TODO: Make transition to one of the following state:
-				//IdleSystem
+				
+				
+				//TODO: Implement state behavior
+				
 			} ).Schedule();
+			
 
-			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );
+
 			
 		}
 	}

@@ -9,8 +9,23 @@ namespace FSM.Components
 	[Serializable]
 	public class SystemLambdaAction
 	{
-		[SerializeField] private string _name;
-		[SerializeField] private ComponentLink[] _components;
+		[SerializeField] private string _name = "";
+		[SerializeField] private ComponentLink[] _components = new ComponentLink[0];
+
+		public IReadOnlyCollection<ComponentLink> Components => _components;
+		public string Name => _name;
+
+		public string FullName( StateNode stateNode )
+		{
+			if ( _name.StartsWith( stateNode.StateName ) )
+			{
+				return Name;
+			}
+			else
+			{
+				return $"{stateNode.StateName}_{Name}";
+			}
+		}
 
 		public void PropertiesChanged( List<ComponentLink> changedComponents )
 		{

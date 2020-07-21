@@ -1,4 +1,5 @@
 using FSM.Components;
+using FSM.Utility;
 
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,7 @@ namespace FSM
 		[Input(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
 		[SerializeField] private StateNode _from = null;
 
-		[SerializeField] private ComponentLink[] _components = new ComponentLink[0];
-		//[SerializeField] private SystemLambdaAction[] _lambda = new SystemLambdaAction[0];
-
-		[Output(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
-		[SerializeField] private StateNode _to = null;
+		[SerializeField] private SystemLambdaAction[] _lambdas = new SystemLambdaAction[0];
 
 		#region Queries
 
@@ -39,82 +36,146 @@ namespace FSM
 			}
 		}
 
-		public IReadOnlyCollection<ComponentLink> Components => _components;
-
-		public IEnumerable<StateNode> TransitionsTo => Outputs
-			.Where( o => o.fieldName == nameof( _to ) )
-			.SelectMany( o => o.GetConnections().Select( c => c.node ) )
-			.OfType<StateNode>();
+		public IEnumerable<ComponentLink> AllComponents => _lambdas.SelectMany( l => l.Components );
+		public IReadOnlyCollection<SystemLambdaAction> Lambdas => _lambdas;
+		public bool HasStructuralChanges => DynamicOutputs.Any( o => o.IsConnected );
 
 		public IEnumerable<StateNode> TransitionsFrom => Inputs
 			.Where( o => o.fieldName == nameof( _from ) )
 			.SelectMany( o => o.GetInputValues() )
 			.OfType<StateNode>();
 
+		public IEnumerable<StateNode> TransitionsTo => Outputs
+			.SelectMany( o => o.GetConnections().Select( c => c.node ) )
+			.OfType<StateNode>();
+
+		public StateNode TransitionTo( SystemLambdaAction lambda )
+		{
+			int index = _lambdas.IndexOf(lambda);
+			return GetComponentPort( index )?.Connection?.node as StateNode;
+		}
+
 		#endregion Queries
+
+		#region Nodes
+
+		public NodePort GetComponentPort( int index )
+		{
+			string portName = ComponentPortName(index);
+			return Outputs.FirstOrDefault( o => o.IsDynamic && o.fieldName == portName );
+		}
+
+		public NodePort GetOrAddComponentPort( int index )
+		{
+			var port = GetComponentPort(index);
+			if ( port != null )
+			{
+				return port;
+			}
+			string portName = ComponentPortName(index);
+			return AddDynamicOutput( typeof( StateNode ), ConnectionType.Override, TypeConstraint.Strict, portName );
+		}
+
+		public void RemoveComponentPort( int index )
+		{
+			var port = GetComponentPort(index);
+			if ( port != null )
+			{
+				RemoveDynamicPort( port );
+			}
+		}
+
+		private string ComponentPortName( int index ) => $"Component_{index}";
+
+		#endregion Nodes
 
 		public override object GetValue( NodePort port ) => this;
 
 		#region Setup validation
 
 		protected override IEnumerable<Func<(bool, string)>> ConfigurationCheckers => new Func<(bool, string)>[] {
-			HasRefInParameter, ComponentsUsageConstrains, ComponentsUniquality, ComponentsNames, ValidateTransition
+			HasAtLeastOneLambda, HasRefInParameter, ComponentsUsageConstrains, ComponentsUniquality, LambdasNames, ComponentsNames
 		};
+
+		private (bool, string) HasAtLeastOneLambda() => (_lambdas.Length > 0, "Has zero lambda actions/behaviors");
 
 		private (bool, string) HasRefInParameter()
 		{
-			bool hasRefOrIn = _components
-				.Any( c => c.Usage == ComponentLinkUsageType.All && ( c.AccessType == ComponentLinkAccessType.R || c.AccessType == ComponentLinkAccessType.RW ) );
-			return (hasRefOrIn, "Has zero [All][R] and [All][RW])");
+			foreach ( var lambda in _lambdas )
+			{
+				bool hasRefOrIn = lambda.Components
+					.Any( c => c.Usage == ComponentLinkUsageType.All && ( c.AccessType == ComponentLinkAccessType.R || c.AccessType == ComponentLinkAccessType.RW ) );
+				if ( !hasRefOrIn )
+				{
+					return (hasRefOrIn, $"Has zero [All][R] and [All][RW] in {lambda.Name}");
+				}
+			}
+			return (true, "");
 		}
 
 		private (bool, string) ComponentsUsageConstrains()
 		{
-			bool toManyAll = _components.Count( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Un ) > 3;
-			bool toManyAny = _components.Count( c => c.Usage == ComponentLinkUsageType.Any ) > 3;
-			bool toManyNone = _components.Count( c => c.Usage == ComponentLinkUsageType.None ) > 3;
+			foreach ( var lambda in _lambdas )
+			{
+				bool toManyAll = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Un ) > 3;
+				bool toManyAny = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.Any ) > 3;
+				bool toManyNone = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.None ) > 3;
 
-			StringBuilder message = new StringBuilder();
-			if ( toManyAll )
-			{
-				message.AppendLine( "Has to many [All][Un] components (max 3)" );
-			}
-			if ( toManyAny )
-			{
-				message.AppendLine( "Has to many [Any] components (max 3)" );
-			}
-			if ( toManyNone )
-			{
-				message.AppendLine( "Has to many [None] components (max 3)" );
-			}
+				if ( toManyAll || toManyAny || toManyNone )
+				{
+					StringBuilder message = new StringBuilder();
+					message.Append( "Lambda: " );
+					message.AppendLine( lambda.Name );
 
-			return (!toManyAll && !toManyAny && !toManyNone, message.ToString());
+					if ( toManyAll )
+					{
+						message.AppendLine( "Has to many [All][Un] components (max 3)" );
+					}
+					if ( toManyAny )
+					{
+						message.AppendLine( "Has to many [Any] components (max 3)" );
+					}
+					if ( toManyNone )
+					{
+						message.AppendLine( "Has to many [None] components (max 3)" );
+					}
+
+					return (!toManyAll && !toManyAny && !toManyNone, message.ToString());
+				}
+			}
+			return (true, "");
 		}
 
 		private (bool, string) ComponentsUniquality()
 		{
-			bool allUnique = _components.Select( c => c.ComponentName ).Distinct().Count() == _components.Length;
-			return (allUnique, "Has not duplicated components");
+			foreach ( var lambda in _lambdas )
+			{
+				bool allUnique = lambda.Components.Select( c => c.ComponentName ).Distinct().Count() == lambda.Components.Count;
+				if ( !allUnique )
+				{
+					return (allUnique, "Has not duplicated components");
+				}
+			}
+			return (true, "");
+		}
+
+		private (bool, string) LambdasNames()
+		{
+			bool allHasNames = _lambdas.All( c => !string.IsNullOrWhiteSpace( c.Name ) );
+			return (allHasNames, "Has lambda without name");
 		}
 
 		private (bool, string) ComponentsNames()
 		{
-			bool allHasNames = _components.All( c => !string.IsNullOrWhiteSpace( c.ComponentName ) );
-			return (allHasNames, "Has component without name");
-		}
-
-		private (bool, string) ValidateTransition()
-		{
-			var connectedNodes = Outputs.FirstOrDefault( p => p?.fieldName == nameof( _to ) ).GetConnections().Select(c => c.node).OfType<StateNode>();
-			bool allValid = true;
-			foreach ( var node in connectedNodes )
+			foreach ( var lambda in _lambdas )
 			{
-				var withAllOthers = node._components.Where(c => c.Usage == ComponentLinkUsageType.All).Select(c => c.ComponentName).ToArray();
-				var withAllMine = _components.Where( c => c.Usage == ComponentLinkUsageType.All ).Select( c => c.ComponentName ).ToArray();
-				var uninoned = withAllOthers.Union(withAllMine);
-				allValid = allValid && uninoned.Count() != Mathf.Max( withAllOthers.Count(), withAllMine.Count() );
+				bool allHasNames = lambda.Components.All( c => !string.IsNullOrWhiteSpace( c.ComponentName ) );
+				if ( !allHasNames )
+				{
+					return (allHasNames, "Has component without name");
+				}
 			}
-			return (allValid, "The state that transition to has the same state definition");
+			return (true, "");
 		}
 
 		#endregion Setup validation

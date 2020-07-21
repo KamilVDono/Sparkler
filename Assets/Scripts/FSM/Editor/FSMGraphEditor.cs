@@ -18,6 +18,7 @@ namespace FSM.Editor
 	public class FSMGraphEditor : XNode.Editor.NodeGraphEditor
 	{
 		#region Consts
+		private const int RefreshRate = 10;
 		private static readonly GUIContent s_emptyContent = new GUIContent("");
 		private static readonly GUIContent s_horizontalLine = new GUIContent("|");
 		private static readonly GUIContent s_namespaceContent = new GUIContent("Namespace");
@@ -38,10 +39,10 @@ namespace FSM.Editor
 			{
 				return;
 			}
-			_counter = 5;
+			_counter = RefreshRate;
 
 			bool anyChange = false;
-			Target.nodes.OfType<StateNode>().SelectMany( n => n.Components ).ForEach( c => anyChange |= c.Validate() );
+			Target.nodes.OfType<StateNode>().SelectMany( n => n.AllComponents ).ForEach( c => anyChange |= c.Validate() );
 			if ( anyChange )
 			{
 				EditorUtility.SetDirty( Target );

@@ -1,22 +1,26 @@
+using FSM.AI.States.Components;
+
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using FSM.AI.States.Components;
 
 
 namespace FSM.AI.States.Systems
 {
 	public class IdleSystem : SystemBase
 	{
-		
+
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
+
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
+
 			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+
 		}
-		
+
 
 		protected override void OnUpdate()
 		{
@@ -28,30 +32,44 @@ namespace FSM.AI.States.Systems
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 
+
+			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
+
+
+
 			Entities
-				
-				
-				
+				.WithName( "IdleSystem_Main" )
+
+
+
 				.ForEach( ( in IdleTag idleTag ) =>
 			{
+
+
 				//TODO: Implement state behavior
+
 			} ).Schedule();
 
-			
-			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
+
 			Entities
-				.WithName( "Transition" )
-				
-				
-				
+				.WithName( "IdleSystem_Transition" )
+
+
+
 				.ForEach( ( Entity e, in IdleTag idleTag ) =>
 			{
+
 				//TODO: Make transition to one of the following state:
-				//WalkSystem, EatSystem
+				//Eat
+
+
 			} ).Schedule();
 
+
+
+
 			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );
-			
+
 		}
 	}
 }
