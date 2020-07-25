@@ -1,4 +1,5 @@
 using FSM.Utility;
+using FSM.Utility.Editor;
 
 using System;
 using System.Collections.Generic;
@@ -179,13 +180,13 @@ namespace FSM.Editor
 
 			ToolbarSpace();
 
-			var oldEnabled = GUI.enabled;
-			GUI.enabled = oldEnabled && Target.nodes.OfType<FSMNode>().All( n => n.IsRightConfigured().Item1 );
-			if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
+			using ( new GUIEnabledScope( Target.nodes.OfType<FSMNode>().All( n => n.IsRightConfigured().Item1 ) ) )
 			{
-				CodeGenerator.Generate( Target );
+				if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
+				{
+					CodeGenerator.Generate( Target );
+				}
 			}
-			GUI.enabled = oldEnabled;
 		}
 
 		private static void ToolbarSpace()

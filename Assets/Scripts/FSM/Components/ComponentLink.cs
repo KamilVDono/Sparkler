@@ -16,9 +16,14 @@ namespace FSM.Components
 	[Flags]
 	public enum ComponentLinkAccessType
 	{
-		Un = 0,
-		R = 1 << 0,
-		RW = R | 1 << 1,
+		[InspectorName("Un")]
+		Unused = 0,
+
+		[InspectorName("R")]
+		Read = 1 << 0,
+
+		[InspectorName("RW")]
+		ReadWrite = Read | ~0,
 	}
 
 	public enum ComponentLinkUsageType
@@ -33,14 +38,14 @@ namespace FSM.Components
 	public class ComponentLink : IEquatable<ComponentLink>
 	{
 		[SerializeField]
-		[ClassImplements( typeof( IComponentData ) )]
+		[ClassImplements( typeof( IComponentData ), typeof( ISharedComponentData ) )]
 		private ClassTypeReference _componentTypeReference = default;
 
 		[SerializeField]
 		private string _componentName;
 
 		[SerializeField]
-		private ComponentLinkAccessType _accessType = ComponentLinkAccessType.Un;
+		private ComponentLinkAccessType _accessType = ComponentLinkAccessType.Unused;
 
 		[SerializeField]
 		private ComponentLinkUsageType _usageType = ComponentLinkUsageType.Invalid;

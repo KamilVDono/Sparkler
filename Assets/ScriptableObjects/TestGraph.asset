@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5692167846030235723
+--- !u!114 &-1781160930075639533
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -424, y: -88}
+  position: {x: -56, y: -536}
   ports:
     keys:
     - _from
-    - Component_0
+    - Component_-1707343371
     values:
     - _fieldName: _from
-      _node: {fileID: -5692167846030235723}
+      _node: {fileID: -1781160930075639533}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 0
@@ -28,77 +28,10 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
       _allowedTypes: []
-    - _fieldName: Component_0
-      _node: {fileID: -5692167846030235723}
+    - _fieldName: Component_-1707343371
+      _node: {fileID: -1781160930075639533}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 2
-      _dynamic: 1
-      _allowedTypes: []
-  _name: WakeUp
-  _from: {fileID: 0}
-  _lambdas:
-  - _name: Main
-    _components:
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.SleepTimer, Assembly-CSharp
-        name: SleepTimer
-      _componentName: 
-      _accessType: 1
-      _usageType: 1
---- !u!114 &-2211651191980779633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: State
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -440, y: -456}
-  ports:
-    keys:
-    - _from
-    - Component_0
-    - Component_1
-    values:
-    - _fieldName: _from
-      _node: {fileID: -2211651191980779633}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: 1760004253655610051}
-        reroutePoints: []
-      - fieldName: _to
-        node: {fileID: -5692167846030235723}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: Component_0
-      _node: {fileID: -2211651191980779633}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 2
-      _dynamic: 1
-      _allowedTypes: []
-    - _fieldName: Component_1
-      _node: {fileID: -2211651191980779633}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: 593013002516118109}
-        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 2
@@ -107,20 +40,19 @@ MonoBehaviour:
   _name: Idle
   _from: {fileID: 0}
   _lambdas:
-  - _name: Main
+  - _guid: -1707343371
+    _name: Main
     _components:
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.IdleTag, Assembly-CSharp
+        classRef: TestTag, Assembly-CSharp
         name: 
-      _componentName: IdleTag
+      _componentName: 
       _accessType: 1
       _usageType: 1
-  - _name: Main
-    _components:
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.IdleTag, Assembly-CSharp
+        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
         name: 
-      _componentName: IdleTag
+      _componentName: 
       _accessType: 1
       _usageType: 1
 --- !u!114 &11400000
@@ -136,251 +68,6 @@ MonoBehaviour:
   m_Name: TestGraph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: -2211651191980779633}
-  - {fileID: 5274439539639490737}
-  - {fileID: 593013002516118109}
-  - {fileID: 1760004253655610051}
-  - {fileID: 6686637859470450578}
-  - {fileID: -5692167846030235723}
+  - {fileID: -1781160930075639533}
   _codeGenerationPath: Assets/Scripts/CodeGen
   _namespace: FSM.AI.States
---- !u!114 &593013002516118109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: State
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -24, y: -392}
-  ports:
-    keys:
-    - _from
-    - Component_0
-    values:
-    - _fieldName: _from
-      _node: {fileID: 593013002516118109}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: Component_1
-        node: {fileID: -2211651191980779633}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: Component_0
-      _node: {fileID: 593013002516118109}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 2
-      _dynamic: 1
-      _allowedTypes: []
-  _name: Eat
-  _from: {fileID: 0}
-  _lambdas:
-  - _name: Main
-    _components:
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.CurrentFood, Assembly-CSharp
-        name: CurrentFood
-      _componentName: 
-      _accessType: -1
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.Energy, Assembly-CSharp
-        name: Energy
-      _componentName: 
-      _accessType: -1
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.EatSpeed, Assembly-CSharp
-        name: EatSpeed
-      _componentName: 
-      _accessType: 1
-      _usageType: 1
---- !u!114 &1760004253655610051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: State
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 456, y: -712}
-  ports:
-    keys:
-    - _from
-    - Component_0
-    values:
-    - _fieldName: _from
-      _node: {fileID: 1760004253655610051}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: 5274439539639490737}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: Component_0
-      _node: {fileID: 1760004253655610051}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 2
-      _dynamic: 1
-      _allowedTypes: []
-  _name: Run
-  _from: {fileID: 0}
-  _lambdas:
-  - _name: Main
-    _components:
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Translation, Unity.Transforms
-        name: Speed
-      _componentName: 
-      _accessType: -1
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.RunTag, Assembly-CSharp
-        name: RunTag
-      _componentName: 
-      _accessType: 0
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.RunSpeed, Assembly-CSharp
-        name: RunSpeed
-      _componentName: 
-      _accessType: 1
-      _usageType: 1
---- !u!114 &5274439539639490737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: State
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -56, y: -712}
-  ports:
-    keys:
-    - _from
-    - Component_0
-    values:
-    - _fieldName: _from
-      _node: {fileID: 5274439539639490737}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: -2211651191980779633}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: Component_0
-      _node: {fileID: 5274439539639490737}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 2
-      _dynamic: 1
-      _allowedTypes: []
-  _name: Walk
-  _from: {fileID: 0}
-  _lambdas:
-  - _name: Main
-    _components:
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.WalkingTag, Assembly-CSharp
-        name: WalkingTag
-      _componentName: 
-      _accessType: 0
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.WalkSpeed, Assembly-CSharp
-        name: WalkSpeed
-      _componentName: 
-      _accessType: 1
-      _usageType: 1
-    - _componentTypeReference:
-        classRef: Unity.Transforms.Translation, Unity.Transforms
-        name: 
-      _componentName: 
-      _accessType: 1
-      _usageType: 1
---- !u!114 &6686637859470450578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: State
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 392, y: -344}
-  ports:
-    keys:
-    - _from
-    - Component_0
-    values:
-    - _fieldName: _from
-      _node: {fileID: 6686637859470450578}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: 593013002516118109}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: Component_0
-      _node: {fileID: 6686637859470450578}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 2
-      _dynamic: 1
-      _allowedTypes: []
-  _name: Sleep
-  _from: {fileID: 0}
-  _lambdas:
-  - _name: Main
-    _components:
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.SleepTag, Assembly-CSharp
-        name: 
-      _componentName: SleepTag
-      _accessType: 1
-      _usageType: 1

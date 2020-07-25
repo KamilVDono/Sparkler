@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using FSM.Components;
+using FSM.Utility.Editor;
+
+using System.Collections.Generic;
 using System.Linq;
 
 using UnityEditor;
@@ -7,6 +10,8 @@ using UnityEngine;
 
 using XNode.Editor;
 
+using static FSM.Utility.SerializedPropertyExtension;
+
 namespace FSM.Editor.Assets.Scripts.FSM.Editor
 {
 	[CustomNodeEditor( typeof( StateNode ) )]
@@ -14,6 +19,10 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 	{
 		private static readonly GUIContent s_foldedButtonContent = new GUIContent("\u25B6");
 		private static readonly GUIContent s_expandedButtonContent = new GUIContent("\u25BC");
+		private static readonly GUIContent s_moveDownContent = new GUIContent("\u25BC");
+		private static readonly GUIContent s_moveUpContent = new GUIContent("\u25B2");
+		private static readonly GUIContent s_deleteContent = new GUIContent("-");
+		private static readonly GUIContent s_addContent = new GUIContent("+");
 
 		public override void OnBodyGUI()
 		{
@@ -35,7 +44,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 					continue;
 				}
 
-				if ( iterator.isArray )
+				if ( iterator.isArray && iterator.propertyType != SerializedPropertyType.String )
 				{
 					DrawArray( iterator, Target );
 				}
@@ -51,6 +60,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 		{
 			var indexesToDelete = new List<int>();
 			int addNewElementCount = 0;
+			int moveDownIndex = -1;
+			int moveUpIndex = -1;
 
 			// Header [Label - size - plus button]
 			EditorGUILayout.Space( 8, false );
@@ -60,7 +71,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 			int newSize = EditorGUILayout.IntField( property.arraySize, GUILayout.Width( 50 ) );
 
-			if ( GUILayout.Button( "+", GUILayout.Width( 25 ) ) )
+			if ( GUILayout.Button( s_addContent, GUILayout.Width( 25 ) ) )
 			{
 				++addNewElementCount;
 			}
@@ -75,17 +86,40 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			EditorGUILayout.BeginVertical();
 			for ( int i = 0; i < property.arraySize; i++ )
 			{
+				var elementProperty = property.GetArrayElementAtIndex( i );
 				DrawLine( 2, 2 );
+
 				EditorGUILayout.BeginHorizontal();
 
-				EditorGUILayout.PropertyField( property.GetArrayElementAtIndex( i ), true, GUILayout.ExpandWidth( true ) );
+				var name = elementProperty.FindPropertyRelative( "_name" )?.stringValue ?? "";
+				EditorGUILayout.LabelField( $"{i}. {name}", EditorStyles.boldLabel );
 
-				if ( GUILayout.Button( "-", GUILayout.Width( 25 ) ) )
+				using ( new GUIEnabledScope( i < property.arraySize - 1 ) )
+				{
+					if ( GUILayout.Button( s_moveDownContent, GUILayout.Width( 25 ) ) )
+					{
+						moveDownIndex = i;
+					}
+				}
+
+				if ( GUILayout.Button( s_deleteContent, GUILayout.Width( 25 ) ) )
 				{
 					indexesToDelete.Add( i );
 				}
+
+				using ( new GUIEnabledScope( i > 0 ) )
+				{
+					if ( GUILayout.Button( s_moveUpContent, GUILayout.Width( 25 ) ) )
+					{
+						moveUpIndex = i;
+					}
+				}
+
 				EditorGUILayout.EndHorizontal();
-				NodeEditorGUILayout.AddPortField( stateNode.GetOrAddComponentPort( i ) );
+
+				EditorGUILayout.PropertyField( elementProperty, true, GUILayout.ExpandWidth( true ) );
+
+				NodeEditorGUILayout.AddPortField( stateNode.GetOrAddLambdaPort( i ) );
 			}
 			EditorGUILayout.EndVertical();
 
@@ -115,12 +149,30 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			for ( int i = 0; i < addNewElementCount; i++ )
 			{
 				property.InsertArrayElementAtIndex( property.arraySize );
+				property.serializedObject.ApplyModifiedProperties();
+
+				var newElement = property.GetArrayElementAtIndex( property.arraySize - 1 ).GetPropertyValue<SystemLambdaAction>();
+				newElement.Initialize();
+
+				property.serializedObject.Update();
+			}
+
+			if ( moveDownIndex != -1 )
+			{
+				var newIndex = moveDownIndex+1;
+				property.MoveArrayElement( moveDownIndex, newIndex );
+			}
+
+			if ( moveUpIndex != -1 )
+			{
+				var newIndex = moveUpIndex-1;
+				property.MoveArrayElement( moveUpIndex, newIndex );
 			}
 
 			property.serializedObject.ApplyModifiedProperties();
 			for ( int i = indexesToDelete.Count - 1; i >= 0; i-- )
 			{
-				stateNode.RemoveComponentPort( indexesToDelete[i] );
+				stateNode.RemoveLambdaPort( indexesToDelete[i] );
 			}
 			indexesToDelete.Clear();
 			property.serializedObject.Update();

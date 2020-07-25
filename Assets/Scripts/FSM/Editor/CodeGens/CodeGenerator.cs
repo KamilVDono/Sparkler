@@ -187,10 +187,10 @@ namespace FSM.Editor
 			//ForEach
 			StringBuilder foreachBuilder = new StringBuilder();
 			var refComponents = lambda.Components
-					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.RW)
+					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.ReadWrite)
 					.ToArray();
 			var inComponents = lambda.Components
-					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.R)
+					.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Read)
 					.ToArray();
 
 			foreach ( var refComponent in refComponents )
@@ -225,7 +225,7 @@ namespace FSM.Editor
 			//With all
 			StringBuilder withAllBuilder = new StringBuilder();
 			var withAllComponents = lambda.Components
-					.Where( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Un )
+					.Where( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Unused )
 					.ToArray();
 			if ( withAllComponents.Length > 0 )
 			{

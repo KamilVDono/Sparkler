@@ -52,22 +52,22 @@ namespace FSM
 		public StateNode TransitionTo( SystemLambdaAction lambda )
 		{
 			int index = _lambdas.IndexOf(lambda);
-			return GetComponentPort( index )?.Connection?.node as StateNode;
+			return GetLambdaPort( index )?.Connection?.node as StateNode;
 		}
 
 		#endregion Queries
 
-		#region Nodes
+		#region Dynamic ports
 
-		public NodePort GetComponentPort( int index )
+		public NodePort GetLambdaPort( int index )
 		{
 			string portName = ComponentPortName(index);
 			return Outputs.FirstOrDefault( o => o.IsDynamic && o.fieldName == portName );
 		}
 
-		public NodePort GetOrAddComponentPort( int index )
+		public NodePort GetOrAddLambdaPort( int index )
 		{
-			var port = GetComponentPort(index);
+			var port = GetLambdaPort(index);
 			if ( port != null )
 			{
 				return port;
@@ -76,25 +76,33 @@ namespace FSM
 			return AddDynamicOutput( typeof( StateNode ), ConnectionType.Override, TypeConstraint.Strict, portName );
 		}
 
-		public void RemoveComponentPort( int index )
+		public void RemoveLambdaPort( int index )
 		{
-			var port = GetComponentPort(index);
+			var port = GetLambdaPort(index);
 			if ( port != null )
 			{
 				RemoveDynamicPort( port );
 			}
 		}
 
-		private string ComponentPortName( int index ) => $"Component_{index}";
+		private string ComponentPortName( int index )
+		{
+			if ( _lambdas.Length <= index || index < 0 )
+			{
+				return null;
+			}
 
-		#endregion Nodes
+			return $"Component_{_lambdas[index].GetHashCode()}";
+		}
+
+		#endregion Dynamic ports
 
 		public override object GetValue( NodePort port ) => this;
 
 		#region Setup validation
 
 		protected override IEnumerable<Func<(bool, string)>> ConfigurationCheckers => new Func<(bool, string)>[] {
-			HasAtLeastOneLambda, HasRefInParameter, ComponentsUsageConstrains, ComponentsUniquality, LambdasNames, ComponentsNames
+			HasAtLeastOneLambda, HasRefInParameter, ComponentsUsageConstrains, ComponentsUniquality, LambdasHasName, ComponentsNames, LambdasUniqueName
 		};
 
 		private (bool, string) HasAtLeastOneLambda() => (_lambdas.Length > 0, "Has zero lambda actions/behaviors");
@@ -104,7 +112,7 @@ namespace FSM
 			foreach ( var lambda in _lambdas )
 			{
 				bool hasRefOrIn = lambda.Components
-					.Any( c => c.Usage == ComponentLinkUsageType.All && ( c.AccessType == ComponentLinkAccessType.R || c.AccessType == ComponentLinkAccessType.RW ) );
+					.Any( c => c.Usage == ComponentLinkUsageType.All && ( c.AccessType == ComponentLinkAccessType.Read || c.AccessType == ComponentLinkAccessType.ReadWrite ) );
 				if ( !hasRefOrIn )
 				{
 					return (hasRefOrIn, $"Has zero [All][R] and [All][RW] in {lambda.Name}");
@@ -117,7 +125,7 @@ namespace FSM
 		{
 			foreach ( var lambda in _lambdas )
 			{
-				bool toManyAll = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Un ) > 3;
+				bool toManyAll = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Unused ) > 3;
 				bool toManyAny = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.Any ) > 3;
 				bool toManyNone = lambda.Components.Count( c => c.Usage == ComponentLinkUsageType.None ) > 3;
 
@@ -159,10 +167,16 @@ namespace FSM
 			return (true, "");
 		}
 
-		private (bool, string) LambdasNames()
+		private (bool, string) LambdasHasName()
 		{
 			bool allHasNames = _lambdas.All( c => !string.IsNullOrWhiteSpace( c.Name ) );
 			return (allHasNames, "Has lambda without name");
+		}
+
+		private (bool, string) LambdasUniqueName()
+		{
+			bool allNamesAreUnique = _lambdas.Select(l => l.Name).Distinct().Count() == _lambdas.Length;
+			return (allNamesAreUnique, "Lambdas has duplicated names");
 		}
 
 		private (bool, string) ComponentsNames()

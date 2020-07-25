@@ -16,6 +16,7 @@ namespace FSM.Editor.Components
 	public class ComponentLinkDrawer : PropertyDrawer
 	{
 		public static readonly GUIContent EmptyContent = new GUIContent("");
+		public static readonly GUIContent PlusContent = new GUIContent("+");
 
 		public override void OnGUI( Rect position, SerializedProperty property, GUIContent label )
 		{
@@ -42,11 +43,19 @@ namespace FSM.Editor.Components
 
 			EditorGUI.PropertyField( propertyRect.RestOfLine(), typeProp, EmptyContent );
 
+			// New custom component
 			if ( !HasSettedType( property ) )
 			{
 				propertyRect.AllocateLine();
 				var nameProp = property.FindPropertyRelative( "_componentName" );
-				EditorGUI.PropertyField( propertyRect.AllocateWidthPrecent( 1f ), nameProp, EmptyContent );
+				EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), nameProp, EmptyContent );
+				using ( new GUIEnabledScope( !string.IsNullOrWhiteSpace( nameProp.stringValue ) ) )
+				{
+					if ( GUI.Button( propertyRect.RestOfLine(), PlusContent ) )
+					{
+						ShowCreateComponentWindow();
+					}
+				}
 			}
 
 			EditorGUI.indentLevel = indent;
@@ -62,6 +71,8 @@ namespace FSM.Editor.Components
 			}
 			return height;
 		}
+
+		private void ShowCreateComponentWindow() => throw new NotImplementedException();
 
 		private bool HasSettedType( SerializedProperty property ) =>
 			( property.FindPropertyRelative( "_componentTypeReference" ).GetPropertyValue() as ClassTypeReference )?.Type != null;

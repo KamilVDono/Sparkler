@@ -9,9 +9,12 @@ namespace FSM.Components
 	[Serializable]
 	public class SystemLambdaAction
 	{
+		[SerializeField] private int _guid;
+
 		[SerializeField] private string _name = "";
 		[SerializeField] private ComponentLink[] _components = new ComponentLink[0];
 
+		#region Queries
 		public IReadOnlyCollection<ComponentLink> Components => _components;
 		public string Name => _name;
 
@@ -27,11 +30,17 @@ namespace FSM.Components
 			}
 		}
 
+		#endregion Queries
+
+		#region Operations
+
+		public void Initialize() => _guid = Guid.NewGuid().GetHashCode();
+
 		public void PropertiesChanged( List<ComponentLink> changedComponents )
 		{
 			foreach ( var changedComponent in changedComponents )
 			{
-				bool isRefIn = changedComponent.Usage == ComponentLinkUsageType.All && (changedComponent.AccessType & ComponentLinkAccessType.R) != 0;
+				bool isRefIn = changedComponent.Usage == ComponentLinkUsageType.All && (changedComponent.AccessType & ComponentLinkAccessType.Read) != 0;
 				bool isInvalid = changedComponent.Usage == ComponentLinkUsageType.Invalid;
 				if ( isRefIn || isInvalid )
 				{
@@ -46,6 +55,10 @@ namespace FSM.Components
 			}
 			_components = _components.OrderBy( c => c.Usage ).ThenBy( c => c.AccessType ).ToArray();
 		}
+
+		#endregion Operations
+
+		public override int GetHashCode() => _guid;
 
 		private static bool IsSameTypeComponent( ComponentLink c, ComponentLink changedComponent ) => c.Usage == changedComponent.Usage && ( changedComponent.Usage == ComponentLinkUsageType.All || c.AccessType == changedComponent.AccessType );
 	}

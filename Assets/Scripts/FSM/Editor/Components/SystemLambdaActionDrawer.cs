@@ -102,7 +102,7 @@ namespace FSM.Editor
 				propertyRect.AllocateLine( EditorGUI.GetPropertyHeight( componentProp ) );
 
 				EditorGUI.BeginChangeCheck();
-				EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 0 ), componentProp );
+				EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), componentProp );
 				if ( EditorGUI.EndChangeCheck() )
 				{
 					s_cache.Add( componentProp.GetPropertyValue<ComponentLink>() );
