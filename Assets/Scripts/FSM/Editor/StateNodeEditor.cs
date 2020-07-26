@@ -23,6 +23,16 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 		private static readonly GUIContent s_moveUpContent = new GUIContent("\u25B2");
 		private static readonly GUIContent s_deleteContent = new GUIContent("-");
 		private static readonly GUIContent s_addContent = new GUIContent("+");
+		private static readonly GUIContent s_summaryTitle = new GUIContent("Summary");
+		private static readonly GUIContent s_summaryLambdasTitle = new GUIContent("Lambdas:");
+		private static readonly GUIContent s_summaryComponentsTitle = new GUIContent("Components:");
+
+		private static readonly GUIStyle s_wrappingLable = new GUIStyle( EditorStyles.label)
+		{
+			wordWrap = true,
+		};
+
+		private bool _expandedSummary = false;
 
 		public override void OnBodyGUI()
 		{
@@ -54,6 +64,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 				}
 			}
 			serializedObject.ApplyModifiedProperties();
+
+			DrawSummary();
 		}
 
 		private static void DrawArray( SerializedProperty property, StateNode stateNode )
@@ -188,6 +200,43 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			EditorGUILayout.EndVertical();
 			EditorGUILayout.Space( space / 2, false );
 			EditorGUILayout.EndVertical();
+		}
+
+		private void DrawSummary()
+		{
+			DrawLine( 1, 2 );
+
+			EditorGUILayout.BeginHorizontal();
+
+			if ( GUILayout.Button( _expandedSummary ? s_expandedButtonContent : s_foldedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) ) )
+			{
+				_expandedSummary = !_expandedSummary;
+			}
+			EditorGUILayout.LabelField( s_summaryTitle, EditorStyles.boldLabel );
+
+			EditorGUILayout.EndHorizontal();
+
+			if ( _expandedSummary )
+			{
+				EditorGUILayout.LabelField( s_summaryLambdasTitle, EditorStyles.boldLabel );
+
+				EditorGUILayout.LabelField( $"Declares {Target.Lambdas.Count} lambda (ForEach) actions." );
+				EditorGUILayout.LabelField( $"{Target.TransitionsTo.Count()}/{Target.Lambdas.Count} lambdas are transition lambda.", s_wrappingLable );
+				EditorGUILayout.LabelField( $"Transition to: {string.Join( ", ", Target.TransitionsTo.Select( t => t.StateName ) )}", s_wrappingLable );
+				EditorGUILayout.LabelField( $"Transition from: {string.Join( ", ", Target.TransitionsFrom.Select( t => t.StateName ) )}", s_wrappingLable );
+
+				DrawLine( 1, 0 );
+				EditorGUILayout.LabelField( s_summaryComponentsTitle, EditorStyles.boldLabel );
+				EditorGUILayout.LabelField( $"Uses {Target.AllComponents.Count()} components." );
+
+				var writeComponents = Target.AllComponents.Where( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.ReadWrite ).ToArray();
+				var writeComponentsNames = string.Join(", ", writeComponents.Select(c => c.ComponentName));
+				EditorGUILayout.LabelField( $"Writes to {writeComponents.Count()}/{Target.AllComponents.Count()} components [{writeComponentsNames}].", s_wrappingLable );
+
+				var readComponents = Target.AllComponents.Where( c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.Read ).ToArray();
+				var readComponentsNames = string.Join(", ", readComponents.Select(c => c.ComponentName));
+				EditorGUILayout.LabelField( $"Reads from {readComponents.Count()}/{Target.AllComponents.Count()} components [{readComponentsNames}].", s_wrappingLable );
+			}
 		}
 	}
 }
