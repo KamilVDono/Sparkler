@@ -1,15 +1,22 @@
 using FSM.Components;
+using FSM.Editor.CodeGens;
+using FSM.Primitives;
 using FSM.Utility;
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Unity.Entities;
+
 using UnityEditor;
 
 using UnityEngine;
+
+using ComponentType = FSM.Editor.CodeGens.ComponentType;
 
 namespace FSM.Editor
 {
@@ -17,65 +24,141 @@ namespace FSM.Editor
 	{
 		private static readonly Regex s_lambdaRegex = new Regex(@"(#\$LAMBDA)(?s)(.+?)(\$#LAMBDA)");
 
-		private FSMGraph _fsmGraph;
-		private IReadOnlyCollection<StateNode> _states;
-		private IReadOnlyCollection<ComponentLink> _components;
-
 		private CodeGenerator()
 		{
 		}
 
 		public static void Generate( FSMGraph fsmGraph )
 		{
-			var states = fsmGraph.nodes.OfType<StateNode>().ToList();
-			var components = states.SelectMany(s => s.AllComponents).Distinct().ToList();
+			GenerateSystems( fsmGraph );
+			AssetDatabase.Refresh();
+		}
 
-			CodeGenerator codeGenerator = new CodeGenerator()
-			{
-				_fsmGraph = fsmGraph,
-				_states = states,
-				_components = components
-			};
-			codeGenerator.Generate();
+		public static void Generate( ComponentDefinition componentDefinition )
+		{
+			GenerateComponent( componentDefinition );
+			AssetDatabase.Refresh();
 		}
 
 		#region Generation
 
-		private void Generate()
-		{
-			GenerateComponents();
-
-			GenerateSystems();
-
-			AssetDatabase.Refresh();
-		}
-
 		#region Components
 
-		private void GenerateComponents()
+		private static void GenerateComponent( ComponentDefinition componentDefinition )
 		{
-			var componentsPath = PathExtension.SystemPath( Path.Combine( _fsmGraph.CodeGenerationPath, "Components") );
+			var componentsPath = PathExtension.SystemPath( Path.Combine( componentDefinition.Directory, "Components") );
 			if ( !Directory.Exists( componentsPath ) )
 			{
 				Directory.CreateDirectory( componentsPath );
 			}
 
-			var unavailableComponents = _components
-				.Where(c => c.IsHandWrited)
-				.Select(c => c.HandwrittenName)
-				.Distinct();
-
 			var template = LoadTemplate("Component");
 
-			foreach ( var componentName in unavailableComponents )
-			{
-				var upperedComponentName = char.ToUpperInvariant( componentName[0] ) + componentName.Substring( 1 );
-				var componentPath = Path.Combine( componentsPath, $"{upperedComponentName}.cs");
-				GenerateComponentFile( upperedComponentName, componentPath, template );
-			}
+			var upperedComponentName = componentDefinition.ComponentName.ToUpperFirstChar();
+
+			template = AssignUsings( componentDefinition.Fields, template );
+			template = AssignComponentType( componentDefinition.ComponentType, template );
+			template = AssignComponentFields( componentDefinition.Fields, template );
+
+			var componentPath = Path.Combine( componentsPath, $"{upperedComponentName}.cs");
+			GenerateComponentFile( upperedComponentName, componentDefinition.Namespace, componentPath, template );
 		}
 
-		private void GenerateComponentFile( string componentName, string componentPath, string template )
+		#region Helpers
+
+		private static string AssignUsings( ComponentField[] fields, string template )
+		{
+			// Namespaces
+			var usingNamespaces = fields
+				.Where( f => f.type.Type != null )
+				.Select( f => f.type.Type.Namespace )
+				.Distinct()
+				.Except(typeof(IPrimitiveType).Namespace.Yield());
+
+			StringBuilder usingsBuilder = new StringBuilder();
+			foreach ( var usingNamespace in usingNamespaces )
+			{
+				usingsBuilder.Append( "using " );
+				usingsBuilder.Append( usingNamespace );
+				usingsBuilder.AppendLine( ";" );
+			}
+
+			template = Regex.Replace( template, @"\$USINGS\$", usingsBuilder.ToString() );
+			return template;
+		}
+
+		private static string AssignComponentType( ComponentType componentType, string template )
+		{
+			var componentInterfaceName = GetInterfaceName(componentType);
+			return Regex.Replace( template, @"\$COMPONENT_TYPE\$", componentInterfaceName );
+		}
+
+		private static string AssignComponentFields( ComponentField[] fields, string template )
+		{
+			var fieldsBuilder = new StringBuilder();
+
+			foreach ( var field in fields )
+			{
+				if ( field.type.Type != null )
+				{
+					if ( typeof( IPrimitiveType ).IsAssignableFrom( field.type.Type ) )
+					{
+						IPrimitiveType primitiveType = Activator.CreateInstance(field.type.Type) as IPrimitiveType;
+						fieldsBuilder.AppendLine( primitiveType.GetFieldDeclaration( field.name, FieldAccesType( field.accessType ) ) );
+					}
+					else
+					{
+						fieldsBuilder.AppendLine( $"\t\t{FieldAccesType( field.accessType )} {field.type.Type.Name} {field.name};" );
+					}
+				}
+			}
+
+			return Regex.Replace( template, @"\$FIELDS\$", fieldsBuilder.ToString() );
+		}
+
+		private static string GetInterfaceName( ComponentType componentType )
+		{
+			if ( componentType == ComponentType.ComponentData )
+			{
+				return typeof( IComponentData ).Name;
+			}
+			else if ( componentType == ComponentType.SharedComponentData )
+			{
+				return typeof( ISharedComponentData ).Name;
+			}
+			else if ( componentType == ComponentType.SystemStateComponent )
+			{
+				return typeof( ISystemStateComponentData ).Name;
+			}
+			else if ( componentType == ComponentType.SystemStateSharedComponent )
+			{
+				return typeof( ISystemStateSharedComponentData ).Name;
+			}
+			else if ( componentType == ComponentType.BufferElementData )
+			{
+				return typeof( IBufferElementData ).Name;
+			}
+			return typeof( IComponentData ).Name;
+		}
+
+		private static string FieldAccesType( ComponentFieldAccessType accessType )
+		{
+			if ( accessType == ComponentFieldAccessType.Public )
+			{
+				return "public";
+			}
+			else if ( accessType == ComponentFieldAccessType.Internal )
+			{
+				return "internal";
+			}
+			else if ( accessType == ComponentFieldAccessType.Private )
+			{
+				return "private";
+			}
+			return "public";
+		}
+
+		private static void GenerateComponentFile( string componentName, string namespaceName, string componentPath, string template )
 		{
 			var shouldProceed = !File.Exists( componentPath ) || EditorUtility.DisplayDialog(
 						"Create component file",
@@ -84,35 +167,39 @@ namespace FSM.Editor
 			if ( shouldProceed )
 			{
 				var code = template;
-				code = Regex.Replace( code, @"\$NAMESPACE\$", _fsmGraph.Namespace );
+				code = Regex.Replace( code, @"\$NAMESPACE\$", namespaceName );
 				code = Regex.Replace( code, @"\$NAME\$", componentName );
 
 				File.WriteAllText( componentPath, code );
 			}
 		}
 
+		#endregion Helpers
+
 		#endregion Components
 
 		#region Systems
 
-		private void GenerateSystems()
+		private static void GenerateSystems( FSMGraph fsmGraph )
 		{
-			var systemsPath = PathExtension.SystemPath(Path.Combine( _fsmGraph.CodeGenerationPath, "Systems"));
+			var states = fsmGraph.nodes.OfType<StateNode>().ToList();
+
+			var systemsPath = PathExtension.SystemPath(Path.Combine( fsmGraph.CodeGenerationPath, "Systems"));
 			if ( !Directory.Exists( systemsPath ) )
 			{
 				Directory.CreateDirectory( systemsPath );
 			}
 
-			IEnumerable<(StateNode s, string)> systemsData = _states.Select(s => (s, s.StateName));
+			IEnumerable<(StateNode s, string)> systemsData = states.Select(s => (s, s.StateName));
 
 			var loadedTemplate = LoadTemplate("System");
 
-			foreach ( var system in _states )
+			foreach ( var system in states )
 			{
 				var template = loadedTemplate;
 				var systemName = system.StateName;
 
-				template = AssignUsings( system, _fsmGraph.Namespace, template );
+				template = AssignUsings( system, fsmGraph.Namespace, template );
 
 				var lambdaTemplate = s_lambdaRegex.Match(template).Groups[2].Value;
 				StringBuilder lambdaTemplateBuilder = new StringBuilder();
@@ -140,11 +227,11 @@ namespace FSM.Editor
 				template = Regex.Replace( template, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline );
 
 				var systemPath = Path.Combine( systemsPath, $"{systemName}.cs");
-				GenerateSystemFile( systemName, systemPath, template );
+				GenerateSystemFile( systemName, fsmGraph.Namespace, systemPath, template );
 			}
 		}
 
-		private void GenerateSystemFile( string systemName, string systemPath, string template )
+		private static void GenerateSystemFile( string systemName, string namespaceName, string systemPath, string template )
 		{
 			var shouldProceed = !File.Exists( systemPath ) || EditorUtility.DisplayDialog(
 						"Create system file",
@@ -154,7 +241,7 @@ namespace FSM.Editor
 			if ( shouldProceed )
 			{
 				var code = template;
-				code = Regex.Replace( code, @"\$NAMESPACE\$", _fsmGraph.Namespace );
+				code = Regex.Replace( code, @"\$NAMESPACE\$", namespaceName );
 				code = Regex.Replace( code, @"\$NAME\$", systemName );
 
 				File.WriteAllText( systemPath, code );
@@ -306,7 +393,7 @@ namespace FSM.Editor
 			return template;
 		}
 
-		private string AssignLambdaName( StateNode system, SystemLambdaAction lambda, string lambdaTemplate ) =>
+		private static string AssignLambdaName( StateNode system, SystemLambdaAction lambda, string lambdaTemplate ) =>
 			Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME\$", lambda.FullName( system ) );
 
 		#endregion Helpers
@@ -329,7 +416,7 @@ namespace FSM.Editor
 			}
 		}
 
-		private string LoadTemplate( string name )
+		private static string LoadTemplate( string name )
 		{
 			var filePath = Path.Combine( Application.dataPath, "Templates", $"{name}.txt" );
 			return File.ReadAllText( filePath );

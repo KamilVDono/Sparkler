@@ -2,10 +2,13 @@ using System;
 
 using Unity.Entities;
 
+$USINGS$
+
 namespace $NAMESPACE$.Components
 {
 	[Serializable]
-	public struct $NAME$ : IComponentData
+	public struct $NAME$ : $COMPONENT_TYPE$
 	{
+$FIELDS$
 	}
 }

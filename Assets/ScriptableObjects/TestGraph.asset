@@ -47,9 +47,9 @@ MonoBehaviour:
     _name: Main
     _components:
     - _componentTypeReference:
-        classRef: 
+        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
         name: 
-      _componentName: hb
+      _componentName: OtherTag
       _accessType: 1
       _usageType: 0
     - _componentTypeReference:

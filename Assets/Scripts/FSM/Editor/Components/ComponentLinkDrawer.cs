@@ -1,4 +1,5 @@
 ﻿using FSM.Components;
+using FSM.Editor.CodeGens;
 using FSM.Utility;
 using FSM.Utility.Editor;
 
@@ -53,7 +54,7 @@ namespace FSM.Editor.Components
 				{
 					if ( GUI.Button( propertyRect.RestOfLine(), PlusContent ) )
 					{
-						ShowCreateComponentWindow();
+						ShowCreateComponentWindow( property );
 					}
 				}
 			}
@@ -72,7 +73,19 @@ namespace FSM.Editor.Components
 			return height;
 		}
 
-		private void ShowCreateComponentWindow() => throw new NotImplementedException();
+		private void ShowCreateComponentWindow( SerializedProperty property )
+		{
+			var componentLink = property.GetPropertyValue<ComponentLink>();
+			StateNode stateNode = null;
+			int depth = 1;
+			while ( stateNode == null )
+			{
+				stateNode = property.GetPropertyValue( depth ) as StateNode;
+				++depth;
+			}
+			var fsmGraph = (FSMGraph)stateNode.graph;
+			ComponentCreatorWindow.ShowWindow( componentLink.HandwrittenName, fsmGraph.Namespace, fsmGraph.CodeGenerationPath );
+		}
 
 		private bool HasSettedType( SerializedProperty property ) =>
 			( property.FindPropertyRelative( "_componentTypeReference" ).GetPropertyValue() as ClassTypeReference )?.Type != null;

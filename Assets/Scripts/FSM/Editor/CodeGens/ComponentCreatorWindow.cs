@@ -1,13 +1,10 @@
-﻿using Rotorz.Games;
-
-using System;
-using System.Linq;
+﻿using System.Linq;
 
 using UnityEditor;
 
 using UnityEngine;
 
-namespace FSM.Editor.Assets.Scripts.FSM.Editor.CodeGens
+namespace FSM.Editor.CodeGens
 {
 	public class ComponentCreatorWindow : EditorWindow
 	{
@@ -16,18 +13,23 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor.CodeGens
 
 		private SerializedObject _serializedObject;
 
-		[SerializeField] private string _componentName = "";
-		[SerializeField] private string _namespace = "";
-		[SerializeField] private ComponentType _componentType = ComponentType.ComponentData;
-		[SerializeField] private ComponentField[] _fields = new ComponentField[0];
+		[SerializeField] private ComponentDefinition _componentDefinition;
 
 		[MenuItem( "FSM/Component creator" )]
-		public static void ShowWindow()
+		public static void ShowWindow() => ShowWindow( "", "", "" );
+
+		public static void ShowWindow( string name, string namespaceName, string directory )
 		{
-			var window =  ScriptableObject.CreateInstance<ComponentCreatorWindow>();
+			var window = EditorWindow.GetWindow<ComponentCreatorWindow>();
 			window.titleContent = s_titleContent;
 			window._serializedObject = new SerializedObject( window );
-			window.ShowModalUtility();
+			window._componentDefinition = new ComponentDefinition()
+			{
+				ComponentName = name,
+				Namespace = namespaceName,
+				Directory = directory,
+			};
+			window.ShowUtility();
 		}
 
 		private void OnGUI()
@@ -36,7 +38,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor.CodeGens
 			string[] excludes = { "m_Script" };
 
 			// Iterate through serialized properties and draw them like the Inspector (But with ports)
-			SerializedProperty iterator = _serializedObject.GetIterator();
+			SerializedProperty iterator = _serializedObject.FindProperty(nameof(_componentDefinition));
 			bool enterChildren = true;
 			EditorGUIUtility.labelWidth = 84;
 			while ( iterator.NextVisible( enterChildren ) )
@@ -69,6 +71,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor.CodeGens
 
 			if ( GUILayout.Button( "Create" ) )
 			{
+				CodeGenerator.Generate( _componentDefinition );
 				Close();
 			}
 
@@ -90,31 +93,6 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor.CodeGens
 
 				EditorGUILayout.EndHorizontal();
 			}
-		}
-
-		private enum ComponentType
-		{
-			ComponentData = 1,
-			SharedComponentData = 2
-		}
-
-		public class ComponentFieldBlacklistedNamespacesAttribute : BlacklistedNamespacesAttribute
-		{
-			public ComponentFieldBlacklistedNamespacesAttribute() :
-				base( true, @"Mono\..+", @"System\..+", @"JetBrains", @"Bee.", @"NUnit", @"Microsoft\..+", @"Novell\..+",
-					@"ExCSS", @"NiceIO", @"ICSharpCode", @"Unity.Build", @"Newtonsoft\..+", @"Rider", @"TMPro", @"UnityEditor",
-					@"Editor", @"SyntaxTree\..+", @"Unity.Profiling", @"Rotorz" )
-			{
-			}
-		}
-
-		[Serializable]
-		private class ComponentField
-		{
-			public string name;
-
-			[ClassTypeReferenceAttributes( typeof( OnlyBlittableAttribute ), typeof(ComponentFieldBlacklistedNamespacesAttribute))]
-			public ClassTypeReference type;
 		}
 	}
 }
