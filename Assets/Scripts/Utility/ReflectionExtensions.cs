@@ -250,5 +250,7 @@ namespace FSM.Utility
 		}
 
 		public static IEnumerable<Type> SubClassesWithBaseOf( Type baseType ) => SubClassesOf( baseType ).Append( baseType );
+
+		public static bool Implements( this Type type, Type interfaceType ) => interfaceType.IsAssignableFrom( type );
 	}
 }

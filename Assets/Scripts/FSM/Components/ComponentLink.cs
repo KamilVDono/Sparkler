@@ -2,6 +2,7 @@ using Rotorz.Games;
 
 using System;
 using System.Linq;
+using System.Reflection;
 
 using Unity.Entities;
 
@@ -23,7 +24,9 @@ namespace FSM.Components
 		Read = 1 << 0,
 
 		[InspectorName("RW")]
-		ReadWrite = Read | ~0,
+		ReadWrite = Read | 1 << 1,
+
+		JustForUnity = 1 << 2,
 	}
 
 	public enum ComponentLinkUsageType
@@ -38,7 +41,7 @@ namespace FSM.Components
 	public class ComponentLink : IEquatable<ComponentLink>
 	{
 		[SerializeField]
-		[ClassImplements( typeof( IComponentData ), typeof( ISharedComponentData ) )]
+		[ClassImplements( typeof( IComponentData ), typeof( ISharedComponentData ), typeof(IBufferElementData), typeof(ISystemStateComponentData), typeof(ISystemStateSharedComponentData) )]
 		private ClassTypeReference _componentTypeReference = default;
 
 		[SerializeField]
@@ -106,7 +109,10 @@ namespace FSM.Components
 		{
 			if ( TypeReference == null && !string.IsNullOrWhiteSpace( HandwrittenName ) )
 			{
-				var type = _allTypes.FirstOrDefault( t => t.Name == HandwrittenName );
+				var myType = GetType();
+				var field = myType.GetField( "_componentTypeReference", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var implementationFilter = field.GetCustomAttribute<ClassImplementsAttribute>();
+				var type = _allTypes.FirstOrDefault( t => t.Name == HandwrittenName && implementationFilter.IsConstraintSatisfied(t) );
 				if ( type != null )
 				{
 					_componentTypeReference = new ClassTypeReference( type );

@@ -46,7 +46,7 @@ namespace FSM.Utility.Editor
 			return AllocateWidthFlat( flatWidth );
 		}
 
-		public Rect RestOfLine()
+		public Rect AllocateRestOfLine()
 		{
 			_currentRect.width = _currentLine.width - ( _currentRect.x - _currentLine.x );
 			return _currentRect;

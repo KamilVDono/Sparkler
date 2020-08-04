@@ -2,14 +2,11 @@ using FSM.AI.States.Components;
 
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Rendering;
 namespace FSM.AI.States.Systems
 {
-	public class IdleSystem : SystemBase
+	public class CraftingSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
-		private EntityQuery _mainQuery;
-		private EntityQuery _craftingQuery;
 		protected override void OnCreate()
 		{
 			base.OnCreate();
@@ -23,36 +20,13 @@ namespace FSM.AI.States.Systems
 			// Entities.ForEach with the target components as parameters, meaning it will process all
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
-			// -- IdleSystem_Main
+			// -- CraftingSystem_Main
+			var mainCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer().AsParallelWriter();
 			Entities
-				.WithName( "IdleSystem_Main" )
-				.WithoutBurst()
-				.WithStoreEntityQueryInField( ref _mainQuery )
-				.WithAny<OtherTag>()
-				.ForEach( ( ref TestTag testTag, in RenderMesh renderMesh ) =>
+				.WithName( "CraftingSystem_Main" )
+				.ForEach( ( Entity entity, int entityInQueryIndex, ref CraftingRecepie craftingRecepie, in WorkSpeed workSpeed ) =>
 			{
 				//TODO: Implement state behavior
-			} )
-			.Run();
-			// -- IdleSystem_TransitionWalk
-			Entities
-				.WithName( "IdleSystem_TransitionWalk" )
-				.WithoutBurst()
-				.ForEach( ( ref TestTag testTag, in RenderMesh renderMesh ) =>
-			{
-				//TODO: Make transition to one of the following state:
-				//Walk
-			} )
-			.Run();
-			// -- IdleSystem_TransitionCrafting
-			Entities
-				.WithName( "IdleSystem_TransitionCrafting" )
-				.WithStoreEntityQueryInField( ref _craftingQuery )
-				.WithAll<WorkSpeed>()
-				.ForEach( ( in OtherTag otherTag ) =>
-			{
-				//TODO: Make transition to one of the following state:
-				//Crafting
 			} )
 			.ScheduleParallel();
 			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );

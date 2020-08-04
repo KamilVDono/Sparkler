@@ -14,8 +14,12 @@ namespace FSM.Editor
 	[CustomPropertyDrawer( typeof( SystemLambdaAction ) )]
 	public class SystemLambdaActionDrawer : PropertyDrawer
 	{
+		private static readonly GUIContent s_emptyContent = new GUIContent("");
 		private static readonly GUIContent s_foldedButtonContent = new GUIContent("\u25B6");
 		private static readonly GUIContent s_expandedButtonContent = new GUIContent("\u25BC");
+		private static readonly GUIContent s_parallelContent = new GUIContent("Parallel schedule");
+		private static readonly GUIContent s_structuralChangesContent = new GUIContent("Structural changes");
+		private static readonly GUIContent s_queryFieldContent = new GUIContent("Query field");
 
 		private static List<ComponentLink> s_cache = new List<ComponentLink>();
 		private static List<int> s_indexesToDelete = new List<int>();
@@ -35,7 +39,21 @@ namespace FSM.Editor
 
 			// Draw array
 			var componentsProp = property.FindPropertyRelative("_components");
-			DrawArray( propertyRect, componentsProp );
+			DrawArray( ref propertyRect, componentsProp );
+
+			// Draw additional settings
+			propertyRect.AllocateLine();
+			var parallelScheduling = property.FindPropertyRelative("_parallelSchedule");
+			EditorGUI.LabelField( propertyRect.AllocateWidthFlat( 105 ), s_parallelContent );
+			EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 25 ), parallelScheduling, s_emptyContent );
+			var structuralChanges = property.FindPropertyRelative("_hasStructuralChanges");
+			EditorGUI.LabelField( propertyRect.AllocateWidthFlat( 115 ), s_structuralChangesContent );
+			EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 25 ), structuralChanges, s_emptyContent );
+
+			propertyRect.AllocateLine();
+			var queryField = property.FindPropertyRelative("_queryField");
+			EditorGUI.LabelField( propertyRect.AllocateWidthFlat( 75 ), s_queryFieldContent );
+			EditorGUI.PropertyField( propertyRect.AllocateRestOfLine(), queryField, s_emptyContent );
 
 			EditorGUI.EndProperty();
 
@@ -57,6 +75,10 @@ namespace FSM.Editor
 			float height = EditorGUIUtility.singleLineHeight;
 			// array header
 			height += EditorGUIUtility.singleLineHeight;
+			// parallel scheduling and structural changes
+			height += EditorGUIUtility.singleLineHeight;
+			// query field
+			height += EditorGUIUtility.singleLineHeight;
 			// array items
 			var components = property.FindPropertyRelative( "_components" );
 			if ( components.isExpanded )
@@ -70,7 +92,7 @@ namespace FSM.Editor
 			return height;
 		}
 
-		private void DrawArray( PropertyRect propertyRect, SerializedProperty property )
+		private void DrawArray( ref PropertyRect propertyRect, SerializedProperty property )
 		{
 			s_cache.Clear();
 			s_indexesToDelete.Clear();
@@ -85,7 +107,7 @@ namespace FSM.Editor
 
 			int newSize = EditorGUI.IntField( propertyRect.AllocateWidthFlat(50), property.arraySize );
 
-			if ( GUI.Button( propertyRect.RestOfLine(), "+" ) )
+			if ( GUI.Button( propertyRect.AllocateRestOfLine(), "+" ) )
 			{
 				++addNewElementCount;
 			}

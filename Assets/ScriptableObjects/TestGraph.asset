@@ -18,6 +18,9 @@ MonoBehaviour:
     keys:
     - _from
     - Component_-1707343371
+    - Component_-1754452857
+    - Component_326643078
+    - Component_516888397
     values:
     - _fieldName: _from
       _node: {fileID: -1781160930075639533}
@@ -31,9 +34,39 @@ MonoBehaviour:
     - _fieldName: Component_-1707343371
       _node: {fileID: -1781160930075639533}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-1754452857
+      _node: {fileID: -1781160930075639533}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_326643078
+      _node: {fileID: -1781160930075639533}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: _from
         node: {fileID: 7842134057005209292}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_516888397
+      _node: {fileID: -1781160930075639533}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: 8925863260592550595}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -45,24 +78,63 @@ MonoBehaviour:
   _lambdas:
   - _guid: -1707343371
     _name: Main
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: _mainQuery
     _components:
-    - _componentTypeReference:
-        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
-        name: 
-      _componentName: OtherTag
-      _accessType: 1
-      _usageType: 0
     - _componentTypeReference:
         classRef: TestTag, Assembly-CSharp
         name: 
       _componentName: 
-      _accessType: -1
+      _accessType: 3
       _usageType: 1
     - _componentTypeReference:
         classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
         name: 
       _componentName: 
       _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 1
+      _usageType: 2
+  - _guid: 326643078
+    _name: TransitionWalk
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
+    _components:
+    - _componentTypeReference:
+        classRef: TestTag, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
+        name: 
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+  - _guid: 516888397
+    _name: TransitionCrafting
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: _craftingQuery
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 0
       _usageType: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -79,8 +151,10 @@ MonoBehaviour:
   nodes:
   - {fileID: -1781160930075639533}
   - {fileID: 7842134057005209292}
+  - {fileID: 8925863260592550595}
   _codeGenerationPath: Assets/Scripts/CodeGen
   _namespace: FSM.AI.States
+  _stateEditing: 1
 --- !u!114 &7842134057005209292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +168,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 408, y: -536}
+  position: {x: 408, y: -568}
   ports:
     keys:
     - _from
@@ -104,7 +178,7 @@ MonoBehaviour:
       _node: {fileID: 7842134057005209292}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: Component_-1707343371
+      - fieldName: Component_326643078
         node: {fileID: -1781160930075639533}
         reroutePoints: []
       _direction: 0
@@ -126,10 +200,80 @@ MonoBehaviour:
   _lambdas:
   - _guid: -1395152212
     _name: Main
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
     _components:
     - _componentTypeReference:
         classRef: Unity.Transforms.Translation, Unity.Transforms
         name: Translation
       _componentName: 
-      _accessType: -1
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+--- !u!114 &8925863260592550595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 408, y: -200}
+  ports:
+    keys:
+    - _from
+    - Component_-1384855949
+    values:
+    - _fieldName: _from
+      _node: {fileID: 8925863260592550595}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Component_516888397
+        node: {fileID: -1781160930075639533}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-1384855949
+      _node: {fileID: 8925863260592550595}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Crafting
+  _from: {fileID: 0}
+  _lambdas:
+  - _guid: -1384855949
+    _name: Main
+    _parallelSchedule: 1
+    _hasStructuralChanges: 1
+    _queryField: 
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.CraftingRecepie, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
+        name: 
+      _componentName: 
+      _accessType: 1
       _usageType: 1

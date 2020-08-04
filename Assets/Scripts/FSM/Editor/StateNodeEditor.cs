@@ -70,6 +70,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 		private static void DrawArray( SerializedProperty property, StateNode stateNode )
 		{
+			bool drawStateEditing = (stateNode.graph as FSMGraph).StateEditing;
+
 			var indexesToDelete = new List<int>();
 			int addNewElementCount = 0;
 			int moveDownIndex = -1;
@@ -103,8 +105,15 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 				EditorGUILayout.BeginHorizontal();
 
-				var name = elementProperty.FindPropertyRelative( "_name" )?.stringValue ?? "";
-				EditorGUILayout.LabelField( $"{i}. {name}", EditorStyles.boldLabel );
+				if ( drawStateEditing )
+				{
+					var name = elementProperty.FindPropertyRelative( "_name" )?.stringValue ?? "";
+					EditorGUILayout.LabelField( $"{i}. {name}", EditorStyles.boldLabel );
+				}
+				else
+				{
+					EditorGUILayout.PropertyField( elementProperty.FindPropertyRelative( "_name" ) );
+				}
 
 				using ( new GUIEnabledScope( i < property.arraySize - 1 ) )
 				{
@@ -129,7 +138,10 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 				EditorGUILayout.EndHorizontal();
 
-				EditorGUILayout.PropertyField( elementProperty, true, GUILayout.ExpandWidth( true ) );
+				if ( drawStateEditing )
+				{
+					EditorGUILayout.PropertyField( elementProperty, true, GUILayout.ExpandWidth( true ) );
+				}
 
 				NodeEditorGUILayout.AddPortField( stateNode.GetOrAddLambdaPort( i ) );
 			}

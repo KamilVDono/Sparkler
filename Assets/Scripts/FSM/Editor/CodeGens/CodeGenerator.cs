@@ -4,7 +4,6 @@ using FSM.Primitives;
 using FSM.Utility;
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -190,8 +189,6 @@ namespace FSM.Editor
 				Directory.CreateDirectory( systemsPath );
 			}
 
-			IEnumerable<(StateNode s, string)> systemsData = states.Select(s => (s, s.StateName));
-
 			var loadedTemplate = LoadTemplate("System");
 
 			foreach ( var system in states )
@@ -201,12 +198,21 @@ namespace FSM.Editor
 
 				template = AssignUsings( system, fsmGraph.Namespace, template );
 
-				var lambdaTemplate = s_lambdaRegex.Match(template).Groups[2].Value;
+				template = AssignQueriesFieldsDefinitions( system, template );
+
+				var lambdaTemplate = s_lambdaRegex.Match( template ).Groups[2].Value;
 				StringBuilder lambdaTemplateBuilder = new StringBuilder();
+
 				foreach ( var lambda in system.Lambdas )
 				{
 					var currentTemplate = lambdaTemplate;
 					currentTemplate = AssignLambdaName( system, lambda, currentTemplate );
+
+					currentTemplate = AssignHasShared( lambda, currentTemplate );
+
+					currentTemplate = AssignParallel( lambda, currentTemplate );
+
+					currentTemplate = AssignQueryField( lambda, currentTemplate );
 
 					currentTemplate = AssignForEachComponents( lambda, currentTemplate );
 
@@ -220,9 +226,10 @@ namespace FSM.Editor
 
 					lambdaTemplateBuilder.AppendLine( currentTemplate );
 				}
-				template = s_lambdaRegex.Replace( template, lambdaTemplateBuilder.ToString() );
 
 				template = ConditionalText( system.HasStructuralChanges, "STRUCTURAL_CHANGES", template );
+
+				template = s_lambdaRegex.Replace( template, lambdaTemplateBuilder.ToString() );
 
 				template = Regex.Replace( template, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline );
 
@@ -253,7 +260,11 @@ namespace FSM.Editor
 		private static string AssignUsings( StateNode system, string namespaceName, string template )
 		{
 			// Namespaces
-			var usingNamespaces = system.AllComponents.Where( c => c.TypeReference != null ).Select( c => c.TypeReference.Namespace ).Distinct();
+			var usingNamespaces = system.AllComponents
+				.Where( c => c.TypeReference != null )
+				.Select( c => c.TypeReference.Namespace )
+				.Distinct()
+				.Where( c => !string.IsNullOrWhiteSpace(c) );
 			StringBuilder usingsBuilder = new StringBuilder();
 			foreach ( var usingNamespace in usingNamespaces )
 			{
@@ -267,6 +278,29 @@ namespace FSM.Editor
 			}
 			template = Regex.Replace( template, @"\$USINGS\$", usingsBuilder.ToString() );
 			return template;
+		}
+
+		private static string AssignQueriesFieldsDefinitions( StateNode system, string template )
+		{
+			var queryFields = system.Lambdas.Where( l => l.HasQueryField ).Select( l => l.QueryFieldName ).ToArray();
+			if ( !queryFields.Any() )
+			{
+				return Regex.Replace( template, @"\$QUERY_FIELDS\$", "" );
+			}
+			StringBuilder fieldsBuilder = new StringBuilder();
+			foreach ( var field in queryFields )
+			{
+				fieldsBuilder.Append( "private EntityQuery " );
+				fieldsBuilder.Append( field );
+				fieldsBuilder.AppendLine( ";" );
+			}
+			return Regex.Replace( template, @"\$QUERY_FIELDS\$", fieldsBuilder.ToString() );
+		}
+
+		private static string AssignHasShared( SystemLambdaAction lambda, string currentTemplate )
+		{
+			currentTemplate = ConditionalText( lambda.HasSharedComponent, "HAS_SHARED", currentTemplate );
+			return ConditionalText( lambda.HasStructuralChanges, "STRUCTURAL_CHANGES", currentTemplate );
 		}
 
 		private static string AssignForEachComponents( SystemLambdaAction lambda, string template )
@@ -305,6 +339,15 @@ namespace FSM.Editor
 			foreachBuilder.Length -= 2;
 
 			return Regex.Replace( template, @"\$FOR_EACH\$", foreachBuilder.ToString() );
+		}
+
+		private static string AssignQueryField( SystemLambdaAction lambda, string currentTemplate )
+		{
+			if ( !lambda.HasQueryField )
+			{
+				return Regex.Replace( currentTemplate, @"\$QUERY_FIELD\$", "" );
+			}
+			return Regex.Replace( currentTemplate, @"\$QUERY_FIELD\$", $".WithStoreEntityQueryInField( ref {lambda.QueryFieldName} )" );
 		}
 
 		private static string AssignWithAll( SystemLambdaAction lambda, string template )
@@ -382,6 +425,8 @@ namespace FSM.Editor
 			return template;
 		}
 
+		private static string AssignParallel( SystemLambdaAction lambda, string template ) => ConditionalText( lambda.Parallel, "PARALLEL", template );
+
 		private static string SetupTransition( StateNode system, SystemLambdaAction lambda, string template )
 		{
 			var transition = system.TransitionTo(lambda);
@@ -393,8 +438,11 @@ namespace FSM.Editor
 			return template;
 		}
 
-		private static string AssignLambdaName( StateNode system, SystemLambdaAction lambda, string lambdaTemplate ) =>
-			Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME\$", lambda.FullName( system ) );
+		private static string AssignLambdaName( StateNode system, SystemLambdaAction lambda, string lambdaTemplate )
+		{
+			lambdaTemplate = Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME\$", lambda.FullName( system ) );
+			return Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME_LOWER\$", lambda.Name.ToLower() );
+		}
 
 		#endregion Helpers
 

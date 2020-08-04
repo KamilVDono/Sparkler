@@ -38,7 +38,7 @@ namespace FSM
 
 		public IEnumerable<ComponentLink> AllComponents => _lambdas.SelectMany( l => l.Components );
 		public IReadOnlyCollection<SystemLambdaAction> Lambdas => _lambdas;
-		public bool HasStructuralChanges => DynamicOutputs.Any( o => o.IsConnected );
+		public bool HasStructuralChanges => DynamicOutputs.Any( o => o.IsConnected ) || _lambdas.Any( l => l.HasStructuralChanges );
 
 		public IEnumerable<StateNode> TransitionsFrom => Inputs
 			.Where( o => o.fieldName == nameof( _from ) )

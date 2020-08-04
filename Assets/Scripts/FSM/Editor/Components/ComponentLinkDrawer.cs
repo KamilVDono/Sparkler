@@ -42,7 +42,7 @@ namespace FSM.Editor.Components
 				EditorGUI.PropertyField( propertyRect.AllocateWidthFlat( 40 ), accessProp, EmptyContent );
 			}
 
-			EditorGUI.PropertyField( propertyRect.RestOfLine(), typeProp, EmptyContent );
+			EditorGUI.PropertyField( propertyRect.AllocateRestOfLine(), typeProp, EmptyContent );
 
 			// New custom component
 			if ( !HasSettedType( property ) )
@@ -52,7 +52,7 @@ namespace FSM.Editor.Components
 				EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), nameProp, EmptyContent );
 				using ( new GUIEnabledScope( !string.IsNullOrWhiteSpace( nameProp.stringValue ) ) )
 				{
-					if ( GUI.Button( propertyRect.RestOfLine(), PlusContent ) )
+					if ( GUI.Button( propertyRect.AllocateRestOfLine(), PlusContent ) )
 					{
 						ShowCreateComponentWindow( property );
 					}

@@ -24,6 +24,7 @@ namespace FSM.Editor
 		private static readonly GUIContent s_horizontalLine = new GUIContent("|");
 		private static readonly GUIContent s_namespaceContent = new GUIContent("Namespace");
 		private static readonly GUIContent s_generateContent = new GUIContent("Code generation path");
+		private static readonly GUIContent s_stateEditigContent = new GUIContent("State editing");
 		#endregion Consts
 
 		private int _counter = 0;
@@ -161,6 +162,11 @@ namespace FSM.Editor
 
 		public override void OnToolbar()
 		{
+			EditorGUILayout.LabelField( s_stateEditigContent, GUILayout.Width( 75 ) );
+			Target.StateEditing = EditorGUILayout.Toggle( Target.StateEditing, GUILayout.Width( 15 ) );
+
+			ToolbarSpace();
+
 			EditorGUILayout.LabelField( s_generateContent, GUILayout.ExpandWidth( false ) );
 			Target.CodeGenerationPath = EditorGUILayout.TextField( Target.CodeGenerationPath, GUILayout.ExpandWidth( true ) );
 			if ( GUILayout.Button( "\u27b1", GUILayout.ExpandWidth( false ) ) )
@@ -180,7 +186,7 @@ namespace FSM.Editor
 
 			ToolbarSpace();
 
-			using ( new GUIEnabledScope( Target.nodes.OfType<FSMNode>().All( n => n.IsRightConfigured().Item1 ) ) )
+			using ( new GUIEnabledScope( Target.StateEditing && Target.nodes.OfType<FSMNode>().All( n => n.IsRightConfigured().Item1 ) ) )
 			{
 				if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
 				{

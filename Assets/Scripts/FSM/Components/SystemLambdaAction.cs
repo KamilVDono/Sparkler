@@ -1,6 +1,10 @@
-﻿using System;
+﻿using FSM.Utility;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Unity.Entities;
 
 using UnityEngine;
 
@@ -12,11 +16,20 @@ namespace FSM.Components
 		[SerializeField] private int _guid;
 
 		[SerializeField] private string _name = "";
+		[SerializeField] private bool _parallelSchedule = true;
+		[SerializeField] private bool _hasStructuralChanges = false;
+		[SerializeField] private string _queryField = "";
 		[SerializeField] private ComponentLink[] _components = new ComponentLink[0];
 
 		#region Queries
 		public IReadOnlyCollection<ComponentLink> Components => _components;
 		public string Name => _name;
+		public bool HasStructuralChanges => _hasStructuralChanges && !HasSharedComponent;
+		public bool HasSharedComponent => _components.Any( c => c.TypeReference.Implements( typeof( ISharedComponentData ) ) || c.TypeReference.Implements( typeof( ISystemStateSharedComponentData ) ) );
+		public bool Parallel => _parallelSchedule && !HasSharedComponent;
+
+		public bool HasQueryField => !string.IsNullOrWhiteSpace( _queryField );
+		public string QueryFieldName => _queryField;
 
 		public string FullName( StateNode stateNode )
 		{
@@ -53,7 +66,7 @@ namespace FSM.Components
 					changedComponent.Usage = ComponentLinkUsageType.Invalid;
 				}
 			}
-			_components = _components.OrderBy( c => c.Usage ).ThenBy( c => c.AccessType ).ToArray();
+			_components = _components.OrderBy( c => c.Usage ).ThenByDescending( c => c.AccessType ).ToArray();
 		}
 
 		#endregion Operations

@@ -7,16 +7,17 @@ namespace $NAMESPACE$.Systems
 {
 	public class $NAME$ : SystemBase
 	{
-		#$STRUCTURAL_CHANGES
+	#$STRUCTURAL_CHANGES
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
-		$#STRUCTURAL_CHANGES
+	$#STRUCTURAL_CHANGES
+		$QUERY_FIELDS$
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
-			#$STRUCTURAL_CHANGES
+		#$STRUCTURAL_CHANGES
 			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-			$#STRUCTURAL_CHANGES
+		$#STRUCTURAL_CHANGES
 		}
 		
 
@@ -29,32 +30,51 @@ namespace $NAMESPACE$.Systems
 			// Entities.ForEach with the target components as parameters, meaning it will process all
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
-
-			#$STRUCTURAL_CHANGES
-			var transitionCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
-			$#STRUCTURAL_CHANGES
-
-			#$LAMBDA
+		#$LAMBDA
+			// -- $LAMBDA_NAME$
+		#$STRUCTURAL_CHANGES
+		#$PARALLEL
+			var $LAMBDA_NAME_LOWER$CmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer().AsParallelWriter();
+		$#PARALLEL
+		#$!PARALLEL
+			var $LAMBDA_NAME_LOWER$CmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
+		$#!PARALLEL
+		$#STRUCTURAL_CHANGES
 			Entities
 				.WithName( "$LAMBDA_NAME$" )
+			#$HAS_SHARED
+				.WithoutBurst()
+			$#HAS_SHARED
+				$QUERY_FIELD$
 				$WITH_ALL$
 				$WITH_ANY$
 				$WITH_NONE$
-				.ForEach( ( #$TRANSITION Entity e, $#TRANSITION $FOR_EACH$ ) =>
+				.ForEach( ( #$STRUCTURAL_CHANGES Entity entity, #$PARALLEL int entityInQueryIndex, $#PARALLEL $#STRUCTURAL_CHANGES $FOR_EACH$ ) =>
 			{
-				#$TRANSITION
+			#$TRANSITION
 				//TODO: Make transition to one of the following state:
 				//$TRANSITION_TO$
-				$#TRANSITION
-				#$!TRANSITION
+			$#TRANSITION
+			#$!TRANSITION
 				//TODO: Implement state behavior
-				$#!TRANSITION
-			} ).Schedule();
-			$#LAMBDA
+			$#!TRANSITION
+			} )
+		#$HAS_SHARED
+			.Run();
+		$#HAS_SHARED
+		#$!HAS_SHARED
+		#$PARALLEL
+			.ScheduleParallel();
+		$#PARALLEL
+		#$!PARALLEL
+			.Schedule();
+		$#!PARALLEL
+		$#!HAS_SHARED
+		$#LAMBDA
 
-			#$STRUCTURAL_CHANGES
+		#$STRUCTURAL_CHANGES
 			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );
-			$#STRUCTURAL_CHANGES
+		$#STRUCTURAL_CHANGES
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System;
 using Unity.Entities;
 
 [Serializable]
-public struct TestTag : ISharedComponentData
+public struct TestTag : IComponentData
 {
 	// Add fields to your component here. Remember that:
 	//
