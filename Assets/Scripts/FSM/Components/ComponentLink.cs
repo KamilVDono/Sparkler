@@ -56,7 +56,8 @@ namespace FSM.Components
 		#region Queries
 		public Type TypeReference => _componentTypeReference?.Type;
 		public string HandwrittenName => _componentName;
-		public string ComponentName => TypeReference?.Name ?? HandwrittenName;
+
+		public string ComponentName => TypeReference?.Name;
 
 		public ComponentLinkAccessType AccessType => _accessType;
 		public ComponentLinkUsageType Usage { get => _usageType; set => _usageType = value; }

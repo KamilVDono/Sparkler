@@ -81,15 +81,20 @@ MonoBehaviour:
     _parallelSchedule: 1
     _hasStructuralChanges: 0
     _queryField: _mainQuery
+    _sharedFilter:
+      FilterName: primitiveTag
+      ComponentDeclaration: PrimitiveTag primitiveTag = new PrimitiveTag{ IntVal
+        = 0, ByteVal = 0, ULongVal = 0, EnumVal = PrimitiveTag.Enum.Val1, FlagEnumVal
+        = (PrimitiveTag.FlagEnum)(0), };
     _components:
     - _componentTypeReference:
-        classRef: TestTag, Assembly-CSharp
+        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
         name: 
       _componentName: 
-      _accessType: 3
+      _accessType: 1
       _usageType: 1
     - _componentTypeReference:
-        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
+        classRef: TestTag, Assembly-CSharp
         name: 
       _componentName: 
       _accessType: 1
@@ -105,15 +110,18 @@ MonoBehaviour:
     _parallelSchedule: 1
     _hasStructuralChanges: 0
     _queryField: 
+    _sharedFilter:
+      FilterName: 
+      ComponentDeclaration: 
     _components:
     - _componentTypeReference:
-        classRef: TestTag, Assembly-CSharp
+        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
         name: 
       _componentName: 
-      _accessType: 3
+      _accessType: 1
       _usageType: 1
     - _componentTypeReference:
-        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
+        classRef: TestTag, Assembly-CSharp
         name: 
       _componentName: 
       _accessType: 1
@@ -123,6 +131,9 @@ MonoBehaviour:
     _parallelSchedule: 1
     _hasStructuralChanges: 0
     _queryField: _craftingQuery
+    _sharedFilter:
+      FilterName: 
+      ComponentDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
@@ -173,6 +184,7 @@ MonoBehaviour:
     keys:
     - _from
     - Component_-1395152212
+    - Component_531302806
     values:
     - _fieldName: _from
       _node: {fileID: 7842134057005209292}
@@ -195,6 +207,15 @@ MonoBehaviour:
       _typeConstraint: 2
       _dynamic: 1
       _allowedTypes: []
+    - _fieldName: Component_531302806
+      _node: {fileID: 7842134057005209292}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
   _name: Walk
   _from: {fileID: 0}
   _lambdas:
@@ -203,6 +224,9 @@ MonoBehaviour:
     _parallelSchedule: 1
     _hasStructuralChanges: 0
     _queryField: 
+    _sharedFilter:
+      FilterName: 
+      ComponentDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: Unity.Transforms.Translation, Unity.Transforms
@@ -264,6 +288,9 @@ MonoBehaviour:
     _parallelSchedule: 1
     _hasStructuralChanges: 1
     _queryField: 
+    _sharedFilter:
+      FilterName: 
+      ComponentDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.CraftingRecepie, Assembly-CSharp

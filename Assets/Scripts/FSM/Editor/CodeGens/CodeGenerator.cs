@@ -21,11 +21,26 @@ namespace FSM.Editor
 {
 	public class CodeGenerator
 	{
+		#region Regex definitions
 		private static readonly Regex s_lambdaRegex = new Regex(@"(#\$LAMBDA)(?s)(.+?)(\$#LAMBDA)");
-
-		private CodeGenerator()
-		{
-		}
+		private static readonly Regex s_usingsRegex = new Regex(@"\$USINGS\$");
+		private static readonly Regex s_componentTypesRegex = new Regex(@"\$COMPONENT_TYPE\$");
+		private static readonly Regex s_fieldsRegex = new Regex(@"\$FIELDS\$");
+		private static readonly Regex s_namespaceRegex = new Regex(@"\$NAMESPACE\$");
+		private static readonly Regex s_nameRegex = new Regex(@"\$NAME\$");
+		private static readonly Regex s_emptyLinesRegex = new Regex(@"^\s+$[\r\n]*", RegexOptions.Multiline);
+		private static readonly Regex s_queryFieldsRegex = new Regex(@"\$QUERY_FIELDS\$");
+		private static readonly Regex s_queryFieldRegex = new Regex(@"\$QUERY_FIELD\$");
+		private static readonly Regex s_foreachRegex = new Regex(@"\$FOR_EACH\$");
+		private static readonly Regex s_withAllRegex = new Regex(@"\$WITH_ALL\$");
+		private static readonly Regex s_withAnyRegex = new Regex(@"\$WITH_ANY\$");
+		private static readonly Regex s_withNoneRegex = new Regex(@"\$WITH_NONE\$");
+		private static readonly Regex s_transitionToRegex = new Regex(@"\$TRANSITION_TO\$");
+		private static readonly Regex s_lambdaNameRegex = new Regex(@"\$LAMBDA_NAME\$");
+		private static readonly Regex s_lambdaLowerNameRegex = new Regex(@"\$LAMBDA_NAME_LOWER\$");
+		private static readonly Regex s_sharedFilterDefinitionRegex = new Regex(@"\$SHARED_FILTER_DECLARATION\$");
+		private static readonly Regex s_sharedFilterRegex = new Regex(@"\$SHARED_FILTER\$");
+		#endregion Regex definitions
 
 		public static void Generate( FSMGraph fsmGraph )
 		{
@@ -82,14 +97,14 @@ namespace FSM.Editor
 				usingsBuilder.AppendLine( ";" );
 			}
 
-			template = Regex.Replace( template, @"\$USINGS\$", usingsBuilder.ToString() );
+			template = s_usingsRegex.Replace( template, usingsBuilder.ToString() );
 			return template;
 		}
 
 		private static string AssignComponentType( ComponentType componentType, string template )
 		{
 			var componentInterfaceName = GetInterfaceName(componentType);
-			return Regex.Replace( template, @"\$COMPONENT_TYPE\$", componentInterfaceName );
+			return s_componentTypesRegex.Replace( template, componentInterfaceName );
 		}
 
 		private static string AssignComponentFields( ComponentField[] fields, string template )
@@ -112,7 +127,23 @@ namespace FSM.Editor
 				}
 			}
 
-			return Regex.Replace( template, @"\$FIELDS\$", fieldsBuilder.ToString() );
+			return s_fieldsRegex.Replace( template, fieldsBuilder.ToString() );
+		}
+
+		private static void GenerateComponentFile( string componentName, string namespaceName, string componentPath, string template )
+		{
+			var shouldProceed = !File.Exists( componentPath ) || EditorUtility.DisplayDialog(
+						"Create component file",
+						$"Component {componentName} at path {componentPath} already exists. Do you want regenerate this file?", "Yes", "No"
+						);
+			if ( shouldProceed )
+			{
+				var code = template;
+				code = s_namespaceRegex.Replace( code, namespaceName );
+				code = s_nameRegex.Replace( code, componentName );
+
+				File.WriteAllText( componentPath, code );
+			}
 		}
 
 		private static string GetInterfaceName( ComponentType componentType )
@@ -157,22 +188,6 @@ namespace FSM.Editor
 			return "public";
 		}
 
-		private static void GenerateComponentFile( string componentName, string namespaceName, string componentPath, string template )
-		{
-			var shouldProceed = !File.Exists( componentPath ) || EditorUtility.DisplayDialog(
-						"Create component file",
-						$"Component {componentName} at path {componentPath} already exists. Do you want regenerate this file?", "Yes", "No"
-						);
-			if ( shouldProceed )
-			{
-				var code = template;
-				code = Regex.Replace( code, @"\$NAMESPACE\$", namespaceName );
-				code = Regex.Replace( code, @"\$NAME\$", componentName );
-
-				File.WriteAllText( componentPath, code );
-			}
-		}
-
 		#endregion Helpers
 
 		#endregion Components
@@ -214,6 +229,8 @@ namespace FSM.Editor
 
 					currentTemplate = AssignQueryField( lambda, currentTemplate );
 
+					currentTemplate = AssignSharedFilter( lambda, currentTemplate );
+
 					currentTemplate = AssignForEachComponents( lambda, currentTemplate );
 
 					currentTemplate = AssignWithAll( lambda, currentTemplate );
@@ -231,7 +248,7 @@ namespace FSM.Editor
 
 				template = s_lambdaRegex.Replace( template, lambdaTemplateBuilder.ToString() );
 
-				template = Regex.Replace( template, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline );
+				template = s_emptyLinesRegex.Replace( template, string.Empty );
 
 				var systemPath = Path.Combine( systemsPath, $"{systemName}.cs");
 				GenerateSystemFile( systemName, fsmGraph.Namespace, systemPath, template );
@@ -248,8 +265,8 @@ namespace FSM.Editor
 			if ( shouldProceed )
 			{
 				var code = template;
-				code = Regex.Replace( code, @"\$NAMESPACE\$", namespaceName );
-				code = Regex.Replace( code, @"\$NAME\$", systemName );
+				code = s_namespaceRegex.Replace( code, namespaceName );
+				code = s_nameRegex.Replace( code, systemName );
 
 				File.WriteAllText( systemPath, code );
 			}
@@ -276,7 +293,7 @@ namespace FSM.Editor
 			{
 				usingsBuilder.AppendLine( $"using {namespaceName}.Components;" );
 			}
-			template = Regex.Replace( template, @"\$USINGS\$", usingsBuilder.ToString() );
+			template = s_usingsRegex.Replace( template, usingsBuilder.ToString() );
 			return template;
 		}
 
@@ -285,7 +302,7 @@ namespace FSM.Editor
 			var queryFields = system.Lambdas.Where( l => l.HasQueryField ).Select( l => l.QueryFieldName ).ToArray();
 			if ( !queryFields.Any() )
 			{
-				return Regex.Replace( template, @"\$QUERY_FIELDS\$", "" );
+				return s_queryFieldsRegex.Replace( template, "" );
 			}
 			StringBuilder fieldsBuilder = new StringBuilder();
 			foreach ( var field in queryFields )
@@ -294,7 +311,7 @@ namespace FSM.Editor
 				fieldsBuilder.Append( field );
 				fieldsBuilder.AppendLine( ";" );
 			}
-			return Regex.Replace( template, @"\$QUERY_FIELDS\$", fieldsBuilder.ToString() );
+			return s_queryFieldsRegex.Replace( template, fieldsBuilder.ToString() );
 		}
 
 		private static string AssignHasShared( SystemLambdaAction lambda, string currentTemplate )
@@ -338,16 +355,30 @@ namespace FSM.Editor
 			// Remove space and comma
 			foreachBuilder.Length -= 2;
 
-			return Regex.Replace( template, @"\$FOR_EACH\$", foreachBuilder.ToString() );
+			return s_foreachRegex.Replace( template, foreachBuilder.ToString() );
 		}
 
 		private static string AssignQueryField( SystemLambdaAction lambda, string currentTemplate )
 		{
 			if ( !lambda.HasQueryField )
 			{
-				return Regex.Replace( currentTemplate, @"\$QUERY_FIELD\$", "" );
+				return s_queryFieldRegex.Replace( currentTemplate, "" );
 			}
-			return Regex.Replace( currentTemplate, @"\$QUERY_FIELD\$", $".WithStoreEntityQueryInField( ref {lambda.QueryFieldName} )" );
+			return s_queryFieldRegex.Replace( currentTemplate, $".WithStoreEntityQueryInField( ref {lambda.QueryFieldName} )" );
+		}
+
+		private static string AssignSharedFilter( SystemLambdaAction lambda, string currentTemplate )
+		{
+			if ( lambda.HasSharedFilter )
+			{
+				currentTemplate = s_sharedFilterDefinitionRegex.Replace( currentTemplate, lambda.SharedFilterDeclaration );
+				return s_sharedFilterRegex.Replace( currentTemplate, $".WithSharedComponentFilter( {lambda.SharedFilterName} )" );
+			}
+			else
+			{
+				currentTemplate = s_sharedFilterDefinitionRegex.Replace( currentTemplate, string.Empty );
+				return s_sharedFilterRegex.Replace( currentTemplate, string.Empty );
+			}
 		}
 
 		private static string AssignWithAll( SystemLambdaAction lambda, string template )
@@ -371,7 +402,7 @@ namespace FSM.Editor
 				}
 				withAllBuilder.Append( ">()" );
 			}
-			template = Regex.Replace( template, @"\$WITH_ALL\$", withAllBuilder.ToString() );
+			template = s_withAllRegex.Replace( template, withAllBuilder.ToString() );
 			return template;
 		}
 
@@ -396,7 +427,7 @@ namespace FSM.Editor
 				}
 				withAnyBuilder.Append( ">()" );
 			}
-			template = Regex.Replace( template, @"\$WITH_ANY\$", withAnyBuilder.ToString() );
+			template = s_withAnyRegex.Replace( template, withAnyBuilder.ToString() );
 			return template;
 		}
 
@@ -421,7 +452,7 @@ namespace FSM.Editor
 				}
 				withNoneBuilder.Append( ">()" );
 			}
-			template = Regex.Replace( template, @"\$WITH_NONE\$", withNoneBuilder.ToString() );
+			template = s_withNoneRegex.Replace( template, withNoneBuilder.ToString() );
 			return template;
 		}
 
@@ -433,15 +464,15 @@ namespace FSM.Editor
 			bool hasTransition = transition != null;
 
 			template = ConditionalText( hasTransition, "TRANSITION", template );
-			template = Regex.Replace( template, @"\$TRANSITION_TO\$", transition?.Name ?? "" );
+			template = s_transitionToRegex.Replace( template, transition?.Name ?? "" );
 
 			return template;
 		}
 
 		private static string AssignLambdaName( StateNode system, SystemLambdaAction lambda, string lambdaTemplate )
 		{
-			lambdaTemplate = Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME\$", lambda.FullName( system ) );
-			return Regex.Replace( lambdaTemplate, @"\$LAMBDA_NAME_LOWER\$", lambda.Name.ToLower() );
+			lambdaTemplate = s_lambdaNameRegex.Replace( lambdaTemplate, lambda.FullName( system ) );
+			return s_lambdaLowerNameRegex.Replace( lambdaTemplate, lambda.Name.ToLower() );
 		}
 
 		#endregion Helpers

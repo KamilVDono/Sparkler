@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Unity.Entities;
+
 using UnityEngine;
 
 using XNode;
@@ -102,7 +104,8 @@ namespace FSM
 		#region Setup validation
 
 		protected override IEnumerable<Func<(bool, string)>> ConfigurationCheckers => new Func<(bool, string)>[] {
-			HasAtLeastOneLambda, HasRefInParameter, ComponentsUsageConstrains, ComponentsUniquality, LambdasHasName, ComponentsNames, LambdasUniqueName
+			HasAtLeastOneLambda, HasRefInParameter, ComponentsUsageConstrains, ComponentsUniquality, LambdasHasName, ComponentsTypes, LambdasUniqueName,
+			HasValidComponentsUsage, NoneSharedRef
 		};
 
 		private (bool, string) HasAtLeastOneLambda() => (_lambdas.Length > 0, "Has zero lambda actions/behaviors");
@@ -179,17 +182,41 @@ namespace FSM
 			return (allNamesAreUnique, "Lambdas has duplicated names");
 		}
 
-		private (bool, string) ComponentsNames()
+		private (bool, string) ComponentsTypes()
 		{
 			foreach ( var lambda in _lambdas )
 			{
-				bool allHasNames = lambda.Components.All( c => !string.IsNullOrWhiteSpace( c.ComponentName ) );
-				if ( !allHasNames )
+				bool allHasTypes = lambda.Components.All( c => c.TypeReference != null );
+				if ( !allHasTypes )
 				{
-					return (allHasNames, "Has component without name");
+					return (allHasTypes, "Has component without type");
 				}
 			}
 			return (true, "");
+		}
+
+		private (bool, string) HasValidComponentsUsage()
+		{
+			foreach ( var lambda in _lambdas )
+			{
+				bool hasInvalid = lambda.Components
+					.Any( c => c.Usage == ComponentLinkUsageType.Invalid);
+				if ( hasInvalid )
+				{
+					return (false, $"Has invalid component usage in {lambda.Name}");
+				}
+			}
+			return (true, "");
+		}
+
+		private (bool, string) NoneSharedRef()
+		{
+			var allRef = _lambdas
+				.SelectMany(l => l.Components)
+				.Where(c => c.Usage == ComponentLinkUsageType.All && c.AccessType == ComponentLinkAccessType.ReadWrite).ToArray();
+			var anySharedInRef = allRef
+				.Any(r => r.TypeReference.Implements(typeof(ISharedComponentData)) || r.TypeReference.Implements(typeof(ISystemStateSharedComponentData)));
+			return (!anySharedInRef, "Shared components can not be write in ref mode");
 		}
 
 		#endregion Setup validation

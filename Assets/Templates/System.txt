@@ -40,11 +40,13 @@ namespace $NAMESPACE$.Systems
 			var $LAMBDA_NAME_LOWER$CmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer();
 		$#!PARALLEL
 		$#STRUCTURAL_CHANGES
+		$SHARED_FILTER_DECLARATION$
 			Entities
 				.WithName( "$LAMBDA_NAME$" )
 			#$HAS_SHARED
 				.WithoutBurst()
 			$#HAS_SHARED
+				$SHARED_FILTER$
 				$QUERY_FIELD$
 				$WITH_ALL$
 				$WITH_ANY$

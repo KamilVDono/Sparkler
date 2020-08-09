@@ -91,61 +91,59 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			}
 			EditorGUILayout.EndHorizontal();
 
-			if ( !property.isExpanded )
-			{
-				return;
-			}
-
 			// Draw content
-			EditorGUILayout.BeginVertical();
-			for ( int i = 0; i < property.arraySize; i++ )
+			if ( property.isExpanded )
 			{
-				var elementProperty = property.GetArrayElementAtIndex( i );
-				DrawLine( 2, 2 );
-
-				EditorGUILayout.BeginHorizontal();
-
-				if ( drawStateEditing )
+				EditorGUILayout.BeginVertical();
+				for ( int i = 0; i < property.arraySize; i++ )
 				{
-					var name = elementProperty.FindPropertyRelative( "_name" )?.stringValue ?? "";
-					EditorGUILayout.LabelField( $"{i}. {name}", EditorStyles.boldLabel );
-				}
-				else
-				{
-					EditorGUILayout.PropertyField( elementProperty.FindPropertyRelative( "_name" ) );
-				}
+					var elementProperty = property.GetArrayElementAtIndex( i );
+					DrawLine( 2, 2 );
 
-				using ( new GUIEnabledScope( i < property.arraySize - 1 ) )
-				{
-					if ( GUILayout.Button( s_moveDownContent, GUILayout.Width( 25 ) ) )
+					EditorGUILayout.BeginHorizontal();
+
+					if ( drawStateEditing )
 					{
-						moveDownIndex = i;
+						var name = elementProperty.FindPropertyRelative( "_name" )?.stringValue ?? "";
+						EditorGUILayout.LabelField( $"{i}. {name}", EditorStyles.boldLabel );
 					}
-				}
-
-				if ( GUILayout.Button( s_deleteContent, GUILayout.Width( 25 ) ) )
-				{
-					indexesToDelete.Add( i );
-				}
-
-				using ( new GUIEnabledScope( i > 0 ) )
-				{
-					if ( GUILayout.Button( s_moveUpContent, GUILayout.Width( 25 ) ) )
+					else
 					{
-						moveUpIndex = i;
+						EditorGUILayout.PropertyField( elementProperty.FindPropertyRelative( "_name" ) );
 					}
+
+					using ( new GUIEnabledScope( i < property.arraySize - 1 ) )
+					{
+						if ( GUILayout.Button( s_moveDownContent, GUILayout.Width( 25 ) ) )
+						{
+							moveDownIndex = i;
+						}
+					}
+
+					if ( GUILayout.Button( s_deleteContent, GUILayout.Width( 25 ) ) )
+					{
+						indexesToDelete.Add( i );
+					}
+
+					using ( new GUIEnabledScope( i > 0 ) )
+					{
+						if ( GUILayout.Button( s_moveUpContent, GUILayout.Width( 25 ) ) )
+						{
+							moveUpIndex = i;
+						}
+					}
+
+					EditorGUILayout.EndHorizontal();
+
+					if ( drawStateEditing )
+					{
+						EditorGUILayout.PropertyField( elementProperty, true, GUILayout.ExpandWidth( true ) );
+					}
+
+					NodeEditorGUILayout.AddPortField( stateNode.GetOrAddLambdaPort( i ) );
 				}
-
-				EditorGUILayout.EndHorizontal();
-
-				if ( drawStateEditing )
-				{
-					EditorGUILayout.PropertyField( elementProperty, true, GUILayout.ExpandWidth( true ) );
-				}
-
-				NodeEditorGUILayout.AddPortField( stateNode.GetOrAddLambdaPort( i ) );
+				EditorGUILayout.EndVertical();
 			}
-			EditorGUILayout.EndVertical();
 
 			// -- logic
 			if ( newSize < 0 )

@@ -1,4 +1,5 @@
 ﻿using FSM.Components;
+using FSM.Editor.SharedComponentFilters;
 using FSM.Utility.Editor;
 
 using System.Collections.Generic;
@@ -14,12 +15,28 @@ namespace FSM.Editor
 	[CustomPropertyDrawer( typeof( SystemLambdaAction ) )]
 	public class SystemLambdaActionDrawer : PropertyDrawer
 	{
+		#region GUIContent
 		private static readonly GUIContent s_emptyContent = new GUIContent("");
 		private static readonly GUIContent s_foldedButtonContent = new GUIContent("\u25B6");
 		private static readonly GUIContent s_expandedButtonContent = new GUIContent("\u25BC");
 		private static readonly GUIContent s_parallelContent = new GUIContent("Parallel schedule");
 		private static readonly GUIContent s_structuralChangesContent = new GUIContent("Structural changes");
 		private static readonly GUIContent s_queryFieldContent = new GUIContent("Query field");
+		private static readonly GUIContent s_sharedFilterContent = new GUIContent("Shared filter");
+		private static readonly GUIContent s_addButtonContnet = new GUIContent("+");
+		private static readonly GUIContent s_removeButtonContnet = new GUIContent("-");
+		#endregion GUIContent
+
+		#region Styles
+		private static GUIStyle s_boldLabelStyle = null;
+
+		private static GUIStyle s_BoldLabelStyle => s_boldLabelStyle ?? ( s_boldLabelStyle = new GUIStyle( EditorStyles.boldLabel )
+		{
+			wordWrap = true,
+			richText = true,
+		} );
+
+		#endregion Styles
 
 		private static List<ComponentLink> s_cache = new List<ComponentLink>();
 		private static List<int> s_indexesToDelete = new List<int>();
@@ -55,6 +72,34 @@ namespace FSM.Editor
 			EditorGUI.LabelField( propertyRect.AllocateWidthFlat( 75 ), s_queryFieldContent );
 			EditorGUI.PropertyField( propertyRect.AllocateRestOfLine(), queryField, s_emptyContent );
 
+			propertyRect.AllocateLine();
+			var sharedFilter = property.FindPropertyRelative("_sharedFilter").GetPropertyValue<SharedComponentFilter>();
+			EditorGUI.LabelField( propertyRect.AllocateWidthFlat( 75 ), s_sharedFilterContent );
+
+			if ( sharedFilter.IsValid )
+			{
+				EditorGUI.LabelField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), sharedFilter.FilterName, s_BoldLabelStyle );
+			}
+			else
+			{
+				EditorGUI.LabelField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), s_emptyContent );
+			}
+
+			if ( !sharedFilter.IsValid && GUI.Button( propertyRect.AllocateRestOfLine(), s_addButtonContnet ) )
+			{
+				SharedComponentFilterWindow.ShowWindow( ( name, declaration ) =>
+				{
+					property.serializedObject.ApplyModifiedProperties();
+					sharedFilter.FilterName = name;
+					sharedFilter.ComponentDeclaration = declaration;
+					property.serializedObject.Update();
+				} );
+			}
+			else if ( sharedFilter.IsValid && GUI.Button( propertyRect.AllocateRestOfLine(), s_removeButtonContnet ) )
+			{
+				sharedFilter.Invalid();
+			}
+
 			EditorGUI.EndProperty();
 
 			if ( GUI.changed )
@@ -78,6 +123,8 @@ namespace FSM.Editor
 			// parallel scheduling and structural changes
 			height += EditorGUIUtility.singleLineHeight;
 			// query field
+			height += EditorGUIUtility.singleLineHeight;
+			// shared filter
 			height += EditorGUIUtility.singleLineHeight;
 			// array items
 			var components = property.FindPropertyRelative( "_components" );
@@ -112,27 +159,25 @@ namespace FSM.Editor
 				++addNewElementCount;
 			}
 
-			if ( !property.isExpanded )
-			{
-				return;
-			}
-
 			// Draw content
-			for ( int i = 0; i < property.arraySize; i++ )
+			if ( property.isExpanded )
 			{
-				var componentProp = property.GetArrayElementAtIndex(i);
-				propertyRect.AllocateLine( EditorGUI.GetPropertyHeight( componentProp ) );
-
-				EditorGUI.BeginChangeCheck();
-				EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), componentProp );
-				if ( EditorGUI.EndChangeCheck() )
+				for ( int i = 0; i < property.arraySize; i++ )
 				{
-					s_cache.Add( componentProp.GetPropertyValue<ComponentLink>() );
-				}
+					var componentProp = property.GetArrayElementAtIndex(i);
+					propertyRect.AllocateLine( EditorGUI.GetPropertyHeight( componentProp ) );
 
-				if ( GUI.Button( propertyRect.AllocateWidthFlat( 25 ), "-" ) )
-				{
-					s_indexesToDelete.Add( i );
+					EditorGUI.BeginChangeCheck();
+					EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), componentProp );
+					if ( EditorGUI.EndChangeCheck() )
+					{
+						s_cache.Add( componentProp.GetPropertyValue<ComponentLink>() );
+					}
+
+					if ( GUI.Button( propertyRect.AllocateWidthFlat( 25 ), "-" ) )
+					{
+						s_indexesToDelete.Add( i );
+					}
 				}
 			}
 

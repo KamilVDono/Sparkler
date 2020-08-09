@@ -19,6 +19,7 @@ namespace FSM.Components
 		[SerializeField] private bool _parallelSchedule = true;
 		[SerializeField] private bool _hasStructuralChanges = false;
 		[SerializeField] private string _queryField = "";
+		[SerializeField] private SharedComponentFilter _sharedFilter = new SharedComponentFilter();
 		[SerializeField] private ComponentLink[] _components = new ComponentLink[0];
 
 		#region Queries
@@ -30,6 +31,10 @@ namespace FSM.Components
 
 		public bool HasQueryField => !string.IsNullOrWhiteSpace( _queryField );
 		public string QueryFieldName => _queryField;
+
+		public bool HasSharedFilter => _sharedFilter.IsValid;
+		public string SharedFilterName => _sharedFilter.FilterName;
+		public string SharedFilterDeclaration => _sharedFilter.ComponentDeclaration;
 
 		public string FullName( StateNode stateNode )
 		{

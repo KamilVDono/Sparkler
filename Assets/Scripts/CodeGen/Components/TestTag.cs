@@ -3,7 +3,7 @@ using System;
 using Unity.Entities;
 
 [Serializable]
-public struct TestTag : IComponentData
+public struct TestTag : ISharedComponentData
 {
 	// Add fields to your component here. Remember that:
 	//
@@ -18,4 +18,32 @@ public struct TestTag : IComponentData
 	// * You should focus on the data structure that makes the most sense
 	//   for runtime use here. Authoring Components will be used for
 	//   authoring the data in the Editor.
+
+	public int IntValue;
+	public SomeEnum Enum;
+	public FlagEnum FlagEnumValue;
+	public byte Byte;
+	public ComposedStruct ComposedStructValue;
+
+	public enum SomeEnum
+	{
+		ValueA,
+		ValueB,
+	}
+
+	[Flags]
+	public enum FlagEnum
+	{
+		ValueA = 1 << 0,
+		ValueB = 1 << 1,
+		ValueC = 1 << 2,
+	}
+
+	[Serializable]
+	public struct ComposedStruct
+	{
+		public int Val1;
+		public float Val2;
+		public ulong Val3;
+	}
 }
