@@ -3,8 +3,12 @@ using FSM.Utility.Editor;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
+
+using Unity.Entities;
 
 using UnityEditor;
 
@@ -191,6 +195,26 @@ namespace FSM.Editor
 				if ( GUILayout.Button( "Generate", GUILayout.Width( 120 ) ) )
 				{
 					CodeGenerator.Generate( Target );
+				}
+			}
+
+			if ( GUILayout.Button( "Load system", GUILayout.Width( 120 ) ) )
+			{
+				string path = EditorUtility.OpenFilePanel("Load system from c# code", Application.dataPath, "cs");
+				if ( File.Exists( path ) )
+				{
+					var fileContent = File.ReadAllText(path);
+					var match = Regex.Match( fileContent, @"(class\s+)(\S+)" );
+					if ( match?.Groups.Count == 3 )
+					{
+						var className = match.Groups[2].Value;
+						var systemType = AppDomain.CurrentDomain.GetAssemblies()
+							.SelectMany( a => a.GetTypes() )
+							.First( t => t.Name == className );
+
+						Debug.Log( systemType );
+						Debug.Log( typeof( SystemBase ).IsAssignableFrom( systemType ) );
+					}
 				}
 			}
 		}
