@@ -54,12 +54,12 @@ namespace FSM.Components
 		private ComponentLinkUsageType _usageType = ComponentLinkUsageType.Invalid;
 
 		#region Queries
-		public Type TypeReference => _componentTypeReference?.Type;
+		public Type TypeReference { get => _componentTypeReference?.Type; set => _componentTypeReference = new ClassTypeReference( value ); }
 		public string HandwrittenName => _componentName;
 
 		public string ComponentName => TypeReference?.Name;
 
-		public ComponentLinkAccessType AccessType => _accessType;
+		public ComponentLinkAccessType AccessType { get => _accessType; set => _accessType = value; }
 		public ComponentLinkUsageType Usage { get => _usageType; set => _usageType = value; }
 
 		public bool IsHandWrited => TypeReference == null && !string.IsNullOrWhiteSpace( HandwrittenName );

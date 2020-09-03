@@ -3,6 +3,7 @@ using FSM.AI.States.Components;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Rendering;
+
 namespace FSM.AI.States.Systems
 {
 	public class IdleSystem : SystemBase
@@ -10,11 +11,13 @@ namespace FSM.AI.States.Systems
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
 		private EntityQuery _mainQuery;
 		private EntityQuery _craftingQuery;
+
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 			_endSimulationCmdBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
+
 		protected override void OnUpdate()
 		{
 			// Assign values to local variables captured in your job here, so that it has everything it

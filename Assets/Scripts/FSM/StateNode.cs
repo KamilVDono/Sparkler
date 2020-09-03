@@ -18,10 +18,38 @@ namespace FSM
 	[CreateNodeMenu( "State" )]
 	public class StateNode : FSMNode
 	{
+		[SerializeField] private bool _fromFile = false;
+
 		[Input(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
 		[SerializeField] private StateNode _from = null;
 
 		[SerializeField] private SystemLambdaAction[] _lambdas = new SystemLambdaAction[0];
+
+		#region Creation
+
+		public static StateNode FromFile( FSMGraph graph, FileSystemData data )
+		{
+			if ( graph.nodes.OfType<StateNode>().Any( n => n.Name == data.Name ) )
+			{
+				return null;
+			}
+
+			var node = graph.AddNode<StateNode>();
+			node.Name = data.Name;
+
+			node._lambdas = new SystemLambdaAction[data.Lambdas.Length];
+			for ( var i = 0; i < data.Lambdas.Length; i++ )
+			{
+				var lambda = data.Lambdas[i];
+				node._lambdas[i] = SystemLambdaAction.FromFile( lambda );
+			}
+
+			node._fromFile = true;
+
+			return node;
+		}
+
+		#endregion Creation
 
 		#region Queries
 
@@ -37,6 +65,8 @@ namespace FSM
 				return systemName;
 			}
 		}
+
+		public override bool Editable => !_fromFile;
 
 		public IEnumerable<ComponentLink> AllComponents => _lambdas.SelectMany( l => l.Components );
 		public IReadOnlyCollection<SystemLambdaAction> Lambdas => _lambdas;
@@ -220,5 +250,7 @@ namespace FSM
 		}
 
 		#endregion Setup validation
+
+		public override string ToString() => $"{GetType().Name} - {Name}";
 	}
 }

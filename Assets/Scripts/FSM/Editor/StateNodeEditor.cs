@@ -40,7 +40,9 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			// serializedObject.Update(); must go at the start of an inspector gui, and
 			// serializedObject.ApplyModifiedProperties(); goes at the end.
 			serializedObject.Update();
-			string[] excludes = { "m_Script", "graph", "position", "ports" };
+			string[] excludes = { "m_Script", "graph", "position", "ports", "_fromFile" };
+
+			var enableScope = new GUIEnabledScope(!serializedObject.FindProperty( "_fromFile" ).boolValue);
 
 			// Iterate through serialized properties and draw them like the Inspector (But with ports)
 			SerializedProperty iterator = serializedObject.GetIterator();
@@ -66,6 +68,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			serializedObject.ApplyModifiedProperties();
 
 			DrawSummary();
+
+			enableScope.Dispose();
 		}
 
 		private static void DrawArray( SerializedProperty property, StateNode stateNode )
@@ -80,7 +84,10 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			// Header [Label - size - plus button]
 			EditorGUILayout.Space( 8, false );
 			EditorGUILayout.BeginHorizontal();
-			property.isExpanded ^= GUILayout.Button( !property.isExpanded ? s_foldedButtonContent : s_expandedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) );
+			using ( new GUIEnabledScope( true, true ) )
+			{
+				property.isExpanded ^= GUILayout.Button( !property.isExpanded ? s_foldedButtonContent : s_expandedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) );
+			}
 			EditorGUILayout.LabelField( property.displayName, EditorStyles.boldLabel );
 
 			int newSize = EditorGUILayout.IntField( property.arraySize, GUILayout.Width( 50 ) );
@@ -218,9 +225,12 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 			EditorGUILayout.BeginHorizontal();
 
-			if ( GUILayout.Button( _expandedSummary ? s_expandedButtonContent : s_foldedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) ) )
+			using ( new GUIEnabledScope( true, true ) )
 			{
-				_expandedSummary = !_expandedSummary;
+				if ( GUILayout.Button( _expandedSummary ? s_expandedButtonContent : s_foldedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) ) )
+				{
+					_expandedSummary = !_expandedSummary;
+				}
 			}
 			EditorGUILayout.LabelField( s_summaryTitle, EditorStyles.boldLabel );
 

@@ -109,10 +109,16 @@ namespace XNode.Editor
 		{
 			XNode.Node node = target.AddNode(type);
 			node.position = position;
+			SetupNewNode( node );
+			config?.Invoke( node );
+		}
+
+		public virtual void SetupNewNode( Node node )
+		{
 			if ( string.IsNullOrEmpty( node.name ) )
 			{
 				// Automatically remove redundant 'Node' postfix
-				string typeName = type.Name;
+				string typeName = node.GetType().Name;
 				if ( typeName.EndsWith( "Node" ) )
 				{
 					typeName = typeName.Substring( 0, typeName.LastIndexOf( "Node" ) );
@@ -127,7 +133,6 @@ namespace XNode.Editor
 			}
 
 			NodeEditorWindow.RepaintAll();
-			config?.Invoke( node );
 		}
 
 		/// <summary>

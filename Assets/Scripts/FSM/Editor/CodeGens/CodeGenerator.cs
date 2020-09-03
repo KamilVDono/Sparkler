@@ -196,7 +196,7 @@ namespace FSM.Editor
 
 		private static void GenerateSystems( FSMGraph fsmGraph )
 		{
-			var states = fsmGraph.nodes.OfType<StateNode>().ToList();
+			var states = fsmGraph.nodes.OfType<StateNode>().Where( s => s.Editable ).ToList();
 
 			var systemsPath = PathExtension.SystemPath(Path.Combine( fsmGraph.CodeGenerationPath, "Systems"));
 			if ( !Directory.Exists( systemsPath ) )

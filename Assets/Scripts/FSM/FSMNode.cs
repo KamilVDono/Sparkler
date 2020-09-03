@@ -30,6 +30,8 @@ namespace FSM
 			}
 		}
 
+		public virtual bool Editable { get; } = true;
+
 		public override Action<string> RenameAction => ( newName ) => Name = newName;
 
 		public virtual int ColorSeed => Name?.GetHashCode() ?? 0;
@@ -61,6 +63,10 @@ namespace FSM
 
 		public (bool, string) IsRightConfigured()
 		{
+			if ( !Editable )
+			{
+				return (true, "");
+			}
 			var messages = _AllConfigurationCheckers
 				.Select( cc => cc() )
 				.GroupBy( p => p.Item1 )

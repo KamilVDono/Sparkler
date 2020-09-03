@@ -1,3 +1,4 @@
+using FSM.Editor.CodeGens;
 using FSM.Utility;
 using FSM.Utility.Editor;
 
@@ -6,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 using Unity.Entities;
 
@@ -35,7 +35,15 @@ namespace FSM.Editor
 
 		private FSMGraph Target => (FSMGraph)target;
 
-		public override void OnOpen() => window.titleContent = new GUIContent( $"{target.name} - FSM" );
+		public FSMGraphEditor() => AssemblyReloadEvents.afterAssemblyReload += RefreshNodes;
+
+		public override void OnOpen()
+		{
+			window.titleContent = new GUIContent( $"{target.name} - FSM" );
+			RefreshNodes();
+		}
+
+		public override void OnClose() => AssemblyReloadEvents.afterAssemblyReload -= RefreshNodes;
 
 		public override void OnGUI()
 		{
@@ -55,6 +63,14 @@ namespace FSM.Editor
 				Target.nodes.ForEach( EditorUtility.SetDirty );
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
+			}
+		}
+
+		private void RefreshNodes()
+		{
+			foreach ( var node in Target.nodes )
+			{
+				Debug.Log( node );
 			}
 		}
 
@@ -200,22 +216,7 @@ namespace FSM.Editor
 
 			if ( GUILayout.Button( "Load system", GUILayout.Width( 120 ) ) )
 			{
-				string path = EditorUtility.OpenFilePanel("Load system from c# code", Application.dataPath, "cs");
-				if ( File.Exists( path ) )
-				{
-					var fileContent = File.ReadAllText(path);
-					var match = Regex.Match( fileContent, @"(class\s+)(\S+)" );
-					if ( match?.Groups.Count == 3 )
-					{
-						var className = match.Groups[2].Value;
-						var systemType = AppDomain.CurrentDomain.GetAssemblies()
-							.SelectMany( a => a.GetTypes() )
-							.First( t => t.Name == className );
-
-						Debug.Log( systemType );
-						Debug.Log( typeof( SystemBase ).IsAssignableFrom( systemType ) );
-					}
-				}
+				LoadSystem();
 			}
 		}
 
@@ -224,6 +225,29 @@ namespace FSM.Editor
 			EditorGUILayout.LabelField( s_emptyContent, GUILayout.Width( 4 ) );
 			EditorGUILayout.LabelField( s_horizontalLine, GUILayout.Width( 4 ) );
 			EditorGUILayout.LabelField( s_emptyContent, GUILayout.Width( 4 ) );
+		}
+
+		private void LoadSystem()
+		{
+			string path = EditorUtility.OpenFilePanel("Load system from c# code", Application.dataPath, "cs");
+			if ( !File.Exists( path ) )
+			{
+				return;
+			}
+
+			var fileData = SystemReader.Read( path );
+			if ( fileData == null )
+			{
+				return;
+			}
+
+			var newNode = StateNode.FromFile( Target, fileData );
+			if ( newNode == null )
+			{
+				return;
+			}
+
+			SetupNewNode( newNode );
 		}
 
 		#endregion Toolbar

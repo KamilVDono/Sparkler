@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8399235882668064251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 824, y: -56}
+  ports:
+    keys:
+    - _from
+    - Component_-820458279
+    values:
+    - _fieldName: _from
+      _node: {fileID: -8399235882668064251}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-820458279
+      _node: {fileID: -8399235882668064251}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Test
+  _fromFile: 1
+  _from: {fileID: 0}
+  _lambdas:
+  - _guid: -820458279
+    _name: IdleSystem_TransitionCrafting
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: _craftingQuery
+    _sharedFilter:
+      FilterName: 
+      ComponentDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
+        name: OtherTag
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
+        name: WorkSpeed
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
 --- !u!114 &-1781160930075639533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +136,7 @@ MonoBehaviour:
       _dynamic: 1
       _allowedTypes: []
   _name: Idle
+  _fromFile: 0
   _from: {fileID: 0}
   _lambdas:
   - _guid: -1707343371
@@ -163,6 +226,7 @@ MonoBehaviour:
   - {fileID: -1781160930075639533}
   - {fileID: 7842134057005209292}
   - {fileID: 8925863260592550595}
+  - {fileID: -8399235882668064251}
   _codeGenerationPath: Assets/Scripts/CodeGen
   _namespace: FSM.AI.States
   _stateEditing: 1
@@ -217,6 +281,7 @@ MonoBehaviour:
       _dynamic: 1
       _allowedTypes: []
   _name: Walk
+  _fromFile: 0
   _from: {fileID: 0}
   _lambdas:
   - _guid: -1395152212
@@ -281,6 +346,7 @@ MonoBehaviour:
       _dynamic: 1
       _allowedTypes: []
   _name: Crafting
+  _fromFile: 0
   _from: {fileID: 0}
   _lambdas:
   - _guid: -1384855949

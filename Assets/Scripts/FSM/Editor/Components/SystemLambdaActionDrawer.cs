@@ -149,7 +149,10 @@ namespace FSM.Editor
 			// -- Drawing
 			// Header [Label - size - plus button]
 			propertyRect.AllocateLine();
-			property.isExpanded ^= GUI.Button( propertyRect.AllocateWidthFlat( 15 ), !property.isExpanded ? s_foldedButtonContent : s_expandedButtonContent, EditorStyles.boldLabel );
+			using ( new GUIEnabledScope( true, true ) )
+			{
+				property.isExpanded ^= GUI.Button( propertyRect.AllocateWidthFlat( 15 ), !property.isExpanded ? s_foldedButtonContent : s_expandedButtonContent, EditorStyles.boldLabel );
+			}
 			EditorGUI.LabelField( propertyRect.AlocateWidthWithAscesorFlat( 75 ), property.displayName, EditorStyles.boldLabel );
 
 			int newSize = EditorGUI.IntField( propertyRect.AllocateWidthFlat(50), property.arraySize );
