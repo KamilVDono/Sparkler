@@ -35,15 +35,7 @@ namespace FSM.Editor
 
 		private FSMGraph Target => (FSMGraph)target;
 
-		public FSMGraphEditor() => AssemblyReloadEvents.afterAssemblyReload += RefreshNodes;
-
-		public override void OnOpen()
-		{
-			window.titleContent = new GUIContent( $"{target.name} - FSM" );
-			RefreshNodes();
-		}
-
-		public override void OnClose() => AssemblyReloadEvents.afterAssemblyReload -= RefreshNodes;
+		public override void OnOpen() => window.titleContent = new GUIContent( $"{target.name} - FSM" );
 
 		public override void OnGUI()
 		{
@@ -63,14 +55,6 @@ namespace FSM.Editor
 				Target.nodes.ForEach( EditorUtility.SetDirty );
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
-			}
-		}
-
-		private void RefreshNodes()
-		{
-			foreach ( var node in Target.nodes )
-			{
-				Debug.Log( node );
 			}
 		}
 
