@@ -222,12 +222,14 @@ namespace FSM.Editor
 			var fileData = SystemReader.Read( path );
 			if ( fileData == null )
 			{
+				EditorUtility.DisplayDialog( "Invalid file", "Can not load selected file", "OK" );
 				return;
 			}
 
 			var newNode = StateNode.FromFile( Target, fileData );
 			if ( newNode == null )
 			{
+				EditorUtility.DisplayDialog( "Invalid file", "Selected file is already loaded", "OK" );
 				return;
 			}
 

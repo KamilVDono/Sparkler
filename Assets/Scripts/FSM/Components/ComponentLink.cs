@@ -121,12 +121,16 @@ namespace FSM.Components
 					return true;
 				}
 			}
-			if ( TypeReference == null && !string.IsNullOrWhiteSpace( _componentTypeReference.Name ) )
+			if ( TypeReference == null )
 			{
-				_componentName = _componentTypeReference.Name;
-				_componentTypeReference = new ClassTypeReference();
-				return true;
+				if ( TypeReference == null && !string.IsNullOrWhiteSpace( _componentTypeReference.Name ) )
+				{
+					_componentName = _componentTypeReference.Name;
+					_componentTypeReference = new ClassTypeReference();
+					return true;
+				}
 			}
+
 			return false;
 		}
 

@@ -52,13 +52,11 @@ MonoBehaviour:
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
-        name: OtherTag
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
-        name: WorkSpeed
       _componentName: 
       _accessType: 0
       _usageType: 1
@@ -152,19 +150,16 @@ MonoBehaviour:
     _components:
     - _componentTypeReference:
         classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
         classRef: TestTag, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 2
@@ -179,13 +174,11 @@ MonoBehaviour:
     _components:
     - _componentTypeReference:
         classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
         classRef: TestTag, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1
@@ -200,13 +193,11 @@ MonoBehaviour:
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 0
       _usageType: 1
@@ -295,13 +286,11 @@ MonoBehaviour:
     _components:
     - _componentTypeReference:
         classRef: Unity.Transforms.Translation, Unity.Transforms
-        name: Translation
       _componentName: 
       _accessType: 3
       _usageType: 1
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1
@@ -360,13 +349,11 @@ MonoBehaviour:
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.CraftingRecepie, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 3
       _usageType: 1
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
-        name: 
       _componentName: 
       _accessType: 1
       _usageType: 1

@@ -41,7 +41,14 @@ namespace FSM
 			get
 			{
 				System.Random rng = new System.Random(ColorSeed);
-				return new Color( (float)rng.NextDouble(), (float)rng.NextDouble(), (float)rng.NextDouble() );
+				var color = RandomColor();
+				while ( color.r > 0.9 && color.g < 0.2f && color.b < 0.2f )
+				{
+					color = RandomColor();
+				}
+				return color;
+
+				Color RandomColor() => new Color( (float)rng.NextDouble(), (float)rng.NextDouble(), (float)rng.NextDouble() );
 			}
 		}
 

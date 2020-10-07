@@ -2,6 +2,7 @@
 // file in the project root.
 
 using System;
+using System.Text.RegularExpressions;
 
 using UnityEngine;
 
@@ -16,11 +17,28 @@ namespace Rotorz.Games
 		[SerializeField]
 		private string classRef;
 
-		[SerializeField]
-		private string name;
-
 		private Type type;
-		public string Name => name;
+
+		public string Name
+		{
+			get
+			{
+				if ( !string.IsNullOrWhiteSpace( Type?.Name ) )
+				{
+					return Type.Name;
+				}
+				if ( string.IsNullOrWhiteSpace( classRef ) )
+				{
+					return string.Empty;
+				}
+				var oldTypeNameMatch = Regex.Match( classRef, @"([A-Za-z\.]+)\.(.+?),");
+				if ( oldTypeNameMatch.Success )
+				{
+					return oldTypeNameMatch.Groups[2].Value;
+				}
+				return string.Empty;
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets type of class reference.
@@ -40,7 +58,6 @@ namespace Rotorz.Games
 
 				this.type = value;
 				this.classRef = GetClassRef( value );
-				this.name = value?.Name;
 			}
 		}
 
@@ -60,7 +77,6 @@ namespace Rotorz.Games
 			this.Type = !string.IsNullOrEmpty( assemblyQualifiedClassName )
 				? Type.GetType( assemblyQualifiedClassName )
 				: null;
-			this.name = this.Type?.Name;
 		}
 
 		/// <summary>
@@ -70,18 +86,9 @@ namespace Rotorz.Games
 		/// <exception cref="System.ArgumentException">
 		/// If <paramref name="type"/> is not a class type.
 		/// </exception>
-		public ClassTypeReference( Type type )
-		{
-			Type = type;
-			this.name = this.Type?.Name;
-		}
+		public ClassTypeReference( Type type ) => Type = type;
 
-		public static string GetClassRef( Type type )
-		{
-			return type != null
-				? type.FullName + ", " + type.Assembly.GetName().Name
-				: "";
-		}
+		public static string GetClassRef( Type type ) => type != null ? type.AssemblyQualifiedName : "";
 
 		public static implicit operator string( ClassTypeReference typeReference ) => typeReference.classRef;
 
@@ -106,13 +113,8 @@ namespace Rotorz.Games
 			}
 		}
 
-		void ISerializationCallbackReceiver.OnBeforeSerialize()
+		public void OnBeforeSerialize()
 		{
-			//HACK: If we null Type then we need null also name
-			if ( Type == null )
-			{
-				name = "";
-			}
 		}
 
 		public override string ToString() => this.Type != null ? this.Type.FullName : "(None)";
@@ -127,7 +129,7 @@ namespace Rotorz.Games
 
 		public bool Equals( ClassTypeReference other ) => !ReferenceEquals( other, null ) && classRef == other.classRef;
 
-		public override int GetHashCode() => 1504390128 + classRef.GetHashCode();
+		public override int GetHashCode() => classRef?.GetHashCode() ?? 0;
 
 		#endregion Equality
 	}

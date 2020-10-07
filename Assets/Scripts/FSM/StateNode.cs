@@ -25,6 +25,14 @@ namespace FSM
 
 		[SerializeField] private SystemLambdaAction[] _lambdas = new SystemLambdaAction[0];
 
+		public override Action<string> RenameAction => ( newName ) =>
+																												 {
+																													 if ( !_fromFile )
+																													 {
+																														 Name = newName;
+																													 }
+																												 };
+
 		#region Creation
 
 		public static StateNode FromFile( FSMGraph graph, FileSystemData data )
