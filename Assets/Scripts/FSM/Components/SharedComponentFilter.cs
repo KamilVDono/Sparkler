@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Text;
+
+using UnityEngine;
 
 namespace FSM.Components
 {
@@ -6,7 +9,27 @@ namespace FSM.Components
 	public class SharedComponentFilter
 	{
 		public string FilterName;
-		public string ComponentDeclaration;
+		[SerializeField] private byte[] _serializedDeclaration;
+
+		public string ComponentDeclaration
+		{
+			get
+			{
+				if ( ( _serializedDeclaration?.Length ?? 0 ) < 1 )
+				{
+					return string.Empty;
+				}
+				return Encoding.Unicode.GetString( _serializedDeclaration );
+			}
+			set
+			{
+				if ( string.IsNullOrWhiteSpace( value ) )
+				{
+					_serializedDeclaration = null;
+				}
+				_serializedDeclaration = Encoding.Unicode.GetBytes( value );
+			}
+		}
 
 		public bool IsValid => !string.IsNullOrEmpty( FilterName ) && !string.IsNullOrEmpty( ComponentDeclaration );
 

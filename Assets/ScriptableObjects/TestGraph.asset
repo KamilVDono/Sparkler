@@ -48,7 +48,7 @@ MonoBehaviour:
     _queryField: _craftingQuery
     _sharedFilter:
       FilterName: 
-      ComponentDeclaration: 
+      _serializedDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
@@ -144,9 +144,7 @@ MonoBehaviour:
     _queryField: _mainQuery
     _sharedFilter:
       FilterName: primitiveTag
-      ComponentDeclaration: PrimitiveTag primitiveTag = new PrimitiveTag{ IntVal
-        = 0, ByteVal = 0, ULongVal = 0, EnumVal = PrimitiveTag.Enum.Val1, FlagEnumVal
-        = (PrimitiveTag.FlagEnum)(0), };
+      _serializedDeclaration: 5000720069006d006900740069007600650054006100670020007000720069006d006900740069007600650054006100670020003d0020006e006500770020005000720069006d00690074006900760065005400610067007b00200049006e007400560061006c0020003d00200030002c0020004200790074006500560061006c0020003d00200030002c00200055004c006f006e006700560061006c0020003d00200030002c00200045006e0075006d00560061006c0020003d0020005000720069006d00690074006900760065005400610067002e0045006e0075006d002e00560061006c0031002c00200046006c006100670045006e0075006d00560061006c0020003d00200028005000720069006d00690074006900760065005400610067002e0046006c006100670045006e0075006d0029002800390029002c0020007d003b00
     _components:
     - _componentTypeReference:
         classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
@@ -170,7 +168,7 @@ MonoBehaviour:
     _queryField: 
     _sharedFilter:
       FilterName: 
-      ComponentDeclaration: 
+      _serializedDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
@@ -189,7 +187,7 @@ MonoBehaviour:
     _queryField: _craftingQuery
     _sharedFilter:
       FilterName: 
-      ComponentDeclaration: 
+      _serializedDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
@@ -282,7 +280,7 @@ MonoBehaviour:
     _queryField: 
     _sharedFilter:
       FilterName: 
-      ComponentDeclaration: 
+      _serializedDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: Unity.Transforms.Translation, Unity.Transforms
@@ -345,7 +343,7 @@ MonoBehaviour:
     _queryField: 
     _sharedFilter:
       FilterName: 
-      ComponentDeclaration: 
+      _serializedDeclaration: 
     _components:
     - _componentTypeReference:
         classRef: FSM.AI.States.Components.CraftingRecepie, Assembly-CSharp
