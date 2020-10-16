@@ -1,6 +1,11 @@
-﻿using System.Linq;
+﻿using FSM.Utility;
+using FSM.Utility.Editor;
+
+using System;
+using System.Linq;
 
 using UnityEditor;
+using UnityEditor.Compilation;
 
 using UnityEngine;
 
@@ -9,10 +14,9 @@ namespace FSM.Editor.CodeGens
 	public class ComponentCreatorWindow : EditorWindow
 	{
 		private static readonly GUIContent s_titleContent = new GUIContent("Component creator");
-		private static readonly GUIContent s_emptyContent = new GUIContent("");
 
+		private static string[] _namespaces;
 		private SerializedObject _serializedObject;
-
 		[SerializeField] private ComponentDefinition _componentDefinition;
 
 		[MenuItem( "FSM/Component creator" )]
@@ -32,25 +36,74 @@ namespace FSM.Editor.CodeGens
 			window.ShowUtility();
 		}
 
+		private void OnEnable()
+		{
+			if ( _namespaces != null )
+			{
+				return;
+			}
+			var unityAssemblies = CompilationPipeline
+				.GetAssemblies( AssembliesType.PlayerWithoutTestAssemblies )
+				.Select( ua => ua.name )
+				.Where(n => !n.StartsWith("unity", StringComparison.InvariantCultureIgnoreCase) && !n.StartsWith("system", StringComparison.InvariantCultureIgnoreCase));
+
+			_namespaces = AppDomain.CurrentDomain.GetAssemblies()
+				.Where( a => unityAssemblies.Contains( a.GetName().Name ) )
+				.SelectMany( a => a.GetTypes() )
+				.Select( t => t.Namespace )
+				.Where( n => !string.IsNullOrWhiteSpace( n ) )
+				.Distinct().ToArray();
+		}
+
 		private void OnGUI()
 		{
 			_serializedObject.Update();
 			string[] excludes = { "m_Script" };
 
 			// Iterate through serialized properties and draw them like the Inspector (But with ports)
-			SerializedProperty iterator = _serializedObject.FindProperty(nameof(_componentDefinition));
-			bool enterChildren = true;
-			EditorGUIUtility.labelWidth = 84;
-			while ( iterator.NextVisible( enterChildren ) )
-			{
-				enterChildren = false;
-				if ( excludes.Contains( iterator.name ) )
-				{
-					continue;
-				}
+			SerializedProperty componentProperty = _serializedObject.FindProperty(nameof(_componentDefinition));
 
-				DrawProperty( iterator );
+			// Directory
+			EditorGUILayout.BeginHorizontal();
+			var directoryProperty = componentProperty.FindPropertyRelative( "Directory" );
+			GUIDrawers.DrawFieldWithLabel( directoryProperty );
+			if ( GUILayout.Button( "\u27b1", GUILayout.Width( 30 ) ) )
+			{
+				var dialogPath = EditorUtility.OpenFolderPanel( "Code directory", "", "" );
+				if ( !string.IsNullOrWhiteSpace( dialogPath ) )
+				{
+					directoryProperty.stringValue = PathExtension.AssetsPath( dialogPath );
+				}
 			}
+			EditorGUILayout.EndHorizontal();
+
+			// Namespace
+			var namespaceProperty = componentProperty.FindPropertyRelative( "Namespace" );
+			using ( new GUIEnabledScope( false ) )
+			{
+				if ( !namespaceProperty.stringValue.EndsWith( ".Components", StringComparison.InvariantCultureIgnoreCase ) )
+				{
+					EditorGUILayout.TextArea( "Remember, if namespace do not ends with \".Components\" system will automatically add it", EditorStyles.helpBox );
+				}
+			}
+			EditorGUILayout.BeginHorizontal();
+			GUIDrawers.DrawFieldWithLabel( namespaceProperty );
+			var selectedNamespace = DrawNamespacesPopup( namespaceProperty.stringValue );
+			if ( !string.IsNullOrWhiteSpace( selectedNamespace ) )
+			{
+				namespaceProperty.stringValue = selectedNamespace;
+			}
+			EditorGUILayout.EndHorizontal();
+
+			// Type & Name
+			EditorGUILayout.BeginHorizontal();
+			GUIDrawers.DrawFieldWithLabel( componentProperty.FindPropertyRelative( "ComponentType" ) );
+			GUIDrawers.DrawFieldWithLabel( componentProperty.FindPropertyRelative( "ComponentName" ) );
+			EditorGUILayout.EndHorizontal();
+
+			// Fields
+			GUIDrawers.DrawArray<object>( componentProperty.FindPropertyRelative( "Fields" ) );
+
 			_serializedObject.ApplyModifiedProperties();
 
 			DrawActionButtons();
@@ -78,21 +131,16 @@ namespace FSM.Editor.CodeGens
 			EditorGUILayout.EndHorizontal();
 		}
 
-		private void DrawProperty( SerializedProperty serializedProperty )
+		private string DrawNamespacesPopup( string oldOption )
 		{
-			if ( serializedProperty.isArray && serializedProperty.propertyType != SerializedPropertyType.String )
+			var oldIndex =_namespaces.IndexOf(oldOption);
+			oldIndex = Mathf.Clamp( oldIndex, -1, _namespaces.Length - 1 );
+			var newIndex = EditorGUILayout.Popup(oldIndex, _namespaces);
+			if ( oldIndex != newIndex && newIndex >= 0 )
 			{
-				EditorGUILayout.PropertyField( serializedProperty );
+				return _namespaces[newIndex];
 			}
-			else
-			{
-				EditorGUILayout.BeginHorizontal();
-
-				EditorGUILayout.LabelField( serializedProperty.displayName, GUILayout.Width( 150 ) );
-				EditorGUILayout.PropertyField( serializedProperty, s_emptyContent );
-
-				EditorGUILayout.EndHorizontal();
-			}
+			return string.Empty;
 		}
 	}
 }

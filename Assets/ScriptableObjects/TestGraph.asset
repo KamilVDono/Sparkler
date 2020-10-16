@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 776, y: -344}
+  position: {x: 920, y: -568}
   ports:
     keys:
     - _from
@@ -171,12 +171,12 @@ MonoBehaviour:
       _serializedDeclaration: 
     _components:
     - _componentTypeReference:
-        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
-      _componentName: 
-      _accessType: 1
-      _usageType: 1
+        classRef: 
+      _componentName: Kupa
+      _accessType: 0
+      _usageType: 0
     - _componentTypeReference:
-        classRef: TestTag, Assembly-CSharp
+        classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
       _componentName: 
       _accessType: 1
       _usageType: 1
@@ -238,6 +238,7 @@ MonoBehaviour:
     - _from
     - Component_-1395152212
     - Component_531302806
+    - Component_-1932310093
     values:
     - _fieldName: _from
       _node: {fileID: 7842134057005209292}
@@ -261,6 +262,15 @@ MonoBehaviour:
       _dynamic: 1
       _allowedTypes: []
     - _fieldName: Component_531302806
+      _node: {fileID: 7842134057005209292}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-1932310093
       _node: {fileID: 7842134057005209292}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []

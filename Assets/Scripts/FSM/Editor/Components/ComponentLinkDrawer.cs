@@ -11,14 +11,13 @@ using UnityEditor;
 
 using UnityEngine;
 
+using static FSM.Utility.Editor.GUIContentExtension;
+
 namespace FSM.Editor.Components
 {
 	[CustomPropertyDrawer( typeof( ComponentLink ) )]
 	public class ComponentLinkDrawer : PropertyDrawer
 	{
-		public static readonly GUIContent EmptyContent = new GUIContent("");
-		public static readonly GUIContent PlusContent = new GUIContent("+");
-
 		public override void OnGUI( Rect position, SerializedProperty property, GUIContent label )
 		{
 			EditorGUI.BeginProperty( position, label, property );
@@ -49,7 +48,7 @@ namespace FSM.Editor.Components
 			{
 				propertyRect.AllocateLine();
 				var nameProp = property.FindPropertyRelative( "_componentName" );
-				EditorGUI.PropertyField( propertyRect.AlocateWidthWithAscesorFlat( 25 ), nameProp, EmptyContent );
+				EditorGUI.PropertyField( propertyRect.AllocateWidthWithAscesorFlat( 25 ), nameProp, EmptyContent );
 				using ( new GUIEnabledScope( !string.IsNullOrWhiteSpace( nameProp.stringValue ) ) )
 				{
 					if ( GUI.Button( propertyRect.AllocateRestOfLine(), PlusContent ) )

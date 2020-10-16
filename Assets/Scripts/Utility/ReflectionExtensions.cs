@@ -209,13 +209,20 @@ namespace FSM.Utility
 		/// <param name="value">The value.</param>
 		public static void SetMemberValue( this MemberInfo member, object target, object value )
 		{
-			if ( member.MemberType == MemberTypes.Field )
+			try
 			{
-				( (FieldInfo)member ).SetValue( target, value );
+				if ( member is FieldInfo fieldInfo )
+				{
+					fieldInfo.SetValue( target, value );
+				}
+				else if ( member.MemberType == MemberTypes.Property )
+				{
+					( (PropertyInfo)member ).SetValue( target, value, null );
+				}
 			}
-			else if ( member.MemberType == MemberTypes.Property )
+			catch ( Exception e )
 			{
-				( (PropertyInfo)member ).SetValue( target, value, null );
+				Debug.LogException( e );
 			}
 		}
 

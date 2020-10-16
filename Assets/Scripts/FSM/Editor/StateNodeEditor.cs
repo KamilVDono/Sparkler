@@ -10,6 +10,7 @@ using UnityEngine;
 
 using XNode.Editor;
 
+using static FSM.Utility.Editor.GUIContentExtension;
 using static FSM.Utility.SerializedPropertyExtension;
 
 namespace FSM.Editor.Assets.Scripts.FSM.Editor
@@ -17,12 +18,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 	[CustomNodeEditor( typeof( StateNode ) )]
 	public class StateNodeEditor : FSMNodeEditor<StateNode>
 	{
-		private static readonly GUIContent s_foldedButtonContent = new GUIContent("\u25B6");
-		private static readonly GUIContent s_expandedButtonContent = new GUIContent("\u25BC");
-		private static readonly GUIContent s_moveDownContent = new GUIContent("\u25BC");
-		private static readonly GUIContent s_moveUpContent = new GUIContent("\u25B2");
-		private static readonly GUIContent s_deleteContent = new GUIContent("-");
-		private static readonly GUIContent s_addContent = new GUIContent("+");
+		#region GUIContent
 		private static readonly GUIContent s_summaryTitle = new GUIContent("Summary");
 		private static readonly GUIContent s_summaryLambdasTitle = new GUIContent("Lambdas:");
 		private static readonly GUIContent s_summaryComponentsTitle = new GUIContent("Components:");
@@ -31,6 +27,8 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 		{
 			wordWrap = true,
 		};
+
+		#endregion GUIContent
 
 		private bool _expandedSummary = false;
 
@@ -86,13 +84,13 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 			EditorGUILayout.BeginHorizontal();
 			using ( new GUIEnabledScope( true, true ) )
 			{
-				property.isExpanded ^= GUILayout.Button( !property.isExpanded ? s_foldedButtonContent : s_expandedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) );
+				property.isExpanded ^= GUILayout.Button( !property.isExpanded ? FoldedButtonContent : ExpandedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) );
 			}
 			EditorGUILayout.LabelField( property.displayName, EditorStyles.boldLabel );
 
 			int newSize = EditorGUILayout.IntField( property.arraySize, GUILayout.Width( 50 ) );
 
-			if ( GUILayout.Button( s_addContent, GUILayout.Width( 25 ) ) )
+			if ( GUILayout.Button( PlusContent, GUILayout.Width( 25 ) ) )
 			{
 				++addNewElementCount;
 			}
@@ -121,20 +119,20 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 					using ( new GUIEnabledScope( i < property.arraySize - 1 ) )
 					{
-						if ( GUILayout.Button( s_moveDownContent, GUILayout.Width( 25 ) ) )
+						if ( GUILayout.Button( MoveDownContent, GUILayout.Width( 25 ) ) )
 						{
 							moveDownIndex = i;
 						}
 					}
 
-					if ( GUILayout.Button( s_deleteContent, GUILayout.Width( 25 ) ) )
+					if ( GUILayout.Button( MinusContent, GUILayout.Width( 25 ) ) )
 					{
 						indexesToDelete.Add( i );
 					}
 
 					using ( new GUIEnabledScope( i > 0 ) )
 					{
-						if ( GUILayout.Button( s_moveUpContent, GUILayout.Width( 25 ) ) )
+						if ( GUILayout.Button( MoveUpContent, GUILayout.Width( 25 ) ) )
 						{
 							moveUpIndex = i;
 						}
@@ -227,7 +225,7 @@ namespace FSM.Editor.Assets.Scripts.FSM.Editor
 
 			using ( new GUIEnabledScope( true, true ) )
 			{
-				if ( GUILayout.Button( _expandedSummary ? s_expandedButtonContent : s_foldedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) ) )
+				if ( GUILayout.Button( _expandedSummary ? ExpandedButtonContent : FoldedButtonContent, EditorStyles.boldLabel, GUILayout.Width( 15 ) ) )
 				{
 					_expandedSummary = !_expandedSummary;
 				}

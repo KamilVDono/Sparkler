@@ -1,6 +1,12 @@
-﻿using Rotorz.Games;
+﻿using FSM.Utility.Editor;
+
+using Rotorz.Games;
 
 using System;
+
+using UnityEditor;
+
+using UnityEngine;
 
 namespace FSM.Editor.CodeGens
 {
@@ -49,5 +55,25 @@ namespace FSM.Editor.CodeGens
 		public ClassTypeReference type;
 
 		public ComponentFieldAccessType accessType = ComponentFieldAccessType.Public;
+	}
+
+	[CustomPropertyDrawer( typeof( ComponentField ) )]
+	public class ComponentFieldDrawer : PropertyDrawer
+	{
+		public override void OnGUI( Rect position, SerializedProperty property, GUIContent label )
+		{
+			PropertyRect propertyRect = new PropertyRect(position);
+			EditorGUI.BeginProperty( position, label, property );
+
+			GUIDrawers.DrawFieldWithLabelPercentage( ref propertyRect, property.FindPropertyRelative( nameof( ComponentField.accessType ) ), labelWidth: 100, labelWidthPercentage: 0.3f );
+			propertyRect.AllocateWidthPrecent( 0.05f );
+			GUIDrawers.DrawFieldWithLabelPercentage( ref propertyRect, property.FindPropertyRelative( nameof( ComponentField.type ) ), false, labelWidth: 50, labelWidthPercentage: 0.65f );
+
+			GUIDrawers.DrawFieldWithLabel( ref propertyRect, property.FindPropertyRelative( nameof( ComponentField.name ) ), labelWidth: 100 );
+
+			EditorGUI.EndProperty();
+		}
+
+		public override float GetPropertyHeight( SerializedProperty property, GUIContent label ) => EditorGUIUtility.singleLineHeight * 2;
 	}
 }

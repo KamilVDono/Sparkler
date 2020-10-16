@@ -1,7 +1,9 @@
 {
     "name": "FSM.Utility.Editor",
     "rootNamespace": "FSM.Utility.Editor",
-    "references": [],
+    "references": [
+        "GUID:2f8dfaadf5ea4b44e81a2d7f24d5a672"
+    ],
     "includePlatforms": [
         "Editor"
     ],

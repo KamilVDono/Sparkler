@@ -178,7 +178,7 @@ namespace FSM.Editor
 				var dialogPath = EditorUtility.OpenFolderPanel( "Code directory", "", "" );
 				if ( !string.IsNullOrWhiteSpace( dialogPath ) )
 				{
-					Target.CodeGenerationPath = "Assets" + dialogPath.Substring( Application.dataPath.Length );
+					Target.CodeGenerationPath = PathExtension.AssetsPath( dialogPath );
 				}
 			}
 

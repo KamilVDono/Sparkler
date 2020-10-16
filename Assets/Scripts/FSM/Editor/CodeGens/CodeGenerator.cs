@@ -132,12 +132,17 @@ namespace FSM.Editor
 
 		private static void GenerateComponentFile( string componentName, string namespaceName, string componentPath, string template )
 		{
+			var dotCompoennts = ".Components";
 			var shouldProceed = !File.Exists( componentPath ) || EditorUtility.DisplayDialog(
 						"Create component file",
 						$"Component {componentName} at path {componentPath} already exists. Do you want regenerate this file?", "Yes", "No"
 						);
 			if ( shouldProceed )
 			{
+				if ( namespaceName.EndsWith( dotCompoennts ) )
+				{
+					namespaceName = namespaceName.Substring( 0, namespaceName.Length - dotCompoennts.Length );
+				}
 				var code = template;
 				code = s_namespaceRegex.Replace( code, namespaceName );
 				code = s_nameRegex.Replace( code, componentName );
