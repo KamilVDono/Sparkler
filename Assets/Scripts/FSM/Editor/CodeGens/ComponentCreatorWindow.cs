@@ -1,5 +1,8 @@
-﻿using FSM.Utility;
+﻿using FSM.Editor.Components.SizeAnalysis;
+using FSM.Utility;
 using FSM.Utility.Editor;
+
+using Primitives;
 
 using System;
 using System.Linq;
@@ -13,13 +16,15 @@ namespace FSM.Editor.CodeGens
 {
 	public class ComponentCreatorWindow : EditorWindow
 	{
+		private const string NESTED_STRUCTS_WARNING = "\nBE AWARE:\nYou have nested structures so there is possibility you are not able to achieve best size";
 		private static readonly GUIContent s_titleContent = new GUIContent("Component creator");
+		private static readonly Type s_primitiveType = typeof(IPrimitiveType);
 
 		private static string[] _namespaces;
 		private SerializedObject _serializedObject;
 		[SerializeField] private ComponentDefinition _componentDefinition;
 
-		[MenuItem( "FSM/Component creator" )]
+		[MenuItem( "FSM/Component creator", priority = 100 )]
 		public static void ShowWindow() => ShowWindow( "", "", "" );
 
 		public static void ShowWindow( string name, string namespaceName, string directory )
@@ -57,8 +62,9 @@ namespace FSM.Editor.CodeGens
 
 		private void OnGUI()
 		{
+			DrawSizeAnalysis();
+
 			_serializedObject.Update();
-			string[] excludes = { "m_Script" };
 
 			// Iterate through serialized properties and draw them like the Inspector (But with ports)
 			SerializedProperty componentProperty = _serializedObject.FindProperty(nameof(_componentDefinition));
@@ -107,6 +113,41 @@ namespace FSM.Editor.CodeGens
 			_serializedObject.ApplyModifiedProperties();
 
 			DrawActionButtons();
+		}
+
+		private void DrawSizeAnalysis()
+		{
+			var fields = _componentDefinition.Fields
+					.Select(f => f.type.Type)
+					.Where(t => t != null)
+					.SelectMany(t => StructTypeSize.CollectFields(t))
+					.ToArray();
+
+			bool hasNested = _componentDefinition.Fields.Any(f => !((f.type.Type?.IsPrimitive ?? true) || s_primitiveType.IsAssignableFrom(f.type.Type)));
+
+			var currentSize = StructTypeSize.GetCurrentStructSize( fields );
+			var possibleSize = StructTypeSize.GetPossibleStructSize( fields );
+
+			using ( new GUIEnabledScope( false ) )
+			{
+				EditorGUILayout.TextArea(
+					S.Concat() + _componentDefinition.Fields.Length + " fields with size: " + currentSize
+					+ "B, when possible " + possibleSize + " B" + ( hasNested ? NESTED_STRUCTS_WARNING : string.Empty ),
+					EditorStyles.helpBox );
+			}
+
+			if ( possibleSize < currentSize && GUILayout.Button( "Try to reduce size" ) )
+			{
+				if ( _componentDefinition.Fields.Any( f => f.type.Type == null ) )
+				{
+					EditorUtility.DisplayDialog( "Invalid setup", "Component have filed without type, fix it", "OK" );
+				}
+				_componentDefinition.Fields = _componentDefinition
+					.Fields
+					.OrderByDescending( f => f.type.Type != null ? StructTypeSize.GetTypeSize( f.type.Type ) : 0 )
+					.ToArray();
+			}
+			EditorGUILayout.Space();
 		}
 
 		private void DrawActionButtons()

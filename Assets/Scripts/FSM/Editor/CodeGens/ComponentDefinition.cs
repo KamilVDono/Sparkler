@@ -10,20 +10,21 @@ using UnityEngine;
 
 namespace FSM.Editor.CodeGens
 {
-	public enum ComponentType
+	public enum ComponentType : byte
 	{
-		ComponentData = 1,
-		SharedComponentData = 2,
-		SystemStateComponent = 3,
-		SystemStateSharedComponent = 4,
-		BufferElementData = 5,
+		ComponentData,
+		SharedComponentData,
+		BufferElementData,
+		SystemStateComponent,
+		SystemStateSharedComponent,
+		SystemStateBufferElementData,
 	}
 
-	public enum ComponentFieldAccessType
+	public enum ComponentFieldAccessType : byte
 	{
-		Public = 1,
-		Internal = 2,
-		Private = 3,
+		Public,
+		Internal,
+		Private,
 	}
 
 	[Serializable]

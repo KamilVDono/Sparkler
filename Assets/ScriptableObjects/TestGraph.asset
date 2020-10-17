@@ -171,11 +171,6 @@ MonoBehaviour:
       _serializedDeclaration: 
     _components:
     - _componentTypeReference:
-        classRef: 
-      _componentName: Kupa
-      _accessType: 0
-      _usageType: 0
-    - _componentTypeReference:
         classRef: Unity.Rendering.RenderMesh, Unity.Rendering.Hybrid
       _componentName: 
       _accessType: 1

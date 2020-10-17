@@ -1,7 +1,8 @@
 using FSM.Components;
 using FSM.Editor.CodeGens;
-using FSM.Primitives;
 using FSM.Utility;
+
+using Primitives;
 
 using System;
 using System.IO;
@@ -161,6 +162,10 @@ namespace FSM.Editor
 			{
 				return typeof( ISharedComponentData ).Name;
 			}
+			else if ( componentType == ComponentType.BufferElementData )
+			{
+				return typeof( IBufferElementData ).Name;
+			}
 			else if ( componentType == ComponentType.SystemStateComponent )
 			{
 				return typeof( ISystemStateComponentData ).Name;
@@ -169,9 +174,9 @@ namespace FSM.Editor
 			{
 				return typeof( ISystemStateSharedComponentData ).Name;
 			}
-			else if ( componentType == ComponentType.BufferElementData )
+			else if ( componentType == ComponentType.SystemStateBufferElementData )
 			{
-				return typeof( IBufferElementData ).Name;
+				return typeof( ISystemStateBufferElementData ).Name;
 			}
 			return typeof( IComponentData ).Name;
 		}
