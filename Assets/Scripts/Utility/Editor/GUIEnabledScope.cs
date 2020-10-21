@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace FSM.Utility.Editor
+namespace Sparkler.Utility.Editor
 {
 	public struct GUIEnabledScope : IDisposable
 	{

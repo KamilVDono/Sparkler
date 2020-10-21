@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 using UnityEditor;
 
-namespace FSM.Utility
+namespace Sparkler.Utility
 {
 	public static class SerializedPropertyExtension
 	{

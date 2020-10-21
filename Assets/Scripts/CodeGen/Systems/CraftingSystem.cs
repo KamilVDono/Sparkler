@@ -1,9 +1,9 @@
-using FSM.AI.States.Components;
+using Sparkler.AI.States.Components;
 
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace FSM.AI.States.Systems
+namespace Sparkler.AI.States.Systems
 {
 	public class CraftingSystem : SystemBase
 	{
@@ -30,6 +30,18 @@ namespace FSM.AI.States.Systems
 				.ForEach( ( Entity entity, int entityInQueryIndex, ref CraftingRecepie craftingRecepie, in WorkSpeed workSpeed ) =>
 			{
 				//TODO: Implement state behavior
+			} )
+			.ScheduleParallel();
+			// -- CraftingSystem_TransitionBuilding
+			var transitionbuildingCmdBuffer = _endSimulationCmdBuffer.CreateCommandBuffer().AsParallelWriter();
+			PrimitiveTag primitiveTag = new PrimitiveTag{ IntVal = 2, ByteVal = 0, ULongVal = 0, EnumVal = PrimitiveTag.Enum.Val1, FlagEnumVal = (PrimitiveTag.FlagEnum)(-1), };
+			Entities
+				.WithName( "CraftingSystem_TransitionBuilding" )
+				.WithSharedComponentFilter( primitiveTag )
+				.ForEach( ( Entity entity, int entityInQueryIndex, ref CraftingRecepie craftingRecepie, in WorkSpeed workSpeed ) =>
+			{
+				//TODO: Make transition to one of the following state:
+				//Building
 			} )
 			.ScheduleParallel();
 			_endSimulationCmdBuffer.AddJobHandleForProducer( this.Dependency );

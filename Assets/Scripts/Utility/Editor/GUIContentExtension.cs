@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FSM.Utility.Editor
+namespace Sparkler.Utility.Editor
 {
 	public static class GUIContentExtension
 	{
@@ -10,6 +10,6 @@ namespace FSM.Utility.Editor
 		public static readonly GUIContent MoveUpContent = new GUIContent("\u25B2");
 		public static readonly GUIContent MinusContent = new GUIContent("-");
 		public static readonly GUIContent PlusContent = new GUIContent("+");
-		public static readonly GUIContent EmptyContent = new GUIContent("");
+		public static readonly GUIContent EmptyContent = GUIContent.none;
 	}
 }

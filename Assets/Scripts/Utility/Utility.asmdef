@@ -1,6 +1,6 @@
 {
-    "name": "FSM.Utility",
-    "rootNamespace": "FSM.Utility",
+    "name": "Sparkler.Utility",
+    "rootNamespace": "Sparkler.Utility",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

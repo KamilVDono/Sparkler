@@ -4,7 +4,7 @@ using System.Linq;
 
 using UnityEngine;
 
-namespace FSM.Utility
+namespace Sparkler.Utility
 {
 	public static class LinqExtensions
 	{

@@ -2,7 +2,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace FSM.Utility.Editor
+namespace Sparkler.Utility.Editor
 {
 	public struct PropertyRect
 	{

@@ -21,7 +21,8 @@ MonoBehaviour:
     values:
     - _fieldName: _from
       _node: {fileID: -8399235882668064251}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections: []
       _direction: 0
       _connectionType: 0
@@ -51,12 +52,14 @@ MonoBehaviour:
       _serializedDeclaration: 
     _components:
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.OtherTag, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.WorkSpeed, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 0
       _usageType: 1
@@ -84,7 +87,8 @@ MonoBehaviour:
     values:
     - _fieldName: _from
       _node: {fileID: -1781160930075639533}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections: []
       _direction: 0
       _connectionType: 0
@@ -157,7 +161,8 @@ MonoBehaviour:
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.OtherTag, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 1
       _usageType: 2
@@ -185,12 +190,14 @@ MonoBehaviour:
       _serializedDeclaration: 
     _components:
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.OtherTag, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.OtherTag, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 1
       _usageType: 1
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.WorkSpeed, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 0
       _usageType: 1
@@ -211,9 +218,70 @@ MonoBehaviour:
   - {fileID: 7842134057005209292}
   - {fileID: 8925863260592550595}
   - {fileID: -8399235882668064251}
+  - {fileID: 3236578575046441879}
   _codeGenerationPath: Assets/Scripts/CodeGen
   _namespace: FSM.AI.States
   _stateEditing: 1
+--- !u!114 &3236578575046441879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 936, y: -56}
+  ports:
+    keys:
+    - _from
+    - Component_-1680893054
+    values:
+    - _fieldName: _from
+      _node: {fileID: 3236578575046441879}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Component_1506316459
+        node: {fileID: 8925863260592550595}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-1680893054
+      _node: {fileID: 3236578575046441879}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Building
+  _fromFile: 0
+  _from: {fileID: 0}
+  _lambdas:
+  - _guid: -1680893054
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Components.TestComponent, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
 --- !u!114 &7842134057005209292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +305,8 @@ MonoBehaviour:
     values:
     - _fieldName: _from
       _node: {fileID: 7842134057005209292}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: Component_326643078
         node: {fileID: -1781160930075639533}
@@ -293,7 +362,8 @@ MonoBehaviour:
       _accessType: 3
       _usageType: 1
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.Speed, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.Speed, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 1
       _usageType: 1
@@ -315,10 +385,12 @@ MonoBehaviour:
     keys:
     - _from
     - Component_-1384855949
+    - Component_1506316459
     values:
     - _fieldName: _from
       _node: {fileID: 8925863260592550595}
-      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: Component_516888397
         node: {fileID: -1781160930075639533}
@@ -332,6 +404,18 @@ MonoBehaviour:
       _node: {fileID: 8925863260592550595}
       _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_1506316459
+      _node: {fileID: 8925863260592550595}
+      _typeQualifiedName: FSM.StateNode, FSM, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: 3236578575046441879}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 2
@@ -351,12 +435,35 @@ MonoBehaviour:
       _serializedDeclaration: 
     _components:
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.CraftingRecepie, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.CraftingRecepie, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 3
       _usageType: 1
     - _componentTypeReference:
-        classRef: FSM.AI.States.Components.WorkSpeed, Assembly-CSharp
+        classRef: Sparkler.AI.States.Components.WorkSpeed, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+  - _guid: 1506316459
+    _name: TransitionBuilding
+    _parallelSchedule: 1
+    _hasStructuralChanges: 1
+    _queryField: 
+    _sharedFilter:
+      FilterName: primitiveTag
+      _serializedDeclaration: 5000720069006d006900740069007600650054006100670020007000720069006d006900740069007600650054006100670020003d0020006e006500770020005000720069006d00690074006900760065005400610067007b00200049006e007400560061006c0020003d00200032002c0020004200790074006500560061006c0020003d00200030002c00200055004c006f006e006700560061006c0020003d00200030002c00200045006e0075006d00560061006c0020003d0020005000720069006d00690074006900760065005400610067002e0045006e0075006d002e00560061006c0031002c00200046006c006100670045006e0075006d00560061006c0020003d00200028005000720069006d00690074006900760065005400610067002e0046006c006100670045006e0075006d00290028002d00310029002c0020007d003b00
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.AI.States.Components.CraftingRecepie, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.AI.States.Components.WorkSpeed, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       _componentName: 
       _accessType: 1
       _usageType: 1

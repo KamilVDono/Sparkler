@@ -1,2 +1,2 @@
-# ECS_FSM
-ECS_FSM is project where I want create some how universal Finite State Machine implementation (with visual graph designing) in Unity Entity Component System environment.
+# Sparkler
+Sparkler is node-based design system which works with [Unity Entities package](https://docs.unity3d.com/Packages/com.unity.entities@0.14/manual/index.html). Project started as tool for design and generate finite state machines for Entities. With progression project become more generic and now allows design and generate (syntax correct boilerplate code) behaviors and others (not only AI-related) systems.

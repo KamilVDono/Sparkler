@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FSM.Utility
+namespace Sparkler.Utility
 {
 	public class SimplePool<T>
 	{

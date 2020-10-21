@@ -1,15 +1,15 @@
-using Unity.Collections;
+using Sparkler.AI.States.Components;
+
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Rendering;
-using FSM.AI.States.Components;
-namespace FSM.AI.States.Systems
+namespace Sparkler.AI.States.Systems
 {
 	public class IdleSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
 		private EntityQuery _mainQuery;
-private EntityQuery _craftingQuery;
+		private EntityQuery _craftingQuery;
 		protected override void OnCreate()
 		{
 			base.OnCreate();
@@ -24,14 +24,14 @@ private EntityQuery _craftingQuery;
 			// entities in the world that have both Translation and Rotation components. Change it to
 			// process the component types you want.
 			// -- IdleSystem_Main
-		PrimitiveTag primitiveTag = new PrimitiveTag{ IntVal = 0, ByteVal = 0, ULongVal = 0, EnumVal = PrimitiveTag.Enum.Val1, FlagEnumVal = (PrimitiveTag.FlagEnum)(9), };
+			PrimitiveTag primitiveTag = new PrimitiveTag{ IntVal = 0, ByteVal = 0, ULongVal = 0, EnumVal = PrimitiveTag.Enum.Val1, FlagEnumVal = (PrimitiveTag.FlagEnum)(9), };
 			Entities
 				.WithName( "IdleSystem_Main" )
 				.WithoutBurst()
 				.WithSharedComponentFilter( primitiveTag )
 				.WithStoreEntityQueryInField( ref _mainQuery )
 				.WithAny<OtherTag>()
-				.ForEach( (  in RenderMesh renderMesh, in TestTag testTag ) =>
+				.ForEach( ( in RenderMesh renderMesh, in TestTag testTag ) =>
 			{
 				//TODO: Implement state behavior
 			} )
@@ -40,7 +40,7 @@ private EntityQuery _craftingQuery;
 			Entities
 				.WithName( "IdleSystem_TransitionWalk" )
 				.WithoutBurst()
-				.ForEach( (  in RenderMesh renderMesh, in TestTag testTag ) =>
+				.ForEach( ( in RenderMesh renderMesh, in TestTag testTag ) =>
 			{
 				//TODO: Make transition to one of the following state:
 				//Walk
@@ -51,7 +51,7 @@ private EntityQuery _craftingQuery;
 				.WithName( "IdleSystem_TransitionCrafting" )
 				.WithStoreEntityQueryInField( ref _craftingQuery )
 				.WithAll<WorkSpeed>()
-				.ForEach( (  in OtherTag otherTag ) =>
+				.ForEach( ( in OtherTag otherTag ) =>
 			{
 				//TODO: Make transition to one of the following state:
 				//Crafting

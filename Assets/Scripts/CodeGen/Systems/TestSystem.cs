@@ -1,10 +1,10 @@
-﻿using FSM.AI.States.Components;
+﻿using Sparkler.AI.States.Components;
 
 using Unity.Entities;
 using Unity.Rendering;
 using Unity.Transforms;
 
-namespace FSM.AI.States.Systems
+namespace Sparkler.AI.States.Systems
 {
 	public class TestSystem : SystemBase
 	{

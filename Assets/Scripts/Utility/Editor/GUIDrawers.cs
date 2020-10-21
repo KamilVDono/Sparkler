@@ -5,9 +5,9 @@ using UnityEditor;
 
 using UnityEngine;
 
-using static FSM.Utility.Editor.GUIContentExtension;
+using static Sparkler.Utility.Editor.GUIContentExtension;
 
-namespace FSM.Utility.Editor
+namespace Sparkler.Utility.Editor
 {
 	public static class GUIDrawers
 	{

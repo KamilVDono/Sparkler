@@ -5,7 +5,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 
 
-namespace FSM.AI.States.Components
+namespace Sparkler.AI.States.Components
 {
 	[Serializable]
 	public struct OtherTag : IComponentData

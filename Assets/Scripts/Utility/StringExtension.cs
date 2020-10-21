@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace FSM.Utility
+namespace Sparkler.Utility
 {
 	/// <summary>
 	/// Use this struct for faster and with minimal allocations concatenations
