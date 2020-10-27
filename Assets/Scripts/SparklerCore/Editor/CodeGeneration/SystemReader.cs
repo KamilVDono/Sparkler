@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 using Unity.Entities;
 
-namespace Sparkler.Editor.CodeGens
+namespace Sparkler.Editor.CodeGeneration
 {
 	public static class SystemReader
 	{

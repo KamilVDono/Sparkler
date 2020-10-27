@@ -1,15 +1,12 @@
-using Unity.Collections;
+using Sparkler.Components;
+
 using Unity.Entities;
 using Unity.Jobs;
-using Sparkler.Components;
 namespace Sparkler.AI.States.Systems
 {
 	public class BuildingSystem : SystemBase
 	{
-		protected override void OnCreate()
-		{
-			base.OnCreate();
-		}
+		protected override void OnCreate() => base.OnCreate();
 		protected override void OnUpdate()
 		{
 			// Assign values to local variables captured in your job here, so that it has everything it
@@ -21,7 +18,7 @@ namespace Sparkler.AI.States.Systems
 			// -- BuildingSystem_Main
 			Entities
 				.WithName( "BuildingSystem_Main" )
-				.ForEach( (  ref TestComponent testComponent ) =>
+				.ForEach( ( ref TestComponent testComponent ) =>
 			{
 				//TODO: Implement state behavior
 			} )

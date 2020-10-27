@@ -1,7 +1,7 @@
 ﻿using Rotorz.Games;
 
 using Sparkler.Components;
-using Sparkler.Editor.CodeGens;
+using Sparkler.Editor.CodeGeneration;
 using Sparkler.Utility;
 using Sparkler.Utility.Editor;
 

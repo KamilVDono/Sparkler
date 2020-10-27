@@ -3,7 +3,7 @@ using Sparkler.AI.States.Components;
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace Sparkler.AI.States.Systems
+namespace FSM.AI.States.Systems
 {
 	public class CraftingSystem : SystemBase
 	{

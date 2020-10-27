@@ -12,7 +12,7 @@ using UnityEditor.Compilation;
 
 using UnityEngine;
 
-namespace Sparkler.Editor.CodeGens
+namespace Sparkler.Editor.CodeGeneration
 {
 	public class ComponentCreatorWindow : EditorWindow
 	{

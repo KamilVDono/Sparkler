@@ -8,7 +8,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace Sparkler.Editor.CodeGens
+namespace Sparkler.Editor.CodeGeneration
 {
 	public enum ComponentType : byte
 	{
