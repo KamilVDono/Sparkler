@@ -1,0 +1,27 @@
+{
+    "name": "Sparkler.Tests",
+    "rootNamespace": "Sparkler.Tests",
+    "references": [
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:867f66b20449bd5469ea743548b2fe21",
+        "GUID:875dd8518d6ecda4e8605b633cd475e1",
+        "GUID:2f8dfaadf5ea4b44e81a2d7f24d5a672",
+        "GUID:7bb8d601740fed34abfe01b1b22195d1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

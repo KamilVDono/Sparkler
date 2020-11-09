@@ -1,0 +1,18 @@
+{
+    "name": "Sparkler.Rotorz.Games.Editor",
+    "rootNamespace": "Sparkler.Rotorz.Games.Editor",
+    "references": [
+        "GUID:defade650d4200943bb41a087ec43f59"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
