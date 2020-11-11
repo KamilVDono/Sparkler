@@ -59,6 +59,8 @@ sysinfo.txt
 *.apk
 *.aab
 *.unitypackage
+# But keep exported packeages
+!/ExportedPackages/*
 
 # Crashlytics generated file
 crashlytics-build.properties
