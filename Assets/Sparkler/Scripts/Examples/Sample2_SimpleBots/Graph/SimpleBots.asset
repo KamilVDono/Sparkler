@@ -237,6 +237,134 @@ MonoBehaviour:
       _componentName: 
       _accessType: 3
       _usageType: 1
+--- !u!114 &-2362403642342782479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 808, y: 216}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_712095764
+    - Component_904860808
+    - Component_-1504024068
+    values:
+    - _fieldName: _from
+      _node: {fileID: -2362403642342782479}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -2362403642342782479}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_712095764
+      _node: {fileID: -2362403642342782479}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_904860808
+      _node: {fileID: -2362403642342782479}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-1504024068
+      _node: {fileID: -2362403642342782479}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: TimeTable
+  _fromFile: 1
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: 712095764
+    _name: 
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: filter
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.IsEating, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.Heading, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+  - _guid: 904860808
+    _name: 
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: filter
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.Heading, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+  - _guid: -1504024068
+    _name: 
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.IsEating, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 1
 --- !u!114 &-1108266995040132102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +479,7 @@ MonoBehaviour:
   - {fileID: -7772316986144386499}
   - {fileID: -5819870446959353684}
   - {fileID: 221684291418036080}
+  - {fileID: -2362403642342782479}
   _codeGenerationPath: Assets/Sparkler/Scripts/Examples/Sample2_SimpleBots
   _namespace: Sparkler.Example
   _stateEditing: 1
