@@ -1,5 +1,336 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7772316986144386499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 216, y: 248}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_-701130833
+    values:
+    - _fieldName: _from
+      _node: {fileID: -7772316986144386499}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: -1108266995040132102}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -7772316986144386499}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: -1108266995040132102}
+        reroutePoints: []
+      - fieldName: _from
+        node: {fileID: 935104433943200202}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-701130833
+      _node: {fileID: -7772316986144386499}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: -1108266995040132102}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Work
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -701130833
+    _name: Main
+    _parallelSchedule: 1
+    _hasStructuralChanges: 1
+    _queryField: 
+    _sharedFilter:
+      FilterName: inPlace
+      _serializedDeclaration: 49006e0050006c00610063006500200069006e0050006c0061006300650020003d0020006e0065007700200049006e0050006c006100630065007b00200050006c0061006300650020003d00200050006c006100630065002e004d0069006e0065002c0020007d003b00
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.EnergyStat, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.WorkStat, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.EnergyDestination, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+--- !u!114 &-6444069266165903836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -952, y: -392}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_540777759
+    values:
+    - _fieldName: _from
+      _node: {fileID: -6444069266165903836}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -6444069266165903836}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: 8250705849746480162}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_540777759
+      _node: {fileID: -6444069266165903836}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Sleep
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: 540777759
+    _name: Sleeping
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: inPlace
+      _serializedDeclaration: 49006e0050006c00610063006500200069006e0050006c0061006300650020003d0020006e0065007700200049006e0050006c006100630065007b00200050006c0061006300650020003d00200050006c006100630065002e0048006f006d0065002c0020007d003b00
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.IsSleeping, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+--- !u!114 &-5819870446959353684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 824, y: -392}
+  ports:
+    keys:
+    - _from
+    - Component_1554551338
+    - _to
+    values:
+    - _fieldName: _from
+      _node: {fileID: -5819870446959353684}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_1554551338
+      _node: {fileID: -5819870446959353684}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -5819870446959353684}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+  _name: TimeOfDay
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: 1554551338
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.GameTime, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+--- !u!114 &-1108266995040132102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -344, y: 248}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_1702561285
+    values:
+    - _fieldName: _from
+      _node: {fileID: -1108266995040132102}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: -7772316986144386499}
+        reroutePoints: []
+      - fieldName: Component_-701130833
+        node: {fileID: -7772316986144386499}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -1108266995040132102}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: -7772316986144386499}
+        reroutePoints: []
+      - fieldName: _from
+        node: {fileID: 935104433943200202}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_1702561285
+      _node: {fileID: -1108266995040132102}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Relax
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: 1702561285
+    _name: Main
+    _parallelSchedule: 1
+    _hasStructuralChanges: 1
+    _queryField: 
+    _sharedFilter:
+      FilterName: inPlace
+      _serializedDeclaration: 49006e0050006c00610063006500200069006e0050006c0061006300650020003d0020006e0065007700200049006e0050006c006100630065007b00200050006c0061006300650020003d00200050006c006100630065002e004d0069006e0065002c0020007d003b00
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.EnergyStat, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.EnergyRegeneration, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.EnergyDestination, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,7 +343,273 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053c184ebf42cb449b120db0ca0eec8b, type: 3}
   m_Name: SimpleBots
   m_EditorClassIdentifier: 
-  nodes: []
-  _codeGenerationPath: 
-  _namespace: 
-  _stateEditing: 0
+  nodes:
+  - {fileID: -6444069266165903836}
+  - {fileID: 935104433943200202}
+  - {fileID: 8250705849746480162}
+  - {fileID: -1108266995040132102}
+  - {fileID: -7772316986144386499}
+  - {fileID: -5819870446959353684}
+  - {fileID: 221684291418036080}
+  _codeGenerationPath: Assets/Sparkler/Scripts/Examples/Sample2_SimpleBots
+  _namespace: Sparkler.Example
+  _stateEditing: 1
+--- !u!114 &221684291418036080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 824, y: -88}
+  ports:
+    keys:
+    - _from
+    - Component_-115948754
+    - _to
+    values:
+    - _fieldName: _from
+      _node: {fileID: 221684291418036080}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-115948754
+      _node: {fileID: 221684291418036080}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 221684291418036080}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+  _name: SpawnUnits
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -115948754
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.SpawnRequest, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+--- !u!114 &935104433943200202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 216, y: -392}
+  ports:
+    keys:
+    - _from
+    - Component_-1322656360
+    - Component_-467990126
+    - Component_1852905440
+    - _to
+    values:
+    - _fieldName: _from
+      _node: {fileID: 935104433943200202}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: 8250705849746480162}
+        reroutePoints: []
+      - fieldName: _to
+        node: {fileID: -7772316986144386499}
+        reroutePoints: []
+      - fieldName: _to
+        node: {fileID: -1108266995040132102}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-1322656360
+      _node: {fileID: 935104433943200202}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-467990126
+      _node: {fileID: 935104433943200202}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_1852905440
+      _node: {fileID: 935104433943200202}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 935104433943200202}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: 8250705849746480162}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+  _name: Travel
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -467990126
+    _name: Progression
+    _parallelSchedule: 1
+    _hasStructuralChanges: 1
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.Heading, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.InPlace, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+--- !u!114 &8250705849746480162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -344, y: -392}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_2119979762
+    values:
+    - _fieldName: _from
+      _node: {fileID: 8250705849746480162}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _to
+        node: {fileID: 935104433943200202}
+        reroutePoints: []
+      - fieldName: _to
+        node: {fileID: -6444069266165903836}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 8250705849746480162}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: 935104433943200202}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_2119979762
+      _node: {fileID: 8250705849746480162}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Eat
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: 2119979762
+    _name: Eating
+    _parallelSchedule: 1
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: inPlace
+      _serializedDeclaration: 49006e0050006c00610063006500200069006e0050006c0061006300650020003d0020006e0065007700200049006e0050006c006100630065007b00200050006c0061006300650020003d00200050006c006100630065002e0048006f006d0065002c0020007d003b00
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Components.IsEating, Sparkler.Examples, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1

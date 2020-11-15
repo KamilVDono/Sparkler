@@ -67,8 +67,12 @@ namespace Sparkler
 
 		[SerializeField] private bool _fromFile = false;
 
-		[Input(ShowBackingValue.Never, connectionType = ConnectionType.Multiple)]
+		[Input(ShowBackingValue.Never, connectionType = ConnectionType.Multiple, typeConstraint = TypeConstraint.Inherited)]
 		[SerializeField] private SystemNode _from = null;
+
+		// Just for UI
+		[Output(ShowBackingValue.Never, connectionType = ConnectionType.Multiple, typeConstraint = TypeConstraint.Inherited)]
+		[SerializeField] private SystemNode _to = null;
 
 		[SerializeField] private SystemLambdaAction[] _lambdas = new SystemLambdaAction[0];
 
@@ -128,10 +132,10 @@ namespace Sparkler
 			.SelectMany( o => o.GetConnections().Select( c => c.node ) )
 			.OfType<SystemNode>();
 
-		public SystemNode TransitionTo( SystemLambdaAction lambda )
+		public IEnumerable<SystemNode> TransitionTo( SystemLambdaAction lambda )
 		{
 			int index = _lambdas.IndexOf(lambda);
-			return GetLambdaPort( index )?.Connection?.node as SystemNode;
+			return GetLambdaPort( index )?.Connections.Select( c => c.node ).OfType<SystemNode>();
 		}
 
 		#endregion Queries
@@ -152,7 +156,7 @@ namespace Sparkler
 				return port;
 			}
 			string portName = ComponentPortName(index);
-			return AddDynamicOutput( typeof( SystemNode ), ConnectionType.Override, TypeConstraint.Strict, portName );
+			return AddDynamicOutput( typeof( SystemNode ), ConnectionType.Multiple, TypeConstraint.Inherited, portName );
 		}
 
 		public void RemoveLambdaPort( int index )

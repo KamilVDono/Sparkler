@@ -556,7 +556,7 @@ namespace Sparkler.XNode.Editor
 					{
 						Vector2 portHandlePos = kvp.Value;
 						portHandlePos += node.position;
-						Rect rect = new Rect(portHandlePos.x - 8, portHandlePos.y - 8, 16, 16);
+						Rect rect = new Rect(portHandlePos.x - 12, portHandlePos.y - 12, 24, 24);
 						portConnectionPoints[kvp.Key] = rect;
 					}
 				}

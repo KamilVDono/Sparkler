@@ -300,11 +300,16 @@ namespace Sparkler.Editor.CodeGeneration
 
 		public string ProcessLambda( SystemNode system, SystemLambdaAction lambda, string currentTemplate )
 		{
-			var transition = system.TransitionTo(lambda);
-			bool hasTransition = transition != null;
+			var transitions = system.TransitionTo(lambda).ToArray();
+			bool hasTransition = (transitions?.Count() ?? -1) > 0;
+			string transitionsNames = "";
+			if ( hasTransition )
+			{
+				transitionsNames = string.Join( ", ", transitions.Select( t => t.Name ) );
+			}
 
 			currentTemplate = CodeGeneratorUtils.ConditionalText( hasTransition, "TRANSITION", currentTemplate );
-			return s_transitionToRegex.Replace( currentTemplate, transition?.Name ?? "" );
+			return s_transitionToRegex.Replace( currentTemplate, transitionsNames );
 		}
 	}
 

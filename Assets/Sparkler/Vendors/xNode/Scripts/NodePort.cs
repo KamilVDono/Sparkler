@@ -52,6 +52,20 @@ namespace Sparkler.XNode
 			}
 		}
 
+		public IEnumerable<NodePort> Connections
+		{
+			get
+			{
+				for ( int i = 0; i < connections.Count; i++ )
+				{
+					if ( connections[i] != null )
+					{
+						yield return connections[i].Port;
+					}
+				}
+			}
+		}
+
 		public IO direction => _direction;
 
 		public Node.ConnectionType connectionType => _connectionType;
