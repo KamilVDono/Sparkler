@@ -6,6 +6,7 @@ using Unity.Jobs;
 
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	[UpdateInGroup( typeof( TimeUpdateGroup ) )]
 	[UpdateAfter( typeof( TimeOfDaySystem ) )]
 	public class TimeTableSystem : SystemBase

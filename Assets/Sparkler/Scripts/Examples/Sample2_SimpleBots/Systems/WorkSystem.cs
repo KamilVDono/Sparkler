@@ -2,10 +2,9 @@ using Sparkler.Example.Components;
 
 using Unity.Entities;
 
-using UnityEngine;
-
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	public class WorkSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
@@ -36,10 +35,6 @@ namespace Sparkler.Example.Systems
 				.WithNone<EnergyDestination>()
 				.ForEach( ( Entity entity, int entityInQueryIndex, ref EnergyStat energyStat, in WorkStat workStat ) =>
 			{
-				if ( energyStat.Count == 100 )
-				{
-					Debug.Log( $"Start mining: {entity}" );
-				}
 				energyStat.Count -= deltaTime * workStat.Speed * energyStat.FatiguePressure;
 
 				if ( energyStat.Count <= 10 )

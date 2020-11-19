@@ -5,6 +5,7 @@ using Unity.Jobs;
 using Unity.Rendering;
 namespace Sparkler.AI.States.Systems
 {
+	[DisableAutoCreation]
 	public class IdleSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;

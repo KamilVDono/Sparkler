@@ -2,10 +2,9 @@ using Sparkler.Example.Components;
 
 using Unity.Entities;
 
-using UnityEngine;
-
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	public class TravelSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
@@ -28,11 +27,6 @@ namespace Sparkler.Example.Systems
 				.WithoutBurst()
 				.ForEach( ( Entity e, int entityInQueryIndex, ref Heading heading ) =>
 			{
-				if ( heading.Progression == 0 )
-				{
-					Debug.Log( $"Start travel to: {heading.Place}" );
-				}
-
 				heading.Progression += deltaTime;
 
 				if ( heading.Progression >= 1 )

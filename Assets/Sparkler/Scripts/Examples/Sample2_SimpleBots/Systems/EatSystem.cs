@@ -2,10 +2,9 @@ using Sparkler.Example.Components;
 
 using Unity.Entities;
 
-using UnityEngine;
-
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	public class EatSystem : SystemBase
 	{
 		protected override void OnCreate() => base.OnCreate();
@@ -19,11 +18,6 @@ namespace Sparkler.Example.Systems
 				.WithSharedComponentFilter( inPlace )
 				.ForEach( ( Entity e, ref IsEating isEating ) =>
 			{
-				if ( isEating.Value == 0 )
-				{
-					Debug.Log( $"Eating: {e}" );
-				}
-				isEating.Value = 1;
 			} )
 			.ScheduleParallel();
 		}

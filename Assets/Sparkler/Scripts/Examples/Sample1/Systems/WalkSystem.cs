@@ -6,6 +6,7 @@ using Unity.Transforms;
 
 namespace Sparkler.AI.States.Systems
 {
+	[DisableAutoCreation]
 	public class WalkSystem : SystemBase
 	{
 		protected override void OnCreate() => base.OnCreate();

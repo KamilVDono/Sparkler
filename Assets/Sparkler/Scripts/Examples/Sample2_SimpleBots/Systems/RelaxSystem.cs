@@ -2,10 +2,9 @@ using Sparkler.Example.Components;
 
 using Unity.Entities;
 
-using UnityEngine;
-
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	public class RelaxSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;
@@ -32,7 +31,6 @@ namespace Sparkler.Example.Systems
 				energyStat.Count += energyRegeneration.Value * deltaTime;
 				if ( energyStat.Count >= energyDestination.Value )
 				{
-					Debug.Log( $"Stop relax: {entity}" );
 					mainCmdBuffer.RemoveComponent<EnergyDestination>( entityInQueryIndex, entity );
 				}
 			} )

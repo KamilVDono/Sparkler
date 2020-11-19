@@ -5,6 +5,7 @@ using Unity.Jobs;
 
 namespace FSM.AI.States.Systems
 {
+	[DisableAutoCreation]
 	public class CraftingSystem : SystemBase
 	{
 		private EndSimulationEntityCommandBufferSystem _endSimulationCmdBuffer;

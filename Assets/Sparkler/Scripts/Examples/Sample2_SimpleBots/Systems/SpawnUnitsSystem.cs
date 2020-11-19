@@ -1,16 +1,23 @@
 using Sparkler.Example.Components;
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	public class SpawnUnitsSystem : SystemBase
 	{
+		private static readonly string[] Names = new string[]{
+			"Bill", "Tob", "Bob", "Alex", "Marie", "Ola", "Ala", "Olek", "Max", "Rex", "Tik", "Rick", "John", "Nina", "Aga"
+		};
+
 		private EntityArchetype _archetype;
+		private Dictionary<string, int> _countByName;
 
 		protected override void OnCreate()
 		{
@@ -18,8 +25,7 @@ namespace Sparkler.Example.Systems
 
 			_archetype = EntityManager.CreateArchetype( typeof( CharacterTag ), typeof( InPlace ), typeof( WorkStat ), typeof( EnergyStat ), typeof( EnergyRegeneration ) );
 
-			var e = EntityManager.CreateEntity( typeof( SpawnRequest ));
-			EntityManager.SetComponentData( e, new SpawnRequest() { Count = 50 } );
+			_countByName = Names.ToDictionary( n => n, n => -1 );
 		}
 
 		protected override void OnUpdate()
@@ -29,6 +35,7 @@ namespace Sparkler.Example.Systems
 
 			Entities
 				.WithStructuralChanges()
+				.WithoutBurst()
 				.WithName( "SpawnUnitsSystem_Main" )
 				.ForEach( ( Entity e, ref SpawnRequest spawnRequest ) =>
 			{
@@ -37,6 +44,11 @@ namespace Sparkler.Example.Systems
 
 				foreach ( var entity in entities )
 				{
+					string name = Names[rng.NextInt( 0, Names.Length-1 )];
+					var nameCount = ++_countByName[name];
+					_countByName[name] = nameCount;
+
+					EntityManager.SetName( entity, name + nameCount );
 					EntityManager.SetSharedComponentData( entity, new InPlace() { Place = Place.Home } );
 					EntityManager.SetComponentData( entity, new WorkStat() { Speed = rng.NextFloat( 5f, 7f ) } );
 					EntityManager.SetComponentData( entity, new EnergyStat() { Count = 100, FatiguePressure = rng.NextFloat( 15f, 25f ) } );

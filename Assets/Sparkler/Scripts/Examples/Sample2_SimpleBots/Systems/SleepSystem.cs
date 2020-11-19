@@ -4,6 +4,7 @@ using Unity.Entities;
 
 namespace Sparkler.Example.Systems
 {
+	[DisableAutoCreation]
 	public class SleepSystem : SystemBase
 	{
 		protected override void OnCreate() => base.OnCreate();

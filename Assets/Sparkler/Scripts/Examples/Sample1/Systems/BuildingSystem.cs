@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Jobs;
 namespace Sparkler.AI.States.Systems
 {
+	[DisableAutoCreation]
 	public class BuildingSystem : SystemBase
 	{
 		protected override void OnCreate() => base.OnCreate();
