@@ -34,6 +34,7 @@ namespace Sparkler.Editor.CodeGeneration
 		public string Directory = "";
 		public ComponentType ComponentType = ComponentType.ComponentData;
 		public ComponentField[] Fields = new ComponentField[0];
+		public bool GenerateAuthoring;
 	}
 
 	public class ComponentFieldBlacklistedNamespacesAttribute : BlacklistedNamespacesAttribute

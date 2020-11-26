@@ -204,7 +204,7 @@ namespace Sparkler.Utility.Editor
 		{
 			EditorGUILayout.BeginHorizontal( GUILayout.Width( fullWidth ) );
 			EditorGUILayout.LabelField( property.displayName, GUILayout.Width( labelWidth ) );
-			EditorGUILayout.PropertyField( property, EmptyContent );
+			EditorGUILayout.PropertyField( property, EmptyContent, GUILayout.MaxWidth( fullWidth - labelWidth ) );
 			EditorGUILayout.EndHorizontal();
 		}
 	}

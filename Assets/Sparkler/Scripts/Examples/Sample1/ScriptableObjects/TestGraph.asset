@@ -13,20 +13,24 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 920, y: -568}
+  position: {x: 808, y: -552}
   ports:
     keys:
     - _from
     - Component_-820458279
+    - _to
     values:
     - _fieldName: _from
       _node: {fileID: -8399235882668064251}
       _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: _to
+        node: {fileID: 7842134057005209292}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
-      _typeConstraint: 0
+      _typeConstraint: 1
       _dynamic: 0
       _allowedTypes: []
     - _fieldName: Component_-820458279
@@ -38,9 +42,20 @@ MonoBehaviour:
       _typeConstraint: 2
       _dynamic: 1
       _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -8399235882668064251}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
   _name: Test
   _fromFile: 1
   _from: {fileID: 0}
+  _to: {fileID: 0}
   _lambdas:
   - _guid: -820458279
     _name: IdleSystem_TransitionCrafting
@@ -84,6 +99,7 @@ MonoBehaviour:
     - Component_-1754452857
     - Component_326643078
     - Component_516888397
+    - _to
     values:
     - _fieldName: _from
       _node: {fileID: -1781160930075639533}
@@ -92,7 +108,7 @@ MonoBehaviour:
       connections: []
       _direction: 0
       _connectionType: 0
-      _typeConstraint: 0
+      _typeConstraint: 1
       _dynamic: 0
       _allowedTypes: []
     - _fieldName: Component_-1707343371
@@ -137,9 +153,20 @@ MonoBehaviour:
       _typeConstraint: 2
       _dynamic: 1
       _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -1781160930075639533}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
   _name: Idle
   _fromFile: 0
   _from: {fileID: 0}
+  _to: {fileID: 0}
   _lambdas:
   - _guid: -1707343371
     _name: Main
@@ -235,11 +262,12 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 936, y: -56}
+  position: {x: 792, y: -40}
   ports:
     keys:
     - _from
     - Component_-1680893054
+    - _to
     values:
     - _fieldName: _from
       _node: {fileID: 3236578575046441879}
@@ -251,7 +279,7 @@ MonoBehaviour:
         reroutePoints: []
       _direction: 0
       _connectionType: 0
-      _typeConstraint: 0
+      _typeConstraint: 1
       _dynamic: 0
       _allowedTypes: []
     - _fieldName: Component_-1680893054
@@ -263,9 +291,20 @@ MonoBehaviour:
       _typeConstraint: 2
       _dynamic: 1
       _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 3236578575046441879}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
   _name: Building
   _fromFile: 0
   _from: {fileID: 0}
+  _to: {fileID: 0}
   _lambdas:
   - _guid: -1680893054
     _name: Main
@@ -302,6 +341,7 @@ MonoBehaviour:
     - Component_-1395152212
     - Component_531302806
     - Component_-1932310093
+    - _to
     values:
     - _fieldName: _from
       _node: {fileID: 7842134057005209292}
@@ -313,7 +353,7 @@ MonoBehaviour:
         reroutePoints: []
       _direction: 0
       _connectionType: 0
-      _typeConstraint: 0
+      _typeConstraint: 1
       _dynamic: 0
       _allowedTypes: []
     - _fieldName: Component_-1395152212
@@ -343,9 +383,23 @@ MonoBehaviour:
       _typeConstraint: 2
       _dynamic: 1
       _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 7842134057005209292}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: _from
+        node: {fileID: -8399235882668064251}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
   _name: Walk
   _fromFile: 0
   _from: {fileID: 0}
+  _to: {fileID: 0}
   _lambdas:
   - _guid: -1395152212
     _name: Main
@@ -386,6 +440,7 @@ MonoBehaviour:
     - _from
     - Component_-1384855949
     - Component_1506316459
+    - _to
     values:
     - _fieldName: _from
       _node: {fileID: 8925863260592550595}
@@ -397,7 +452,7 @@ MonoBehaviour:
         reroutePoints: []
       _direction: 0
       _connectionType: 0
-      _typeConstraint: 0
+      _typeConstraint: 1
       _dynamic: 0
       _allowedTypes: []
     - _fieldName: Component_-1384855949
@@ -421,9 +476,20 @@ MonoBehaviour:
       _typeConstraint: 2
       _dynamic: 1
       _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 8925863260592550595}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
   _name: Crafting
   _fromFile: 0
   _from: {fileID: 0}
+  _to: {fileID: 0}
   _lambdas:
   - _guid: -1384855949
     _name: Main

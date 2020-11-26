@@ -7,6 +7,9 @@ $USINGS$
 namespace $NAMESPACE$.Components
 {
 	[Serializable]
+	#$GENERATE_AUTHORING
+	[GenerateAuthoringComponent]
+	$#GENERATE_AUTHORING
 	public struct $NAME$ : $COMPONENT_TYPE$
 	{
 $FIELDS$

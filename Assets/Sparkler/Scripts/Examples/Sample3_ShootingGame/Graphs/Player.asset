@@ -1,0 +1,351 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6416404028913444409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -584, y: -520}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_-1608061593
+    - Component_-1831343370
+    values:
+    - _fieldName: _from
+      _node: {fileID: -6416404028913444409}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -6416404028913444409}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-1608061593
+      _node: {fileID: -6416404028913444409}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-1831343370
+      _node: {fileID: -6416404028913444409}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: Shooting
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -1608061593
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 1
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.LastShootTime, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.AmmoMagazine, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.AmmoPrefab, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.ShootingConfig, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.ReloadingProgress, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 3
+  - _guid: -1831343370
+    _name: Reloading
+    _parallelSchedule: 0
+    _hasStructuralChanges: 1
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.ReloadingProgress, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.AmmoMagazine, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.ReloadSpeed, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+--- !u!114 &-884213589210372823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -968, y: -520}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_-1651631901
+    - Component_-466566247
+    - Component_-1972630708
+    values:
+    - _fieldName: _from
+      _node: {fileID: -884213589210372823}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: -884213589210372823}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-1651631901
+      _node: {fileID: -884213589210372823}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-466566247
+      _node: {fileID: -884213589210372823}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+    - _fieldName: Component_-1972630708
+      _node: {fileID: -884213589210372823}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: InputSystem
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -1651631901
+    _name: MouseButtons
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.MouseLeftButton, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+  - _guid: -466566247
+    _name: MouseMove
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.MouseMove, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+  - _guid: -1972630708
+    _name: KeyboardButtons
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.KeyboardButtons, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053c184ebf42cb449b120db0ca0eec8b, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -884213589210372823}
+  - {fileID: -6416404028913444409}
+  - {fileID: 3544256463270803400}
+  _codeGenerationPath: Assets/Sparkler/Scripts/Examples/Sample3_ShootingGame
+  _namespace: Sparkler.Example.Shooter
+  _stateEditing: 1
+--- !u!114 &3544256463270803400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -216, y: -520}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_-1398764017
+    values:
+    - _fieldName: _from
+      _node: {fileID: 3544256463270803400}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 3544256463270803400}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-1398764017
+      _node: {fileID: 3544256463270803400}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: PlayerRotation
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -1398764017
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Rotation, Unity.Transforms, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.PlayerTag, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 0
+      _usageType: 1

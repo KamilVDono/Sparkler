@@ -31,7 +31,6 @@ namespace Sparkler.Editor.CodeGeneration
 		{
 			var window = EditorWindow.GetWindow<ComponentCreatorWindow>();
 			window.titleContent = s_titleContent;
-			window._serializedObject = new SerializedObject( window );
 			window._componentDefinition = new ComponentDefinition()
 			{
 				ComponentName = name,
@@ -43,6 +42,7 @@ namespace Sparkler.Editor.CodeGeneration
 
 		private void OnEnable()
 		{
+			_serializedObject = new SerializedObject( this );
 			if ( _namespaces != null )
 			{
 				return;
@@ -105,6 +105,7 @@ namespace Sparkler.Editor.CodeGeneration
 			EditorGUILayout.BeginHorizontal();
 			GUIDrawers.DrawFieldWithLabel( componentProperty.FindPropertyRelative( "ComponentType" ) );
 			GUIDrawers.DrawFieldWithLabel( componentProperty.FindPropertyRelative( "ComponentName" ) );
+			GUIDrawers.DrawFieldWithLabelWidth( componentProperty.FindPropertyRelative( "GenerateAuthoring" ), 120, 135 );
 			EditorGUILayout.EndHorizontal();
 
 			// Fields

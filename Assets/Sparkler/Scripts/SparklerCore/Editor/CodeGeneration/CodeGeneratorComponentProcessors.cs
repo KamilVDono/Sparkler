@@ -152,4 +152,10 @@ namespace Sparkler.Editor.CodeGeneration
 			return s_nameRegex.Replace( template, upperedComponentName );
 		}
 	}
+
+	public class ComponentGenerateAuthoringProcessor : ICodeGeneratorComponentProcessors
+	{
+		public string Process( ComponentDefinition componentDefinition, string template ) =>
+			CodeGeneratorUtils.ConditionalText( componentDefinition.GenerateAuthoring, "GENERATE_AUTHORING", template );
+	}
 }

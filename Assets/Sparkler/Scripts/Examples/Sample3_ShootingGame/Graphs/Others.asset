@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053c184ebf42cb449b120db0ca0eec8b, type: 3}
+  m_Name: Others
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1582744839779297684}
+  - {fileID: 3024689454177531015}
+  _codeGenerationPath: Assets/Sparkler/Scripts/Examples/Sample3_ShootingGame
+  _namespace: Sparkler.Example.Shooter
+  _stateEditing: 1
+--- !u!114 &1582744839779297684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1016, y: -488}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_1044537045
+    values:
+    - _fieldName: _from
+      _node: {fileID: 1582744839779297684}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 1582744839779297684}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_1044537045
+      _node: {fileID: 1582744839779297684}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: MoveSystem
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: 1044537045
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Translation, Unity.Transforms, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 3
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.Acceleration, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+--- !u!114 &3024689454177531015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
+  m_Name: System
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -664, y: -488}
+  ports:
+    keys:
+    - _from
+    - _to
+    - Component_-881665339
+    values:
+    - _fieldName: _from
+      _node: {fileID: 3024689454177531015}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: _to
+      _node: {fileID: 3024689454177531015}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+      _allowedTypes: []
+    - _fieldName: Component_-881665339
+      _node: {fileID: 3024689454177531015}
+      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 1
+      _allowedTypes: []
+  _name: HitSystem
+  _fromFile: 0
+  _from: {fileID: 0}
+  _to: {fileID: 0}
+  _lambdas:
+  - _guid: -881665339
+    _name: Main
+    _parallelSchedule: 0
+    _hasStructuralChanges: 0
+    _queryField: 
+    _sharedFilter:
+      FilterName: 
+      _serializedDeclaration: 
+    _components:
+    - _componentTypeReference:
+        classRef: Unity.Transforms.Translation, Unity.Transforms, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1
+    - _componentTypeReference:
+        classRef: Sparkler.Example.Shooter.Components.Acceleration, Sparkler.Examples,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _componentName: 
+      _accessType: 1
+      _usageType: 1

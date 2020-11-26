@@ -237,54 +237,6 @@ MonoBehaviour:
       _componentName: 
       _accessType: 3
       _usageType: 1
---- !u!114 &-5264833746652599164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: System
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -472, y: 488}
-  ports:
-    keys:
-    - _from
-    - _to
-    values:
-    - _fieldName: _from
-      _node: {fileID: -5264833746652599164}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: _to
-      _node: {fileID: -5264833746652599164}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: 8595671980901822197}
-        reroutePoints:
-        - {x: -68.19998, y: 528.4}
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-  _name: 
-  _fromFile: 0
-  _from: {fileID: 0}
-  _to: {fileID: 0}
-  _lambdas: []
 --- !u!114 &-2362403642342782479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,10 +480,6 @@ MonoBehaviour:
   - {fileID: -5819870446959353684}
   - {fileID: 221684291418036080}
   - {fileID: -2362403642342782479}
-  - {fileID: -5264833746652599164}
-  - {fileID: 334457329554395896}
-  - {fileID: 8595671980901822197}
-  - {fileID: 7762264047190937722}
   _codeGenerationPath: Assets/Sparkler/Scripts/Examples/Sample2_SimpleBots
   _namespace: Sparkler.Example
   _stateEditing: 1
@@ -605,57 +553,6 @@ MonoBehaviour:
       _componentName: 
       _accessType: 3
       _usageType: 1
---- !u!114 &334457329554395896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: System
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -472, y: 696}
-  ports:
-    keys:
-    - _from
-    - _to
-    values:
-    - _fieldName: _from
-      _node: {fileID: 334457329554395896}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: _to
-      _node: {fileID: 334457329554395896}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: _from
-        node: {fileID: 8595671980901822197}
-        reroutePoints:
-        - {x: -62.79998, y: 634.60004}
-      - fieldName: _from
-        node: {fileID: 7762264047190937722}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-  _name: 
-  _fromFile: 0
-  _from: {fileID: 0}
-  _to: {fileID: 0}
-  _lambdas: []
 --- !u!114 &935104433943200202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,53 +663,6 @@ MonoBehaviour:
       _componentName: 
       _accessType: 1
       _usageType: 1
---- !u!114 &7762264047190937722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: System
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 120, y: 712}
-  ports:
-    keys:
-    - _from
-    - _to
-    values:
-    - _fieldName: _from
-      _node: {fileID: 7762264047190937722}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: 334457329554395896}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: _to
-      _node: {fileID: 7762264047190937722}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-  _name: 
-  _fromFile: 0
-  _from: {fileID: 0}
-  _to: {fileID: 0}
-  _lambdas: []
 --- !u!114 &8250705849746480162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,53 +742,3 @@ MonoBehaviour:
       _componentName: 
       _accessType: 1
       _usageType: 1
---- !u!114 &8595671980901822197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54c0ad212f53d041bd42d83287dacce, type: 3}
-  m_Name: System
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 104, y: 520}
-  ports:
-    keys:
-    - _from
-    - _to
-    values:
-    - _fieldName: _from
-      _node: {fileID: 8595671980901822197}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: _to
-        node: {fileID: -5264833746652599164}
-        reroutePoints: []
-      - fieldName: _to
-        node: {fileID: 334457329554395896}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-    - _fieldName: _to
-      _node: {fileID: 8595671980901822197}
-      _typeQualifiedName: Sparkler.SystemNode, Sparkler, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 1
-      _dynamic: 0
-      _allowedTypes: []
-  _name: 
-  _fromFile: 0
-  _from: {fileID: 0}
-  _to: {fileID: 0}
-  _lambdas: []
